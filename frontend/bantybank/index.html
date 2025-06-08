@@ -4,440 +4,95 @@
   <meta charset="UTF-8" />
   <title>BantyBank</title>
   <style>
-    /* ============ BASIC RESET & LAYOUT ============ */
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-    body {
-      background-color: #f2f2f2;
-      color: #333;
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-    header {
-      background-color: #004b8d;
-      color: white;
-      padding: 10px 20px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-    }
-    header h1 {
-      font-size: 1.5rem;
-    }
-    nav {
-      display: none;
-    }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 20px;
-    }
-    nav a {
-      color: white;
-      text-decoration: none;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    main {
-      flex: 1;
-      padding: 20px;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-    .container {
-      background-color: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      width: 100%;
-      max-width: 400px;
-    }
-    .hidden {
-      display: none;
-    }
-    label {
-      display: block;
-      margin-top: 15px;
-      font-size: 0.9rem;
-    }
-    input[type="text"],
-    input[type="password"],
-    input[type="number"] {
-      width: 100%;
-      padding: 8px;
-      margin-top: 5px;
-      border: 1px solid #aaa;
-      border-radius: 4px;
-    }
-    button {
-      margin-top: 20px;
-      padding: 10px 15px;
-      background-color: #004b8d;
-      color: white;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    button:hover {
-      background-color: #00356b;
-    }
-    .message {
-      margin-bottom: 15px;
-      color: green;
-      font-size: 0.9rem;
-    }
-    /* ============ NAVIGATION ACTIVE STATE ============ */
-    .active-tab {
-      text-decoration: underline;
-    }
-    /* ============ FLOATING “REPORT PHISHING SITE” ============ */
-    #reportPhishBtn {
-      position: fixed;
-      bottom: 20px;
-      right: 20px;
-      background-color: #e63946;
-      color: white;
-      border: none;
-      border-radius: 50px;
-      padding: 12px 18px;
-      font-size: 0.9rem;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
-      cursor: pointer;
-      z-index: 1000;
-    }
-    #reportPhishBtn:hover {
-      background-color: #c5303f;
-    }
-    /* ============ ACCOUNT INFO / TRANSFER FORM ============ */
-    #accountInfo {
-      max-width: 500px;
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-    }
-    #accountInfo h2 {
-      margin-bottom: 20px;
-      color: #004b8d;
-    }
-    .info-line {
-      margin-bottom: 10px;
-      font-size: 1rem;
-    }
-    #transferForm {
-      margin-top: 20px;
-    }
-    #transferForm label {
-      font-size: 0.9rem;
-    }
-    #transferForm input[type="text"],
-    #transferForm input[type="number"] {
-      margin-top: 5px;
-      margin-bottom: 10px;
-    }
-    /* ============ SUCCESS SCREEN ============ */
-    #successScreen {
-      text-align: center;
-    }
-    #successScreen h2 {
-      color: #007f5f;
-    }
-    /* ============ ABOUT TAB ============ */
-    #aboutContent {
-      max-width: 600px;
-      background: white;
-      padding: 30px;
-      border-radius: 8px;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-      line-height: 1.5rem;
-    }
+    /* palette & layout */
+    *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
+    body{background:#f2f2f2;min-height:100vh;display:flex;flex-direction:column;color:#333}
+    header{background:#004b8d;color:#fff;padding:12px 20px;display:flex;justify-content:space-between;align-items:center}
+    main{flex:1;display:flex;justify-content:center;align-items:center;padding:30px}
+    .card{background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);width:100%;max-width:400px;text-align:center}
+    input{width:100%;padding:9px;border:1px solid #aaa;border-radius:4px;margin-top:6px}
+    button{margin-top:20px;padding:10px 18px;background:#004b8d;color:#fff;border:none;border-radius:4px;cursor:pointer}
+    button:hover{background:#00356b}
+    .error{color:#e63946;font-size:.9rem;margin-top:10px}
+    #reportBtn{position:fixed;bottom:20px;right:20px;background:#e63946;color:#fff;border:none;border-radius:50px;padding:12px 18px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.2)}
+    #reportBtn:hover{background:#c5303f}
   </style>
 </head>
 <body>
-  <!-- ============ HEADER & NAV ============ -->
-  <header>
-    <h1>BantyBank</h1>
-    <nav>
-      <ul>
-        <li><a id="navHome" class="active-tab">Home</a></li>
-        <li><a id="navAbout">About</a></li>
-      </ul>
-    </nav>
-  </header>
+<header><h1>BantyBank</h1></header>
 
-  <!-- ============ MAIN CONTENT AREA ============ -->
-  <main>
-    <!-- ==== 1) LOGIN SCREEN ==== -->
-    <div id="loginContainer" class="container">
-      <div id="loginMessage" class="message"></div>
-      <h2>Please Log In</h2>
-      <label for="accountNumber">Bank Account Number:</label>
-      <input type="text" id="accountNumber" placeholder="Enter account #" />
-      <label for="password">Password:</label>
-      <input type="password" id="password" placeholder="Enter password" />
-      <button id="loginBtn">Log In</button>
-      <div id="loginError" style="color: red; margin-top: 10px; font-size: 0.9rem;"></div>
-    </div>
+<main>
+  <!-- LOGIN -->
+  <div id="loginCard" class="card">
+    <h2>Secure Login</h2>
+    <input id="acc" placeholder="Account #" />
+    <input id="pwd" type="password" placeholder="Password" />
+    <button id="loginBtn">Login</button>
+    <div id="loginErr" class="error"></div>
+  </div>
 
-    <!-- ==== 2) HOME CONTENT (After login) ==== -->
-    <div id="homeContainer" class="hidden">
-      <div id="accountInfo">
-        <h2>Account Summary</h2>
-        <div class="info-line"><strong>Balance:</strong> <span id="balanceDisplay">$0.00</span></div>
-        <div class="info-line"><strong>Account Type:</strong> <span id="accountTypeDisplay">—</span></div>
+  <!-- TASK -->
+  <div id="taskCard" class="card" style="display:none">
+    <h2>Pending Approval</h2>
+    <p style="margin:18px 0">Transfer <strong>$250</strong> to account <strong>987654321</strong>.</p>
+    <button id="approveBtn">Approve Transfer</button>
+  </div>
 
-        <form id="transferForm">
-          <h3>Transfer Money</h3>
-          <label for="recipientAccount">Recipient Account Number:</label>
-          <input type="text" id="recipientAccount" placeholder="Recipient account #" required />
+  <!-- SUCCESS -->
+  <div id="doneCard" class="card" style="display:none">
+    <h2>Transfer Approved ✅</h2>
+    <p>Task complete. Please close this tab and open your email for the next task.</p>
+  </div>
+</main>
 
-          <label for="transferAmount">Amount:</label>
-          <input type="number" id="transferAmount" placeholder="0.00" min="0.01" step="0.01" required />
+<button id="reportBtn">🚨 Report Phish</button>
 
-          <label for="transferComment">Comment (optional):</label>
-          <input type="text" id="transferComment" placeholder="e.g., Rent payment" />
+<script>
+(() => {
+  /* hard-coded study vars */
+  const siteName = "BantyBank";
+  const validAccount = "test", validPassword = "test";
+  const userId = 123;                 // replace via pre-survey / localStorage
 
-          <button type="submit">Transfer</button>
-        </form>
-      </div>
-    </div>
+  /* helper – POST a single line to /log */
+  const log = text =>
+    fetch("http://localhost:5001/log", {
+      method:"POST",
+      headers:{"Content-Type":"application/json"},
+      body:JSON.stringify({user_id:userId, text})
+    }).catch(err=>console.warn("log failed",err));
 
-    <!-- ==== 3) TRANSFER SUCCESS SCREEN ==== -->
-    <div id="successScreen" class="hidden">
-      <h2>Transfer Successful</h2>
-      <p>Your transfer has been completed.</p>
-      <button id="backToHome">Back to Home</button>
-    </div>
+  /* DOM */
+  const $ = id => document.getElementById(id);
+  const loginCard=$("loginCard"), taskCard=$("taskCard"), doneCard=$("doneCard");
 
-    <!-- ==== 4) ABOUT CONTENT ==== -->
-    <div id="aboutContent" class="hidden">
-      <h2>About BantyBank</h2>
-      <p>
-        Welcome to BantyBank—a generic placeholder bank interface. Our mission is to provide secure,
-        reliable banking services tailored to your needs. At BantyBank, we pride ourselves on offering:
-      </p>
-      <ul>
-        <li>Competitive checking and savings accounts</li>
-        <li>Secure online and mobile banking</li>
-        <li>Easy, transparent money transfers</li>
-        <li>Dedicated customer support</li>
-      </ul>
-      <p>
-        This demo site is for illustrative purposes only. In a real deployment, all credentials,
-        transactions, and logging would occur over a secure backend, and sensitive data would be
-        encrypted in transit and at rest.
-      </p>
-    </div>
-  </main>
+  /* Login flow */
+  $("loginBtn").onclick = () => {
+    if ($("acc").value.trim()===validAccount && $("pwd").value.trim()===validPassword){
+      $("loginErr").textContent="";
+      loginCard.style.display="none";
+      taskCard.style.display="block";
+      log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
+    } else {
+      $("loginErr").textContent="Invalid credentials.";
+    }
+  };
 
-  <!-- ============ FLOATING “REPORT PHISHING SITE” BUTTON ============ -->
-  <button id="reportPhishBtn">Report Phishing Site</button>
+  /* Approve task */
+  $("approveBtn").onclick = () => {
+    //log("Task complete. Please close this tab and open your email for the next task.");
+    taskCard.style.display="none";
+    doneCard.style.display="block";
+  };
 
-  <!-- ============ JAVASCRIPT ============ -->
-  <script>
-    (function () {
-      // ----------- HARD-CODED VALUES -----------
-      const validAccount = "test";
-      const validPassword = "test";
-      const userId = 123; // Hardcoded user_id
-      const balance = "$10,000.00"; // Hardcoded for demonstration
-      const accountType = "Checking – Corporate";
-
-      // ----------- PAGE ELEMENT REFERENCES -----------
-      const nav = document.querySelector("nav");
-      const navHome = document.getElementById("navHome");
-      const navAbout = document.getElementById("navAbout");
-
-      const loginContainer = document.getElementById("loginContainer");
-      const loginMessage = document.getElementById("loginMessage");
-      const loginError = document.getElementById("loginError");
-      const accountInput = document.getElementById("accountNumber");
-      const passwordInput = document.getElementById("password");
-      const loginBtn = document.getElementById("loginBtn");
-
-      const homeContainer = document.getElementById("homeContainer");
-      const balanceDisplay = document.getElementById("balanceDisplay");
-      const accountTypeDisplay = document.getElementById("accountTypeDisplay");
-      const transferForm = document.getElementById("transferForm");
-      const recipientAccountInput = document.getElementById("recipientAccount");
-      const transferAmountInput = document.getElementById("transferAmount");
-      const transferCommentInput = document.getElementById("transferComment");
-
-      const successScreen = document.getElementById("successScreen");
-      const backToHome = document.getElementById("backToHome");
-
-      const aboutContent = document.getElementById("aboutContent");
-      const reportPhishBtn = document.getElementById("reportPhishBtn");
-
-      // ----------- UTILITY: LOG ACTION TO BACKEND -----------
-      function logAction(text) {
-        fetch("http://localhost:5001/log", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_id: userId, text }),
-        }).catch((err) => {
-          console.warn("Log endpoint failed:", err);
-        });
-      }
-
-      // ----------- UTILITY: CALL /report_phishing  -----------
-      function reportPhishing() {
-        fetch("http://localhost:5001/report_phishing", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_id: userId }),
-        }).catch((err) => {
-          console.warn("Phishing endpoint failed:", err);
-        });
-      }
-
-      // ----------- UTILITY: CALL /transfer_money  -----------
-      function callTransferEndpoint() {
-        fetch("http://localhost:5001/transfer_money", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ user_id: userId }),
-        }).catch((err) => {
-          console.warn("Transfer endpoint failed:", err);
-        });
-      }
-
-      // ----------- SHOW / HIDE HELPERS -----------
-      function showLogin(message = "") {
-        loginMessage.textContent = message;
-        loginError.textContent = "";
-        accountInput.value = "";
-        passwordInput.value = "";
-
-        loginContainer.classList.remove("hidden");
-        nav.style.display = "none";
-        homeContainer.classList.add("hidden");
-        successScreen.classList.add("hidden");
-        aboutContent.classList.add("hidden");
-      }
-
-      function showHome() {
-        loginContainer.classList.add("hidden");
-        nav.style.display = "flex";
-        aboutContent.classList.add("hidden");
-        successScreen.classList.add("hidden");
-        homeContainer.classList.remove("hidden");
-
-        // Populate account info
-        balanceDisplay.textContent = balance;
-        accountTypeDisplay.textContent = accountType;
-
-        // Make “Home” tab active
-        navHome.classList.add("active-tab");
-        navAbout.classList.remove("active-tab");
-      }
-
-      function showAbout() {
-        homeContainer.classList.add("hidden");
-        successScreen.classList.add("hidden");
-        aboutContent.classList.remove("hidden");
-
-        // Make “About” tab active
-        navAbout.classList.add("active-tab");
-        navHome.classList.remove("active-tab");
-      }
-
-      function showSuccess() {
-        homeContainer.classList.add("hidden");
-        aboutContent.classList.add("hidden");
-        successScreen.classList.remove("hidden");
-        navHome.classList.remove("active-tab");
-        navAbout.classList.remove("active-tab");
-      }
-
-      // ----------- EVENT: LOGIN BTN CLICK -----------
-      loginBtn.addEventListener("click", () => {
-        const enteredAcc = accountInput.value.trim();
-        const enteredPwd = passwordInput.value.trim();
-
-        if (enteredAcc === validAccount && enteredPwd === validPassword) {
-          // Log login action with timestamp
-          const now = new Date().toISOString();
-          logAction(`User logged in at ${now}`);
-
-          showHome();
-        } else {
-          loginError.textContent = "Invalid account number or password.";
-        }
-      });
-
-      // ----------- NAVIGATION EVENT LISTENERS -----------
-      navHome.addEventListener("click", () => {
-        showHome();
-      });
-      navAbout.addEventListener("click", () => {
-        showAbout();
-      });
-
-      // ----------- EVENT: TRANSFER FORM SUBMIT -----------
-      transferForm.addEventListener("submit", (e) => {
-        e.preventDefault();
-        const recipient = recipientAccountInput.value.trim();
-        const amount = transferAmountInput.value.trim();
-        const comment = transferCommentInput.value.trim();
-
-        if (!recipient || !amount) {
-          alert("Please fill in recipient and amount.");
-          return;
-        }
-
-        const confirmation = window.confirm(
-          `Please confirm:\n\nRecipient Account: ${recipient}\nAmount: $${amount}\nComment: ${comment || "(none)"}\n\nProceed with transfer?`
-        );
-        if (!confirmation) return;
-
-        // 1) Call transfer_money endpoint
-        callTransferEndpoint();
-
-        // 2) Log the transfer details
-        const now = new Date().toISOString();
-        logAction(
-          `User transferred $${amount} to account ${recipient} comment: "${comment ||
-            "(none)"}" at ${now}`
-        );
-
-        // 3) Show success screen
-        showSuccess();
-        // Clear the form fields
-        recipientAccountInput.value = "";
-        transferAmountInput.value = "";
-        transferCommentInput.value = "";
-      });
-
-      // ----------- EVENT: BACK TO HOME FROM SUCCESS -----------
-      backToHome.addEventListener("click", () => {
-        showHome();
-      });
-
-      // ----------- EVENT: REPORT PHISHING BTN CLICK -----------
-      reportPhishBtn.addEventListener("click", () => {
-        const confirmReport = window.confirm(
-          "Are you sure you want to report this site as phishing?"
-        );
-        if (!confirmReport) return;
-
-        // 1) Call /report_phishing endpoint
-        reportPhishing();
-
-        // 2) Return to login screen with success message
-        showLogin("Reported successfully, please return to email.");
-      });
-
-      // ----------- INITIAL PAGE LOAD: Show login -----------
-      showLogin();
-    })();
-  </script>
+  /* Report phishing */
+  $("reportBtn").onclick = () => {
+    if(!confirm("Report this site as phishing?")) return;
+    log(`User ${userId} reported ${siteName} as phishing at ${new Date().toISOString()}`);
+    alert("Thank you for reporting. Please return to your email for the next task.");
+    location.reload();
+  };
+})();
+</script>
 </body>
 </html>

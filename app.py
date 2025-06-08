@@ -122,6 +122,7 @@ def log_endpoint():
     except Exception as e:
         app.logger.error(f"Exception in log_endpoint: {e}")
         return jsonify({"error": "Internal server error"}), 500
+    
 
 
 # Add a test route to verify the server is working
