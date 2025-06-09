@@ -1,140 +1,157 @@
-# app.py
-
-import os
-from datetime import datetime
-
+# app.py  ─ logging • login-event • completion • random assignment
+import os, random, datetime as dt
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from supabase import create_client, Client
 
 app = Flask(__name__)
-
-# Fix CORS configuration - allow your frontend origin
-CORS(app, origins=["http://localhost:8000", "http://127.0.0.1:8000"], 
-     methods=["GET", "POST", "OPTIONS"],
+CORS(app, origins="*", methods=["GET", "POST", "OPTIONS"],
      allow_headers=["Content-Type", "Authorization"])
-
-# ------------------------------------------------------------------------------
-# 1) INITIALIZE SUPABASE CLIENT
-# ------------------------------------------------------------------------------
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
-if not SUPABASE_URL or not SUPABASE_KEY:
-    raise RuntimeError(
-        "Please set the SUPABASE_URL and SUPABASE_KEY environment variables."
-    )
-
 supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
+# ───────────────────────── helpers ─────────────────────────
+def append_log(uid: int, line: str):
+    cur = supabase.table("users").select("log_text").eq("id", uid).limit(1).execute().data
+    if not cur:
+        return
+    existing = cur[0]["log_text"] or ""
+    body = (existing + "\n" if existing.strip() else "") + line
+    supabase.table("users").update({"log_text": body}).eq("id", uid).execute()
 
-# ------------------------------------------------------------------------------
-# 2) HELPERS
-# ------------------------------------------------------------------------------
+def unseen_task_for(uid: int):
+    seen = {r["task_id"] for r in supabase.table("assignments")
+                                    .select("task_id")
+                                    .eq("user_id", uid).execute().data}
+    pool = [t for t in supabase.table("tasks").select("*").execute().data
+            if t["task_id"] not in seen]
+    return random.choice(pool) if pool else None
 
-def append_log_to_user(user_id: int, new_text: str) -> bool:
+def queue_random(uid: int):
+    # stop if an assignment is still open
+    if supabase.table("assignments").select("assignment_id") \
+         .eq("user_id", uid).is_("completed_at", "null") \
+         .execute().data:
+        return None
+
+    pick = unseen_task_for(uid)
+    if not pick:
+        return None
+
+    now = dt.datetime.utcnow().isoformat()
+    row = supabase.table("assignments").insert({
+        "user_id": uid,
+        "task_id": pick["task_id"],
+        "sent_at": now
+    }).execute().data[0]
+
+    append_log(uid, f"{now}  assigned '{pick['task_name']}' ({pick['site_url']})")
+    return {"assignment_id": row["assignment_id"],
+            "task_name":   pick["task_name"],
+            "site_url":    pick["site_url"]}
+
+def open_assignment_for_site(uid: int, site_url: str):
     """
-    Fetches the current log_text for this user from public.users,
-    appends new_text (on its own line), and updates the table.
-    Returns True if update succeeded, False otherwise.
+    Return the OPEN assignment for this user whose task.site_url matches site_url.
     """
-    try:
-        # 1) Fetch existing log_text
-        resp = (
-            supabase.table("users")
-            .select("log_text")
-            .eq("id", user_id)
-            .limit(1)
-            .execute()
-        )
-        
-        # Check if the response has data
-        if not resp.data:
-            app.logger.error(f"User ID {user_id} not found when appending log.")
-            return False
+    rows = (supabase.table("assignments")
+            .select("assignment_id, task_id, sent_at, login_occurred,"
+                    "tasks(task_name, site_url)")
+            .eq("user_id", uid)
+            .is_("completed_at", "null")
+            .limit(5)                 # small buffer
+            .execute().data)
 
-        existing = resp.data[0].get("log_text") or ""
+    for r in rows:
+        if r["tasks"]["site_url"] == site_url:
+            return r
+    return None
 
-        # 2) Compute updated log_text
-        timestamp = datetime.utcnow().isoformat() + "Z"
-        # If existing is empty, don't prepend a newline
-        if existing.strip() == "":
-            updated = f"{new_text}"
-        else:
-            updated = f"{existing}\n{new_text}"
-
-        # 3) Update the user's log_text
-        upd = (
-            supabase.table("users")
-            .update({"log_text": updated})
-            .eq("id", user_id)
-            .execute()
-        )
-        
-        # Check if update was successful by looking at the data
-        if not upd.data:
-            app.logger.error(f"Error updating log for user {user_id}")
-            return False
-
-        return True
-        
-    except Exception as e:
-        app.logger.error(f"Exception in append_log_to_user: {e}")
-        return False
-
-
-# ------------------------------------------------------------------------------
-# 3) ROUTES
-# ------------------------------------------------------------------------------
-
-# Add OPTIONS handler for preflight requests
+# ───────────────────────── CORS pre-flight ─────────────────────────
 @app.before_request
-def handle_preflight():
+def preflight():
     if request.method == "OPTIONS":
-        response = jsonify({})
-        response.headers.add("Access-Control-Allow-Origin", "*")
-        response.headers.add('Access-Control-Allow-Headers', "*")
-        response.headers.add('Access-Control-Allow-Methods', "*")
-        return response
+        r = jsonify({})
+        r.headers["Access-Control-Allow-Origin"]  = "*"
+        r.headers["Access-Control-Allow-Headers"] = "*"
+        r.headers["Access-Control-Allow-Methods"] = "*"
+        return r
 
+# ───────────────────────── /log ─────────────────────────
 @app.route("/log", methods=["POST"])
-def log_endpoint():
-    """
-    Expects JSON: { "user_id": <int>, "text": <string> }
-    Appends `text` to public.users.log_text for that user_id.
-    """
-    try:
-        payload = request.get_json()
-        if not payload:
-            return jsonify({"error": "Invalid JSON body"}), 400
+def log_route():
+    b = request.get_json(silent=True) or {}
+    uid, text = b.get("user_id"), b.get("text")
+    if not (isinstance(uid, int) and isinstance(text, str)):
+        return jsonify({"error": "bad payload"}), 400
+    append_log(uid, text)
+    return jsonify({"status": "logged"}), 200
 
-        user_id = payload.get("user_id")
-        text = payload.get("text")
-        if not isinstance(user_id, int) or not isinstance(text, str):
-            return jsonify({"error": "Must provide user_id (int) and text (string)"}), 400
+# ───────────────────────── /login-event ─────────────────────────
+@app.route("/login-event", methods=["POST"])
+def login_event():
+    data = request.get_json(silent=True) or {}
+    uid, site = data.get("user_id"), data.get("site_url")
+    if not (isinstance(uid, int) and isinstance(site, str)):
+        return jsonify({"error": "bad payload"}), 400
 
-        success = append_log_to_user(user_id, text)
-        if not success:
-            return jsonify({"error": "Failed to append log"}), 500
+    row = open_assignment_for_site(uid, site)
+    if not row:
+        return jsonify({"error": "no_pending_assignment"}), 409
 
-        return jsonify({"status": "logged"}), 200
-        
-    except Exception as e:
-        app.logger.error(f"Exception in log_endpoint: {e}")
-        return jsonify({"error": "Internal server error"}), 500
-    
+    if not row["login_occurred"]:
+        supabase.table("assignments").update({"login_occurred": True}) \
+                .eq("assignment_id", row["assignment_id"]).execute()
+        append_log(uid, f"{dt.datetime.utcnow().isoformat()}  login on '{site}'")
 
+    return jsonify({"status": "marked"}), 200
 
-# Add a test route to verify the server is working
-@app.route("/test", methods=["GET"])
-def test_endpoint():
-    return jsonify({"status": "Server is running", "message": "CORS should be working"}), 200
+# ───────────────────────── /assign-random ─────────────────────────
+@app.route("/assign-random", methods=["POST"])
+def assign_random():
+    uid = (request.get_json(silent=True) or {}).get("user_id")
+    if not isinstance(uid, int):
+        return jsonify({"error": "user_id int required"}), 400
+    nxt = queue_random(uid)
+    if not nxt:
+        return jsonify({"error": "pending_assignment_exists"}), 409
+    return jsonify({"status": "assigned", **nxt}), 200
 
+# ───────────────────────── /complete-task ─────────────────────────
+@app.route("/complete-task", methods=["POST"])
+def complete_task():
+    d = request.get_json(silent=True) or {}
+    uid, site = d.get("user_id"), d.get("site_url")
+    elapsed, ctype = d.get("elapsed_ms"), d.get("completion_type")
 
-# ------------------------------------------------------------------------------
-# 4) RUN THE APP
-# ------------------------------------------------------------------------------
+    if not (isinstance(uid, int) and isinstance(site, str)
+            and isinstance(elapsed, (int, float))
+            and ctype in ("task_completed", "reported_phishing")):
+        return jsonify({"error": "bad payload"}), 400
+
+    row = open_assignment_for_site(uid, site)
+    if not row:
+        return jsonify({"error": "no_pending_assignment"}), 409
+
+    now = dt.datetime.utcnow().isoformat()
+    supabase.table("assignments").update({
+            "completed_at": now,
+            "time_taken":   f"{elapsed/1000:.1f}s",
+            "completion_type": ctype}) \
+        .eq("assignment_id", row["assignment_id"]).execute()
+
+    append_log(uid,
+        f"{now}  finished '{row['tasks']['task_name']}' "
+        f"({ctype}) in {elapsed/1000:.1f}s")
+
+    nxt = queue_random(uid)
+    return jsonify({"status": "completed", "next_task": nxt}), 200
+
+# ───────────────────────── sanity ─────────────────────────
+@app.route("/test")
+def test(): return jsonify({"utc": dt.datetime.utcnow().isoformat()})
 
 if __name__ == "__main__":
-    # By default, Flask runs on port 5000
     app.run(host="0.0.0.0", port=5001, debug=True)

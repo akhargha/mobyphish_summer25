@@ -1,76 +1,207 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<meta charset="UTF-8" />
-<title>Touristy Travels</title>
-<style>
-  *{box-sizing:border-box;margin:0;padding:0;font-family:Arial,sans-serif}
-  body{background:#f5ecff;min-height:100vh;display:flex;flex-direction:column;color:#4a185a}
-  header{background:#7b2cbf;color:#fff;padding:12px 20px;display:flex;align-items:center}
-  main{flex:1;display:flex;justify-content:center;align-items:center;padding:30px}
-  .card{background:#fff;padding:30px;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,.1);width:100%;max-width:400px;text-align:center}
-  input{width:100%;padding:9px;border:1px solid #aaa;border-radius:4px;margin-top:6px}
-  button{margin-top:20px;padding:10px 18px;background:#7b2cbf;color:#fff;border:none;border-radius:4px;cursor:pointer}
-  button:hover{background:#5b1e8b}
-  .error{color:#e63946;font-size:.9rem;margin-top:10px}
-  #reportBtn{position:fixed;bottom:20px;right:20px;background:#e63946;color:#fff;border:none;border-radius:50px;padding:12px 18px;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.2)}
-  #reportBtn:hover{background:#c5303f}
-</style>
-</head>
-<body>
-<header><h1>Touristy Travels</h1></header>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Touristy Travels</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+      }
+      body {
+        background: #f5ecff;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        color: #4a185a;
+      }
+      header {
+        background: #7b2cbf;
+        color: #fff;
+        padding: 12px 20px;
+        display: flex;
+        align-items: center;
+      }
+      main {
+        flex: 1;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 30px;
+      }
+      .card {
+        background: #fff;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        width: 100%;
+        max-width: 400px;
+        text-align: center;
+      }
+      input {
+        width: 100%;
+        padding: 9px;
+        border: 1px solid #aaa;
+        border-radius: 4px;
+        margin-top: 6px;
+      }
+      button {
+        margin-top: 20px;
+        padding: 10px 18px;
+        background: #7b2cbf;
+        color: #fff;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+      }
+      button:hover {
+        background: #5b1e8b;
+      }
+      .error {
+        color: #e63946;
+        font-size: 0.9rem;
+        margin-top: 10px;
+      }
+      #reportBtn {
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        background: #e63946;
+        color: #fff;
+        border: none;
+        border-radius: 50px;
+        padding: 12px 18px;
+        cursor: pointer;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+      }
+      #reportBtn:hover {
+        background: #c5303f;
+      }
+    </style>
+  </head>
+  <body>
+    <header><h1>Touristy Travels</h1></header>
 
-<main>
-  <!-- Login -->
-  <div id="loginCard" class="card">
-    <h2>Traveler Login</h2>
-    <input id="acc" placeholder="Member ID" />
-    <input id="pwd" type="password" placeholder="Password" />
-    <button id="loginBtn">Login</button>
-    <div id="loginErr" class="error"></div>
-  </div>
+    <main>
+      <!-- Login -->
+      <div id="loginCard" class="card">
+        <h2>Traveler Login</h2>
+        <input id="acc" placeholder="Member ID" />
+        <input id="pwd" type="password" placeholder="Password" />
+        <button id="loginBtn">Login</button>
+        <div id="loginErr" class="error"></div>
+      </div>
 
-  <!-- Task -->
-  <div id="taskCard" class="card" style="display:none">
-    <h2>Trip Confirmation</h2>
-    <p style="margin:18px 0">Reserve <strong>Lakeview Resort</strong> in Seattle for <strong>$220</strong>.</p>
-    <button id="approveBtn">Confirm Booking</button>
-  </div>
+      <!-- Task -->
+      <div id="taskCard" class="card" style="display: none">
+        <h2>Trip Confirmation</h2>
+        <p style="margin: 18px 0">
+          Reserve <strong>Lakeview Resort</strong> in Seattle for
+          <strong>$220</strong>.
+        </p>
+        <button id="approveBtn">Confirm Booking</button>
+      </div>
 
-  <!-- Success -->
-  <div id="doneCard" class="card" style="display:none">
-    <h2>Booking Confirmed ✅</h2>
-    <p>Please close this tab and open your email for the next task.</p>
-  </div>
-</main>
+      <!-- Success -->
+      <div id="doneCard" class="card" style="display: none">
+        <h2>Booking Confirmed ✅</h2>
+        <p>Please close this tab and open your email for the next task.</p>
+      </div>
+    </main>
 
-<button id="reportBtn">🚨 Report Phish</button>
+    <button id="reportBtn">🚨 Report Phish</button>
 
-<script>
-(() => {
-  const siteName="Touristy Travels";
-  const validAccount="test", validPassword="test";
-  const userId=123;
+    <script>
+      (() => {
+        /*  <<< customise for each site  >>>  */
+        const siteUrl = "touristytravels.local";
+        const siteName = "TouristyTravels";
+        /* ---------------------------------- */
 
-  const log=t=>fetch("http://localhost:5001/log",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({user_id:userId,text:t})}).catch(()=>{});
-  const $=id=>document.getElementById(id);
-  const loginCard=$("loginCard"),taskCard=$("taskCard"),doneCard=$("doneCard");
+        const validAccount = "test",
+          validPassword = "test";
+        const userId = Number(localStorage.getItem("study_uid") || 123);
 
-  $("loginBtn").onclick=()=>{
-    if($("acc").value.trim()===validAccount && $("pwd").value.trim()===validPassword){
-      $("loginErr").textContent=""; loginCard.style.display="none"; taskCard.style.display="block";
-      log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
-    }else{$("loginErr").textContent="Invalid credentials.";}
-  };
-  $("approveBtn").onclick=()=>{
-      //log("Task complete. please close this tab and open your email for the next task");
-      taskCard.style.display="none"; doneCard.style.display="block";
-  };
-  $("reportBtn").onclick=()=>{
-    if(!confirm("Report this site as phishing?"))return;
-    log(`User ${userId} reported ${siteName} as phishing at ${new Date().toISOString()}`);
-    alert("Thank you. Return to your email for the next task."); location.reload();
-  };
-})();
-</script>
-</body></html>
+        const pageStart = Date.now();
+        const $ = (id) => document.getElementById(id);
+
+        const log = (msg) =>
+          fetch("http://localhost:5001/log", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: userId, text: msg }),
+          }).catch(() => {});
+
+        /* mark login */
+        const markLogin = () =>
+          fetch("http://localhost:5001/login-event", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: userId, site_url: siteUrl }),
+          }).catch(() => {});
+
+        /* finish + queue next */
+        function finishTask(type) {
+          fetch("http://localhost:5001/complete-task", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: userId,
+              site_url: siteUrl,
+              elapsed_ms: Date.now() - pageStart,
+              completion_type: type,
+            }),
+          })
+            .then((r) => r.json())
+            .then((j) => {
+              if (j.error === "no_pending_assignment") {
+                alert("Please complete the latest task sent to you via email.");
+              }
+            })
+            .catch(() => {});
+        }
+
+        /* ----- DOM refs ----- */
+        const loginCard = $("loginCard"),
+          taskCard = $("taskCard"),
+          doneCard = $("doneCard");
+
+        /* login click */
+        $("loginBtn").onclick = () => {
+          if (
+            $("acc").value.trim() === validAccount &&
+            $("pwd").value.trim() === validPassword
+          ) {
+            $("loginErr").textContent = "";
+            loginCard.style.display = "none";
+            taskCard.style.display = "block";
+            log(
+              `User ${userId} logged into ${siteName} at ${new Date().toISOString()}`
+            );
+            markLogin();
+          } else $("loginErr").textContent = "Invalid credentials.";
+        };
+
+        /* approve */
+        $("approveBtn").onclick = () => {
+          taskCard.style.display = "none";
+          doneCard.style.display = "block";
+          finishTask("task_completed");
+        };
+
+        /* report */
+        $("reportBtn").onclick = () => {
+          if (!confirm("Report this site as phishing?")) return;
+          log(
+            `User ${userId} reported ${siteName} as phishing at ${new Date().toISOString()}`
+          );
+          finishTask("reported_phishing");
+          alert("Thank you. Return to your email for the next task.");
+          location.reload();
+        };
+      })();
+    </script>
+  </body>
+</html>
