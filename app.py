@@ -1,8 +1,11 @@
 # app.py  ─ logging • login-event • completion • random assignment
 import os, random, datetime as dt
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, abort
 from flask_cors import CORS
 from supabase import create_client, Client
+from OpenSSL import SSL
+import socket
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app, origins="*", methods=["GET", "POST", "OPTIONS"],
@@ -149,6 +152,43 @@ def complete_task():
     nxt = queue_random(uid)
     return jsonify({"status": "completed", "next_task": nxt}), 200
 
+# ───────────────────────── /certificate_chain ─────────────────────────
+def fetch_cert_chain(hostname: str, port: int = 443):
+    ctx = SSL.Context(SSL.TLS_CLIENT_METHOD)
+    ctx.set_verify(SSL.VERIFY_NONE, lambda *args: True)
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    conn = SSL.Connection(ctx, sock)
+    conn.set_tlsext_host_name(hostname.encode()) 
+    conn.connect((hostname, port))
+    conn.setblocking(True)
+    conn.do_handshake()
+
+    # Retrieve the full chain
+    chain = conn.get_peer_cert_chain()
+    conn.close()
+
+    certs = []
+    for cert in chain:
+        x509 = cert.to_cryptography()
+
+        certs.append({
+            "subject": {attr.oid._name: attr.value for attr in x509.subject},
+            "issuer":  {attr.oid._name: attr.value for attr in x509.issuer},
+            "serial_number": format(x509.serial_number, 'x'),
+            "version": x509.version.name,
+            "not_before": x509.not_valid_before.isoformat(),
+            "not_after":  x509.not_valid_after.isoformat(),
+        })
+    return certs
+
+@app.route("/certificate_chain/<path:hostname>")
+def certificate_chain(hostname):
+    try:
+        certs = fetch_cert_chain(hostname)
+    except Exception as e:
+        # Could not connect / handshake / parse
+        abort(502, description=f"Error fetching certificates: {e}")
+    return jsonify(certs)
 # ───────────────────────── sanity ─────────────────────────
 @app.route("/test")
 def test(): return jsonify({"utc": dt.datetime.utcnow().isoformat()})
