@@ -1,5 +1,5 @@
-# app.py  ─ logging • login-event • completion • random assignment
-import os, random, datetime as dt
+# app.py  ─ logging • login-event • completion • random assignment • user creation
+import os, random, string, datetime as dt
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from supabase import create_client, Client
@@ -69,6 +69,10 @@ def open_assignment_for_site(uid: int, site_url: str):
             return r
     return None
 
+def generate_random_password(length=6):
+    chars = string.ascii_letters + string.digits
+    return ''.join(random.choices(chars, k=length))
+
 # ───────────────────────── CORS pre-flight ─────────────────────────
 @app.before_request
 def preflight():
@@ -78,6 +82,63 @@ def preflight():
         r.headers["Access-Control-Allow-Headers"] = "*"
         r.headers["Access-Control-Allow-Methods"] = "*"
         return r
+
+# ───────────────────────── /create-user ─────────────────────────
+@app.route("/create-user", methods=["POST"])
+def create_user():
+    data = request.get_json(silent=True) or {}
+    email = data.get("email")
+    if not isinstance(email, str) or "@" not in email:
+        return jsonify({"error": "valid email required"}), 400
+
+    # Check if user exists
+    existing = supabase.table("users").select("*").eq("email", email).execute().data
+    if existing:
+        return jsonify({"error": "user already exists"}), 409
+
+    # Generate username and password
+    username = "user_" + ''.join(random.choices(string.ascii_lowercase + string.digits, k=5))
+    password = generate_random_password()
+
+    # Insert into users table
+    row = supabase.table("users").insert({
+        "email": email,
+        "username": username,
+        "password": password,
+        "log_text": ""
+    }).execute().data[0]
+
+    append_log(row["id"], f"{dt.datetime.utcnow().isoformat()}  user created")
+
+    # Return the credentials (so Qualtrics can email/display them)
+    return jsonify({
+        "user_id": row["id"],
+        "username": username,
+        "password": password
+    }), 201
+
+# ───────────────────────── /verify-login ─────────────────────────
+@app.route("/verify-login", methods=["POST"])
+def verify_login():
+    d = request.get_json(silent=True) or {}
+    username = d.get("username", "").strip().lower()
+    password = d.get("password", "").strip()
+
+    if not username or not password:
+        return jsonify({"error": "username and password are required"}), 400
+
+    res = supabase.table("users").select("id, username, password") \
+        .eq("username", username).limit(1).execute().data
+
+    if not res:
+        return jsonify({"error": "invalid username"}), 401
+
+    user = res[0]
+    if user["password"] != password:
+        return jsonify({"error": "invalid password"}), 401
+
+    return jsonify({"user_id": user["id"]}), 200
+
 
 # ───────────────────────── /log ─────────────────────────
 @app.route("/log", methods=["POST"])
