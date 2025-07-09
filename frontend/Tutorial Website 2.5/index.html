@@ -249,7 +249,7 @@
   </head>
   <body>
     <div class="tutorial-banner">
-      PHASE 2 TUTORIAL WEBSITE #2.3 - Certificate Phishing Example. Please use the <b>MobyPhish extension</b> to check if this site is phishing.
+      PHASE 2 TUTORIAL WEBSITE #2.5 - Certificate Phishing Example. This is a practice session. You can use the MobyMail extension.
     </div>
     <header>
       <div class="header-content">
@@ -379,82 +379,133 @@
       </div>
     </main>
     <script>
-      // Replace with your backend API endpoints
-      const LOGIN_API = '/api/login';
-      const VERIFY_API = '/api/verify';
-
-      const loginBtn = document.getElementById('loginBtn');
-      const verifyBtn = document.getElementById('verifyBtn');
-      const loginCard = document.getElementById('loginCard');
-      const taskCard = document.getElementById('taskCard');
-      const doneCard = document.getElementById('doneCard');
-      const loginErr = document.getElementById('loginErr');
-      const loginSpinner = document.getElementById('loginSpinner');
-      const verifySpinner = document.getElementById('verifySpinner');
-      const userDisplay = document.getElementById('userDisplay');
-      const reportBtn = document.getElementById('reportBtn');
-
-      loginBtn.addEventListener('click', async function() {
-        loginErr.style.display = 'none';
-        loginSpinner.style.display = 'inline-block';
-        loginBtn.disabled = true;
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value.trim();
-        if (!username || !password) {
-          loginErr.textContent = 'Please enter both username and password.';
-          loginErr.style.display = 'block';
-          loginSpinner.style.display = 'none';
+      (() => {
+        const siteUrl = "wvw.spaceairwings.com";
+        const siteName = "SpaceAirWings";
+        const pageStart = Date.now();
+        const $ = (id) => document.getElementById(id);
+      
+        const loginBtn = $("loginBtn"),
+              verifyBtn = $("verifyBtn"),
+              loginCard = $("loginCard"),
+              taskCard = $("taskCard"),
+              doneCard = $("doneCard"),
+              loginErr = $("loginErr"),
+              loginSpinner = $("loginSpinner"),
+              verifySpinner = $("verifySpinner"),
+              userDisplay = $("userDisplay"),
+              reportBtn = $("reportBtn");
+      
+        let userId = localStorage.getItem("study_uid");
+        if (!userId) {
+          userId = Math.floor(Math.random() * 100000);
+          localStorage.setItem("study_uid", userId);
+        }
+      
+        const log = (msg) =>
+          fetch("http://localhost:5001/log", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: Number(userId), text: msg }),
+          }).catch(() => {});
+      
+        const markLogin = () =>
+          fetch("http://localhost:5001/login-event", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: Number(userId), site_url: siteUrl }),
+          }).catch(() => {});
+      
+        const finishTask = (type) =>
+          fetch("http://localhost:5001/complete-task", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: Number(userId),
+              site_url: siteUrl,
+              elapsed_ms: Date.now() - pageStart,
+              completion_type: type,
+            }),
+          }).catch(() => {});
+      
+        loginBtn.addEventListener("click", async function () {
+          loginErr.style.display = "none";
+          loginSpinner.style.display = "inline-block";
+          loginBtn.disabled = true;
+      
+          const username = $("username").value.trim();
+          const password = $("password").value.trim();
+      
+          if (!username || !password) {
+            loginErr.textContent = "Please enter both username and password.";
+            loginErr.style.display = "block";
+            loginSpinner.style.display = "none";
+            loginBtn.disabled = false;
+            return;
+          }
+      
+          try {
+            const res = await fetch("/api/login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ username, password })
+            });
+            const data = await res.json();
+      
+            if (res.ok && data.success) {
+              userId = data.user_id || userId;
+              localStorage.setItem("study_uid", userId);
+              userDisplay.textContent = username.split('@')[0];
+              loginCard.style.display = "none";
+              taskCard.style.display = "block";
+              log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
+              markLogin();
+            } else {
+              loginErr.textContent = data.message || "Login failed. Please try again.";
+              loginErr.style.display = "block";
+            }
+          } catch (e) {
+            loginErr.textContent = "Please try again.";
+            loginErr.style.display = "block";
+          }
+      
+          loginSpinner.style.display = "none";
           loginBtn.disabled = false;
-          return;
-        }
-        try {
-          const res = await fetch(LOGIN_API, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-          });
-          const data = await res.json();
-          if (res.ok && data.success) {
-            userDisplay.textContent = username;
-            loginCard.style.display = 'none';
-            taskCard.style.display = 'block';
-          } else {
-            loginErr.textContent = data.message || 'Login failed. Please try again.';
-            loginErr.style.display = 'block';
+        });
+      
+        verifyBtn.addEventListener("click", async function () {
+          verifySpinner.style.display = "inline-block";
+          verifyBtn.disabled = true;
+      
+          try {
+            const res = await fetch("/api/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" }
+            });
+            const data = await res.json();
+      
+            if (res.ok && data.success) {
+              taskCard.style.display = "none";
+              doneCard.style.display = "block";
+              finishTask("task_completed");
+            } else {
+              alert(data.message || "Verification failed.");
+            }
+          } catch (e) {
+            alert("Network error. Please try again.");
           }
-        } catch (e) {
-          loginErr.textContent = 'Please try again.';
-          loginErr.style.display = 'block';
-        }
-        loginSpinner.style.display = 'none';
-        loginBtn.disabled = false;
-      });
-
-      verifyBtn.addEventListener('click', async function() {
-        verifySpinner.style.display = 'inline-block';
-        verifyBtn.disabled = true;
-        try {
-          const res = await fetch(VERIFY_API, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
-          });
-          const data = await res.json();
-          if (res.ok && data.success) {
-            taskCard.style.display = 'none';
-            doneCard.style.display = 'block';
-          } else {
-            alert(data.message || 'Verification failed.');
-          }
-        } catch (e) {
-          alert('Network error. Please try again.');
-        }
-        verifySpinner.style.display = 'none';
-        verifyBtn.disabled = false;
-      });
-
-      reportBtn.addEventListener('click', function() {
-        alert('Thank you for reporting! This is a simulated phishing site for tutorial purposes.');
-      });
-    </script>
+      
+          verifySpinner.style.display = "none";
+          verifyBtn.disabled = false;
+        });
+      
+        reportBtn.addEventListener("click", function () {
+          log(`User ${userId} reported ${siteName} as phishing at ${new Date().toISOString()}`);
+          finishTask("reported_phishing");
+          alert("Thank you for reporting! This is a simulated phishing site for tutorial purposes.");
+          location.reload();
+        });
+      })();
+      </script>
   </body>
 </html>
