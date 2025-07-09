@@ -430,21 +430,21 @@
         }
 
         const log = (msg) =>
-          fetch("http://localhost:5001/log", {
+          fetch("/log", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ user_id: Number(userId), text: msg }),
           }).catch(() => {});
 
         const markLogin = () =>
-          fetch("http://localhost:5001/login-event", {
+          fetch("/login-event", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ user_id: Number(userId), site_url: siteUrl }),
           }).catch(() => {});
 
         function finishTask(type) {
-          fetch("http://localhost:5001/complete-task", {
+          fetch("/complete-task", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -466,7 +466,7 @@
           btn.disabled = true;
 
           try {
-            const res = await fetch("http://localhost:5001/verify-login", {
+            const res = await fetch("/verify-login", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ username, password })
