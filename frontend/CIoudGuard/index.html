@@ -465,45 +465,43 @@
           }).catch(() => {});
         }
 
-        $("loginBtn").onclick = async () => {
-          const username = $("acc").value.trim();
-          const password = $("pwd").value.trim();
-          const spinner = $("loginSpinner");
-          const btn = $("loginBtn");
+$("loginBtn").onclick = async () => {
+  const username = $("acc").value.trim();
+  const password = $("pwd").value.trim();
+  const spinner = $("loginSpinner");
+  const btn = $("loginBtn");
 
-          spinner.style.display = "inline-block";
-          btn.disabled = true;
+  spinner.style.display = "inline-block";
+  btn.disabled = true;
 
-          try {
-            const res = await fetch("http://localhost:5001/verify-login", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ username, password })
-            });
+  try {
+    // NEW LOGIN LOGIC: Check if username matches userXX format and password matches username
+    const userPattern = /^user(0[1-9]|[1-3][0-9]|40)$/; // Matches user01-user40
+    const isValidUser = userPattern.test(username);
+    const isValidPassword = password === username;
 
-            const result = await res.json();
-
-            if (res.ok && result.user_id) {
-              userId = result.user_id;
-              localStorage.setItem("study_uid", userId);
-              $("loginErr").style.display = "none";
-              loginCard.style.display = "none";
-              taskCard.style.display = "block";
-              $("userDisplay").textContent = username;
-              log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
-              markLogin();
-            } else {
-              $("loginErr").textContent = result.error || "Invalid credentials.";
-              $("loginErr").style.display = "block";
-            }
-          } catch (err) {
-            $("loginErr").textContent = "Login failed. Please try again.";
-            $("loginErr").style.display = "block";
-          } finally {
-            spinner.style.display = "none";
-            btn.disabled = false;
-          }
-        };
+    if (isValidUser && isValidPassword) {
+      // Store the entire username (e.g., "user05")
+      userId = username;
+      localStorage.setItem("study_uid", userId);
+      $("loginErr").style.display = "none";
+      loginCard.style.display = "none";
+      taskCard.style.display = "block";
+      $("userDisplay").textContent = username;
+      log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
+      markLogin();
+    } else {
+      $("loginErr").textContent = "Invalid credentials. Please use userXX format (user01-user40) with matching password.";
+      $("loginErr").style.display = "block";
+    }
+  } catch (err) {
+    $("loginErr").textContent = "Login failed. Please try again.";
+    $("loginErr").style.display = "block";
+  } finally {
+    spinner.style.display = "none";
+    btn.disabled = false;
+  }
+};
 
         $("approveBtn").onclick = () => {
           const spinner = $("approveSpinner");
