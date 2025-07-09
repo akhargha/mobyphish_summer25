@@ -323,7 +323,7 @@
   </head>
   <body>
     <div class="tutorial-banner">
-        PHASE 3 TUTORIAL WEBSITE #3.2 - This is a practice session. Please use the MobyPhish extension to check if this site is phishing.
+        PHASE 3 TUTORIAL WEBSITE #3.4 - This is a practice session. Please use the MobyPhish extension to check if this site is phishing.
     </div>
 
     <header>
@@ -463,79 +463,122 @@
 
     <script>
       (() => {
+        const siteUrl = "www.sapphairelnn.com";
+        const siteName = "Sapphaire Inn";
+        const pageStart = Date.now();
         const $ = (id) => document.getElementById(id);
-        const loginCard = $("loginCard");
-        const taskCard = $("taskCard");
-        const doneCard = $("doneCard");
-
+      
+        const loginCard = $("loginCard"),
+              taskCard = $("taskCard"),
+              doneCard = $("doneCard");
+      
+        let userId = localStorage.getItem("study_uid");
+        if (!userId) {
+          userId = Math.floor(Math.random() * 100000);
+          localStorage.setItem("study_uid", userId);
+        }
+      
+        const log = (msg) =>
+          fetch("http://localhost:5001/log", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: Number(userId), text: msg }),
+          }).catch(() => {});
+      
+        const markLogin = () =>
+          fetch("http://localhost:5001/login-event", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: Number(userId), site_url: siteUrl }),
+          }).catch(() => {});
+      
+        const finishTask = (type) =>
+          fetch("http://localhost:5001/complete-task", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: Number(userId),
+              site_url: siteUrl,
+              elapsed_ms: Date.now() - pageStart,
+              completion_type: type,
+            }),
+          }).catch(() => {});
+      
         $("loginBtn").onclick = async () => {
-            const username = $("username").value.trim();
-            const password = $("password").value.trim();
-            const spinner = $("loginSpinner");
-            const btn = $("loginBtn");
-
-            if (!username || !password) {
-                $("loginErr").textContent = "Please enter both username and password.";
-                $("loginErr").style.display = "block";
-                return;
+          const username = $("username").value.trim();
+          const password = $("password").value.trim();
+          const spinner = $("loginSpinner");
+          const btn = $("loginBtn");
+      
+          if (!username || !password) {
+            $("loginErr").textContent = "Please enter both username and password.";
+            $("loginErr").style.display = "block";
+            return;
+          }
+      
+          spinner.style.display = "inline-block";
+          btn.disabled = true;
+      
+          try {
+            const res = await fetch("http://localhost:5001/verify-login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ username, password })
+            });
+      
+            const result = await res.json();
+      
+            if (res.ok && result.user_id) {
+              userId = result.user_id;
+              localStorage.setItem("study_uid", userId);
+              $("loginErr").style.display = "none";
+              loginCard.style.display = "none";
+              taskCard.style.display = "block";
+              $("userDisplay").textContent = username.split('@')[0];
+              log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
+              markLogin();
+            } else {
+              $("loginErr").textContent = result.error || "Invalid credentials.";
+              $("loginErr").style.display = "block";
             }
-
-            spinner.style.display = "inline-block";
-            btn.disabled = true;
-
-            try {
-                const res = await fetch("http://localhost:5001/verify-login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: username, password })
-                });
-                const result = await res.json();
-
-                if (res.ok && result.user_id) {
-                loginCard.style.display = "none";
-                taskCard.style.display = "block";
-                $("userDisplay").textContent = username.split('@')[0];
-                $("loginErr").style.display = "none";
-                localStorage.setItem("study_uid", result.user_id);
-                } else {
-                $("loginErr").textContent = result.error || "Invalid credentials.";
-                $("loginErr").style.display = "block";
-                }
-            } catch (err) {
-                $("loginErr").textContent = "Login failed. Please try again.";
-                $("loginErr").style.display = "block";
-            } finally {
-                spinner.style.display = "none";
-                btn.disabled = false;
-            }
+          } catch (err) {
+            $("loginErr").textContent = "Login failed. Please try again.";
+            $("loginErr").style.display = "block";
+          } finally {
+            spinner.style.display = "none";
+            btn.disabled = false;
+          }
         };
-
+      
         $("verifyBtn").onclick = () => {
           const spinner = $("verifySpinner");
           const btn = $("verifyBtn");
-
+      
           spinner.style.display = "inline-block";
           btn.disabled = true;
           btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing...';
-
+      
           setTimeout(() => {
             taskCard.style.display = "none";
             doneCard.style.display = "block";
+            finishTask("task_completed");
           }, 2000);
         };
-
+      
         $("reportBtn").onclick = () => {
           if (!confirm("Report this site as phishing?")) return;
+          log(`User ${userId} reported ${siteName} as phishing at ${new Date().toISOString()}`);
+          finishTask("reported_phishing");
           alert("Good job! This is exactly what you should do when you encounter phishing sites.");
           location.reload();
         };
-
+      
         document.addEventListener("keypress", (e) => {
           if (e.key === "Enter" && loginCard.style.display !== "none") {
             $("loginBtn").click();
           }
         });
-
+      
         // Countdown timer simulation
         let timeLeft = 872; // 14:32 in seconds
         const countdown = setInterval(() => {
@@ -552,6 +595,6 @@
           }
         }, 1000);
       })();
-    </script>
+    </script> 
   </body>
 </html>
