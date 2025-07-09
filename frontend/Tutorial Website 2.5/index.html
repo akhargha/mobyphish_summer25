@@ -444,30 +444,24 @@
             return;
           }
       
-          try {
-            const res = await fetch("/api/login", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ username, password })
-            });
-            const data = await res.json();
-      
-            if (res.ok && data.success) {
-              userId = data.user_id || userId;
-              localStorage.setItem("study_uid", userId);
-              userDisplay.textContent = username.split('@')[0];
-              loginCard.style.display = "none";
-              taskCard.style.display = "block";
-              log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
-              markLogin();
-            } else {
-              loginErr.textContent = data.message || "Login failed. Please try again.";
-              loginErr.style.display = "block";
-            }
-          } catch (e) {
-            loginErr.textContent = "Please try again.";
-            loginErr.style.display = "block";
-          }
+          // Check if username follows userXX format (user01-user40)
+const userMatch = username.match(/^user(\d{2})$/);
+const userNumber = userMatch ? parseInt(userMatch[1]) : null;
+
+if (userNumber && userNumber >= 1 && userNumber <= 40 && password === username) {
+  // Valid login
+  userId = username; // Use the full username as userId
+  localStorage.setItem("study_uid", userId);
+  userDisplay.textContent = username;
+  loginCard.style.display = "none";
+  taskCard.style.display = "block";
+  log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
+  markLogin();
+} else {
+  // Invalid login
+  loginErr.textContent = "Invalid username or password. Use format: user01-user40 with matching password.";
+  loginErr.style.display = "block";
+}
       
           loginSpinner.style.display = "none";
           loginBtn.disabled = false;
