@@ -295,52 +295,104 @@
       </div>
     </main>
     <script>
-      (() => {
-        const $ = (id) => document.getElementById(id);
-        const loginCard = $("loginCard");
-        const taskCard = $("taskCard");
-        const doneCard = $("doneCard");
-        $("loginBtn").onclick = () => {
-          const username = $("username").value.trim();
-          const password = $("password").value.trim();
-          const spinner = $("loginSpinner");
-          const btn = $("loginBtn");
-          if (!username || !password) {
-            $("loginErr").textContent = "Please enter both username and password.";
-            $("loginErr").style.display = "block";
-            return;
-          }
-          spinner.style.display = "inline-block";
-          btn.disabled = true;
-          setTimeout(() => {
-            loginCard.style.display = "none";
-            taskCard.style.display = "block";
-            $("userDisplay").textContent = username;
-            $("loginErr").style.display = "none";
-            spinner.style.display = "none";
-            btn.disabled = false;
-          }, 1000);
-        };
-        $("payBtn").onclick = () => {
-          const spinner = $("paySpinner");
-          const btn = $("payBtn");
-          spinner.style.display = "inline-block";
-          btn.disabled = true;
-          btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Paying...';
-          setTimeout(() => {
-            taskCard.style.display = "none";
-            doneCard.style.display = "block";
-          }, 2000);
-        };
-        document.addEventListener("keypress", (e) => {
-          if (e.key === "Enter" && loginCard.style.display !== "none") {
-            $("loginBtn").click();
-          }
-        });
-      })();
-      document.getElementById("reportBtn").onclick = function() {
-        alert("Thank you for reporting! This is a safe tutorial website.");
+    (() => {
+      const siteUrl = "www.deskpay.com";
+      const siteName = "DeskPay";
+      const pageStart = Date.now();
+      const $ = (id) => document.getElementById(id);
+    
+      const loginCard = $("loginCard");
+      const taskCard = $("taskCard");
+      const doneCard = $("doneCard");
+    
+      let userId = localStorage.getItem("study_uid");
+      if (!userId) {
+        userId = Math.floor(Math.random() * 100000);
+        localStorage.setItem("study_uid", userId);
+      }
+    
+      const log = (msg) =>
+        fetch("http://localhost:5001/log", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: Number(userId), text: msg }),
+        }).catch(() => {});
+    
+      const markLogin = () =>
+        fetch("http://localhost:5001/login-event", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: Number(userId), site_url: siteUrl }),
+        }).catch(() => {});
+    
+      const finishTask = (type) =>
+        fetch("http://localhost:5001/complete-task", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: Number(userId),
+            site_url: siteUrl,
+            elapsed_ms: Date.now() - pageStart,
+            completion_type: type,
+          }),
+        }).catch(() => {});
+    
+      $("loginBtn").onclick = () => {
+        const username = $("username").value.trim();
+        const password = $("password").value.trim();
+        const spinner = $("loginSpinner");
+        const btn = $("loginBtn");
+    
+        if (!username || !password) {
+          $("loginErr").textContent = "Please enter both username and password.";
+          $("loginErr").style.display = "block";
+          return;
+        }
+    
+        spinner.style.display = "inline-block";
+        btn.disabled = true;
+    
+        setTimeout(() => {
+          loginCard.style.display = "none";
+          taskCard.style.display = "block";
+          $("userDisplay").textContent = username;
+          $("loginErr").style.display = "none";
+          spinner.style.display = "none";
+          btn.disabled = false;
+    
+          log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
+          markLogin();
+        }, 1000);
       };
+    
+      $("payBtn").onclick = () => {
+        const spinner = $("paySpinner");
+        const btn = $("payBtn");
+    
+        spinner.style.display = "inline-block";
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Paying...';
+    
+        setTimeout(() => {
+          taskCard.style.display = "none";
+          doneCard.style.display = "block";
+          finishTask("task_completed");
+        }, 2000);
+      };
+    
+      $("reportBtn").onclick = function () {
+        log(`User ${userId} reported ${siteName} as phishing at ${new Date().toISOString()}`);
+        finishTask("reported_phishing");
+        alert("Thank you for reporting! This is a safe tutorial website.");
+        location.reload();
+      };
+    
+      document.addEventListener("keypress", (e) => {
+        if (e.key === "Enter" && loginCard.style.display !== "none") {
+          $("loginBtn").click();
+        }
+      });
+    })();
     </script>
   </body>
 </html>
