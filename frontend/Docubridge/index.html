@@ -340,7 +340,7 @@
             <input id="username" class="form-control" placeholder="Enter your username" />
           </div>
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="password">Password</label>
             <input id="password" type="password" class="form-control" placeholder="Enter your password" />
           </div>
@@ -351,6 +351,27 @@
           </button>
 
           <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+        </div>
+      </div> -->
+
+       <form id="loginForm" method="POST" action="/verify-login">
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input id="username" type="username" class="form-control" placeholder="Enter your username" />
+                </div>
+
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input id="password" type="password" class="form-control" placeholder="Enter your password" />
+                </div>
+
+                <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                  <span class="loading-spinner" id="loginSpinner"></span>
+                Login
+                </button>
+
+                <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+          </form>
         </div>
       </div>
 

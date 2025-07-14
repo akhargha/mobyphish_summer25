@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Bank Easy</title>
+    <title>Fast Bank</title>
     <style>
       * {
         box-sizing: border-box;
@@ -20,7 +20,7 @@
       }
 
       .tutorial-banner {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        background: linear-gradient(135deg, #1059b9 0%, #053096 100%);
         color: white;
         text-align: center;
         padding: 12px 24px;
@@ -30,7 +30,7 @@
       }
 
       header {
-        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        background: linear-gradient(135deg, #af941e 0%, #af941e 100%);
         color: white;
         padding: 16px 24px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -85,10 +85,10 @@
       }
 
       .card-header {
-        background: linear-gradient(90deg, #1e3a8a 0%, #1e40af 100%);
+        background: linear-gradient(90deg, #af941e 0%, #af941e 100%);
         color: white;
         padding: 20px 24px;
-        border-bottom: 3px solid #3b82f6;
+        border-bottom: 3px solid #f6f63b;
       }
 
       .card-header h2 {
@@ -146,12 +146,12 @@
       }
 
       .btn-primary {
-        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
+        background: linear-gradient(135deg, #afa01e 0%, #afa01e 100%);
         color: white;
       }
 
       .btn-primary:hover {
-        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        background: linear-gradient(135deg, #818a1e 0%, #818a1e 100%);
         transform: translateY(-1px);
         box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
       }
@@ -307,12 +307,12 @@
   </head>
   <body>
     <div class="tutorial-banner">
-      PHASE 1 TUTORIAL WEBSITE #1.1 - This is a practice session. The actual study has not started yet.
+      PHASE 2 TUTORIAL WEBSITE #2.1 - This is a practice session. Please use the MobyPhish extension to check if this site is phishing.
     </div>
 
     <header>
       <div class="header-content">
-        <div class="logo">Bank Easy</div>
+        <div class="logo">Fast Bank</div>
         <div class="user-info">
         <span id="userDisplay">Guest</span>
         </div>
@@ -326,7 +326,7 @@
       </div>
 
       <!-- LOGIN CARD -->
-      <div id="loginCard" class="card">
+      <!-- <div id="loginCard" class="card">
         <div class="card-header">
           <h2>Secure Login</h2>
         </div>
@@ -352,6 +352,38 @@
 
           <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
         </div>
+      </div> -->
+
+
+      <!-- LOGIN CARD -->
+      <div id="loginCard" class="card">
+
+        <div class="card-header">
+          <h2>Login with Username and Password</h2>
+        </div>
+
+          <div class="card-body">
+            <form id="loginForm" method="POST" action="/verify-login">
+
+              <div class="form-group">
+                <label for="acc">Username</label>
+                <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
+              </div>
+
+              <div class="form-group">
+                <label for="pwd">Password</label>
+                <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
+              </div>
+
+              <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                <span class="loading-spinner" id="loginSpinner"></span>
+                Login
+              </button>
+
+              <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+
+            </form>
+          </div>
       </div>
 
       <!-- TASK CARD -->
@@ -365,26 +397,26 @@
           </div>
 
           <div class="account-balance">
-            <div class="balance-amount">$2,847.92</div>
+            <div class="balance-amount">$3,127.12</div>
             <div class="balance-label">Current Account Balance</div>
           </div>
 
           <p style="margin: 20px 0; font-size: 16px;">
-            You have requested to <strong>transfer $500</strong> to your savings account. Please review the details below and confirm the transaction.
+            You have requested to <strong>transfer $1,500</strong> to your checking account. Please review the details below and confirm the transaction.
           </p>
 
           <div class="transaction-details">
             <div class="transaction-row">
               <span class="transaction-label">From Account:</span>
-              <span class="transaction-value">Checking Account (****1234)</span>
+              <span class="transaction-value">Checking Account (****3233)</span>
             </div>
             <div class="transaction-row">
               <span class="transaction-label">To Account:</span>
-              <span class="transaction-value">Savings Account (****5678)</span>
+              <span class="transaction-value">Savings Account (****5572)</span>
             </div>
             <div class="transaction-row">
               <span class="transaction-label">Transfer Amount:</span>
-              <span class="transaction-value">$500.00</span>
+              <span class="transaction-value">$1,500.00</span>
             </div>
             <div class="transaction-row">
               <span class="transaction-label">Transfer Date:</span>
@@ -392,7 +424,7 @@
             </div>
             <div class="transaction-row">
               <span class="transaction-label">Transaction Fee:</span>
-              <span class="transaction-value">$0.00</span>
+              <span class="transaction-value">$0.30</span>
             </div>
           </div>
 
@@ -411,12 +443,12 @@
           <h2>Transfer Complete</h2>
         </div>
         <div class="card-body" style="text-align: center;">
-          <h3 style="color: #059669; margin-bottom: 16px;">Transaction Successful</h3>
-          <p style="font-size: 16px; margin-bottom: 24px; color: #1e3a8a;">
-            Your transfer of <strong>$500.00</strong> has been successfully completed.
+          <h3 style="color: #054d96; margin-bottom: 16px;">Transaction Successful</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #1e8a49;">
+            Your transfer of <strong>$1,500.00</strong> has been successfully completed.
           </p>
           <div class="alert alert-success">
-            <strong>Transaction ID:</strong> SB-TXN-2025070301<br />
+            <strong>Transaction ID:</strong> BH-HAB-1024370301<br />
             <strong>Confirmation sent to:</strong> your registered email address
           </div>
           <div class="alert alert-info" style="margin-top: 16px;">

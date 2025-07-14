@@ -3,18 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>FileFlow Pro</title>
+    <title>SupplyPay</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        background: linear-gradient(135deg, #fffbe7 0%, #fff3cd 100%);
+        background: #f0fdf4;
         min-height: 100vh;
-        color: #7c4700;
+        color: #22543d;
         line-height: 1.6;
       }
       .tutorial-banner {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        background: linear-gradient(135deg, #1059b9 0%, #053096 100%);
         color: white;
         text-align: center;
         padding: 12px 24px;
@@ -23,7 +23,7 @@
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       }
       header {
-        background: linear-gradient(135deg, #7c4700 0%, #7c4700 100%);
+        background: #38a169;
         color: white;
         padding: 16px 24px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -41,7 +41,7 @@
         align-items: center;
         font-size: 24px;
         font-weight: 700;
-        color: #ffffff;
+        color: #fff;
       }
       .user-info {
         display: flex;
@@ -53,7 +53,7 @@
         position: absolute;
         top: 16px;
         right: 24px;
-        background: linear-gradient(135deg, #ae2727 0%, #992222 100%);
+        background: #e53e3e;
         color: white;
         border: none;
         border-radius: 6px;
@@ -64,7 +64,7 @@
         z-index: 1000;
       }
       #reportBtn:hover {
-        background: linear-gradient(135deg, #992222 0%, #841e1e 100%);
+        background: #b91c1c;
         transform: translateY(-1px);
       }
       main {
@@ -73,12 +73,12 @@
         padding: 0 24px;
       }
       .breadcrumb {
-        color: #b26a00;
+        color: #22543d;
         font-size: 14px;
         margin-bottom: 24px;
       }
       .breadcrumb a {
-        color: #ff9800;
+        color: #38a169;
         text-decoration: none;
       }
       .card {
@@ -87,13 +87,13 @@
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         overflow: hidden;
         margin-bottom: 24px;
-        border: 2px solid #ff9800;
+        border: 2px solid #38a169;
       }
       .card-header {
-        background: linear-gradient(90deg, #7c4700 0%, #7c4700 100%);
+        background: #38a169;
         color: white;
         padding: 20px 24px;
-        border-bottom: 3px solid #7c4700;
+        border-bottom: 3px solid #bbf7d0;
       }
       .card-header h2 {
         margin: 0;
@@ -110,22 +110,22 @@
         display: block;
         margin-bottom: 6px;
         font-weight: 600;
-        color: #7c4700;
+        color: #22543d;
         font-size: 14px;
       }
       .form-control {
         width: 100%;
         padding: 12px 16px;
-        border: 2px solid #ffe0b2;
+        border: 2px solid #bbf7d0;
         border-radius: 8px;
         font-size: 16px;
         transition: all 0.3s ease;
-        background: #fffbe7;
+        background: #f0fdf4;
       }
       .form-control:focus {
         outline: none;
-        border-color: #ff9800;
-        box-shadow: 0 0 0 3px rgba(255, 152, 0, 0.1);
+        border-color: #38a169;
+        box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.1);
         background: white;
       }
       .btn {
@@ -143,13 +143,13 @@
         min-width: 140px;
       }
       .btn-primary {
-        background: linear-gradient(135deg, #7c4700 0%, #7c4700 100%);
+        background: #38a169;
         color: white;
       }
       .btn-primary:hover {
-        background: linear-gradient(135deg, #ff9800 0%, #ff9800 100%);
+        background: #22543d;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.3);
+        box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
       }
       .alert {
         padding: 12px 16px;
@@ -158,9 +158,9 @@
         font-size: 14px;
       }
       .alert-info {
-        background: #fff8e1;
-        border: 1px solid #ffe0b2;
-        color: #b26a00;
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #22543d;
       }
       .alert-success {
         background: #f0fdf4;
@@ -169,11 +169,11 @@
       }
       .footer-info {
         text-align: center;
-        color: #b26a00;
+        color: #22543d;
         font-size: 12px;
         margin-top: 32px;
         padding: 16px;
-        border-top: 1px solid #ffe0b2;
+        border-top: 1px solid #bbf7d0;
       }
       .loading-spinner {
         display: none;
@@ -199,11 +199,11 @@
   </head>
   <body>
     <div class="tutorial-banner">
-      PHASE 1 TUTORIAL WEBSITE #1.2 - This is a practice session. The actual study has not started yet.
+      PHASE 2 TUTORIAL WEBSITE #2.3 - This is a practice session. Please use the MobyPhish extension to check if this site is phishing.
     </div>
     <header>
       <div class="header-content">
-        <div class="logo">FileFlow Pro</div>
+        <div class="logo">SupplyPay</div>
         <div class="user-info">
           <span id="userDisplay">Guest</span>
         </div>
@@ -212,16 +212,16 @@
     </header>
     <main>
       <div class="breadcrumb">
-        <a href="#">Dashboard</a> › <a href="#">Transfers</a> › Department File Transfer
+        <a href="#">Dashboard</a> › <a href="#">Payments</a> › Office Supply Vendors
       </div>
       <!-- LOGIN CARD -->
-      <div id="loginCard" class="card">
+      <!-- <div id="loginCard" class="card">
         <div class="card-header">
-          <h2>Department Login</h2>
+          <h2>Vendor Login</h2>
         </div>
         <div class="card-body">
           <div class="alert alert-info">
-            <strong>Tutorial Instructions:</strong> This is a legitimate file transfer website. Use your username and password to proceed with the tutorial.
+            <strong>Tutorial Instructions:</strong> This is a legitimate office supply payment website. Use your username and password to proceed.
           </div>
           <div class="form-group">
             <label for="username">Username</label>
@@ -237,55 +237,94 @@
           </button>
           <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
         </div>
+      </div> -->
+
+
+      <!-- LOGIN CARD -->
+      <div id="loginCard" class="card">
+
+        <div class="card-header">
+          <h2>Login with Username and Password</h2>
+        </div>
+
+          <div class="card-body">
+            <form id="loginForm" method="POST" action="/verify-login">
+
+              <div class="form-group">
+                <label for="acc">Username</label>
+                <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
+              </div>
+
+              <div class="form-group">
+                <label for="pwd">Password</label>
+                <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
+              </div>
+
+              <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                <span class="loading-spinner" id="loginSpinner"></span>
+                Login
+              </button>
+
+              <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+
+            </form>
+          </div>
       </div>
+
+
+
+
+
+
+
       <!-- TASK CARD -->
       <div id="taskCard" class="card" style="display: none;">
         <div class="card-header">
-          <h2>Transfer Files</h2>
+          <h2>Pay Vendor</h2>
         </div>
         <div class="card-body">
           <div class="alert alert-success">
-            <strong>Login Successful</strong> - Welcome to FileFlow Pro.
+            <strong>Login Successful</strong> - Welcome to SupplyPay.
           </div>
           <p style="margin: 20px 0; font-size: 16px;">
-            Select the files you wish to transfer between departments. All transfers are encrypted and logged for security.
+            Select the vendor and enter the payment amount. All transactions are secure and logged.
           </p>
           <div class="form-group">
-            <label for="fileInput">Choose Files</label>
-            <input id="fileInput" type="file" class="form-control" multiple />
-          </div>
-          <div class="form-group">
-            <label for="targetDept">Target Department</label>
-            <select id="targetDept" class="form-control">
-              <option>Finance</option>
-              <option>HR</option>
-              <option>IT</option>
-              <option>Legal</option>
-              <option>Operations</option>
+            <label for="vendorSelect">Vendor</label>
+            <select id="vendorSelect" class="form-control">
+              <option>StaplePro</option>
+              <option>PaperWorks</option>
+              <option>OfficeMart</option>
+              <option>SupplyHub</option>
+              <option>DeskDirect</option>
             </select>
           </div>
-          <button id="transferBtn" class="btn btn-primary" style="width: 100%; font-size: 18px; padding: 16px;">
-            <span class="loading-spinner" id="transferSpinner"></span>
-            Transfer Files
+          <div class="form-group">
+            <label for="amount">Amount ($)</label>
+            <input id="amount" type="number" class="form-control" placeholder="Enter amount" min="1" />
+          </div>
+          <button id="payBtn" class="btn btn-primary" style="width: 100%; font-size: 18px; padding: 16px;">
+            <span class="loading-spinner" id="paySpinner"></span>
+            Pay Vendor
           </button>
         </div>
       </div>
       <!-- SUCCESS CARD -->
       <div id="doneCard" class="card" style="display: none;">
         <div class="card-header">
-          <h2>Transfer Complete</h2>
+          <h2>Payment Complete</h2>
         </div>
         <div class="card-body" style="text-align: center;">
-          <h3 style="color: #ff9800; margin-bottom: 16px;">Files Transferred Successfully</h3>
-          <p style="font-size: 16px; margin-bottom: 24px; color: #7c4700;">
-            Your files have been securely transferred to the selected department.
+          <h3 style="color: #38a169; margin-bottom: 16px;">Payment Sent Successfully</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #22543d;">
+            Your payment has been securely sent to the selected vendor.
           </p>
           <div class="alert alert-success">
-            <strong>Transfer ID:</strong> FF-TXN-2025070302<br />
-            <strong>Confirmation sent to:</strong> your department email
+            <strong>Transaction ID:</strong> SPY-TXN-2025070306<br />
+            <strong>Confirmation sent to:</strong> your email
           </div>
           <div class="alert alert-info" style="margin-top: 16px;">
-            <strong>Tutorial Complete!</strong> This demonstrates a safe file transfer between departments.
+            <strong>Tutorial Complete!</strong> This demonstrates a safe office supply payment process.
           </div>
         </div>
       </div>
@@ -321,12 +360,12 @@
             btn.disabled = false;
           }, 1000);
         };
-        $("transferBtn").onclick = () => {
-          const spinner = $("transferSpinner");
-          const btn = $("transferBtn");
+        $("payBtn").onclick = () => {
+          const spinner = $("paySpinner");
+          const btn = $("payBtn");
           spinner.style.display = "inline-block";
           btn.disabled = true;
-          btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Transferring...';
+          btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Paying...';
           setTimeout(() => {
             taskCard.style.display = "none";
             doneCard.style.display = "block";

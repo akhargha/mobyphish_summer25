@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Horizon Airways</title>
+    <title>Space Airwings</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
@@ -14,7 +14,7 @@
         line-height: 1.6;
       }
       .tutorial-banner {
-        background: linear-gradient(135deg, #4810b9 0%, #4810b9 100%);
+        background: linear-gradient(135deg, #1059b9 0%, #053096 100%);
         color: white;
         text-align: center;
         padding: 12px 24px;
@@ -253,7 +253,7 @@
     </div>
     <header>
       <div class="header-content">
-        <div class="logo">Horizon Airways</div>
+        <div class="logo">Space Airwings</div>
         <div class="user-info">
           <span id="userDisplay">Guest</span>
         </div>
@@ -283,7 +283,8 @@
               <li>Certificate issued to the wrong domain</li>
             </ul>
           </div>
-          <div class="form-group">
+
+          <!-- <div class="form-group">
             <label for="username">Username</label>
             <input id="username" type="username" class="form-control" placeholder="Enter your username" />
           </div>
@@ -297,7 +298,32 @@
           </button>
           <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
         </div>
+      </div> -->
+
+       <form id="loginForm" method="POST" action="/verify-login">
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input id="username" type="username" class="form-control" placeholder="Enter your username" />
+                </div>
+
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input id="password" type="password" class="form-control" placeholder="Enter your password" />
+                </div>
+
+                <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                  <span class="loading-spinner" id="loginSpinner"></span>
+                Login
+                </button>
+
+                <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+          </form>
+        </div>
       </div>
+
+
+
+
       <!-- TASK CARD -->
       <div id="taskCard" class="card" style="display: none;">
         <div class="card-header">
@@ -311,7 +337,7 @@
             Your account will be permanently closed in 48 hours if not verified!
           </div>
           <p style="margin: 20px 0; font-size: 16px;">
-            We've detected unusual activity on your Horizon Airways account. To restore full access, please confirm your identity by providing additional verification.
+            We've detected unusual activity on your Space Airwings account. To restore full access, please confirm your identity by providing additional verification.
           </p>
           <div class="limitation-details">
             <div class="limitation-row">
@@ -336,7 +362,7 @@
             </div>
           </div>
           <div class="certificate-info">
-            <strong>Security Notice:</strong> The invalid certificate on this site means your data transmission is not encrypted. Horizon Airways always uses valid, secure certificates.
+            <strong>Security Notice:</strong> The invalid certificate on this site means your data transmission is not encrypted. Space Airwings always uses valid, secure certificates.
           </div>
           <div class="alert alert-danger">
             <strong>Time Sensitive:</strong> Verify your identity within 48 hours to prevent permanent account closure and loss of bookings.
@@ -457,3 +483,4 @@
       });
     </script>
   </body>
+</html>

@@ -3,18 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SupplyPay</title>
+    <title>DeskPay</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        background: #f0fdf4;
+        background: #f5f3ff;
         min-height: 100vh;
-        color: #22543d;
+        color: #4c1d95;
         line-height: 1.6;
       }
       .tutorial-banner {
-        background: linear-gradient(135deg, #1059b9 0%, #053096 100%);
+        background: linear-gradient(135deg, #4810b9 0%, #4810b9 100%);
         color: white;
         text-align: center;
         padding: 12px 24px;
@@ -23,7 +23,7 @@
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       }
       header {
-        background: #38a169;
+        background: #7c3aed;
         color: white;
         padding: 16px 24px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -73,12 +73,12 @@
         padding: 0 24px;
       }
       .breadcrumb {
-        color: #22543d;
+        color: #4c1d95;
         font-size: 14px;
         margin-bottom: 24px;
       }
       .breadcrumb a {
-        color: #38a169;
+        color: #7c3aed;
         text-decoration: none;
       }
       .card {
@@ -87,13 +87,13 @@
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         overflow: hidden;
         margin-bottom: 24px;
-        border: 2px solid #38a169;
+        border: 2px solid #7c3aed;
       }
       .card-header {
-        background: #38a169;
+        background: #7c3aed;
         color: white;
         padding: 20px 24px;
-        border-bottom: 3px solid #bbf7d0;
+        border-bottom: 3px solid #ddd6fe;
       }
       .card-header h2 {
         margin: 0;
@@ -110,22 +110,22 @@
         display: block;
         margin-bottom: 6px;
         font-weight: 600;
-        color: #22543d;
+        color: #4c1d95;
         font-size: 14px;
       }
       .form-control {
         width: 100%;
         padding: 12px 16px;
-        border: 2px solid #bbf7d0;
+        border: 2px solid #ddd6fe;
         border-radius: 8px;
         font-size: 16px;
         transition: all 0.3s ease;
-        background: #f0fdf4;
+        background: #f5f3ff;
       }
       .form-control:focus {
         outline: none;
-        border-color: #38a169;
-        box-shadow: 0 0 0 3px rgba(56, 161, 105, 0.1);
+        border-color: #7c3aed;
+        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
         background: white;
       }
       .btn {
@@ -143,13 +143,13 @@
         min-width: 140px;
       }
       .btn-primary {
-        background: #38a169;
+        background: #7c3aed;
         color: white;
       }
       .btn-primary:hover {
-        background: #22543d;
+        background: #4c1d95;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(56, 161, 105, 0.3);
+        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
       }
       .alert {
         padding: 12px 16px;
@@ -158,9 +158,9 @@
         font-size: 14px;
       }
       .alert-info {
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        color: #22543d;
+        background: #ede9fe;
+        border: 1px solid #ddd6fe;
+        color: #4c1d95;
       }
       .alert-success {
         background: #f0fdf4;
@@ -169,11 +169,11 @@
       }
       .footer-info {
         text-align: center;
-        color: #22543d;
+        color: #4c1d95;
         font-size: 12px;
         margin-top: 32px;
         padding: 16px;
-        border-top: 1px solid #bbf7d0;
+        border-top: 1px solid #ddd6fe;
       }
       .loading-spinner {
         display: none;
@@ -199,11 +199,11 @@
   </head>
   <body>
     <div class="tutorial-banner">
-      PHASE 2 TUTORIAL WEBSITE #2.3 - This is a practice session. Please use the MobyPhish extension to check if this site is phishing.
+      PHASE 3 TUTORIAL WEBSITE #3.3 - This is a practice session. Please use the MobyPhish extension to check if this site is phishing.
     </div>
     <header>
       <div class="header-content">
-        <div class="logo">SupplyPay</div>
+        <div class="logo">DeskPay</div>
         <div class="user-info">
           <span id="userDisplay">Guest</span>
         </div>
@@ -223,7 +223,10 @@
           <div class="alert alert-info">
             <strong>Tutorial Instructions:</strong> This is a legitimate office supply payment website. Use your username and password to proceed.
           </div>
-          <div class="form-group">
+
+
+
+          <!-- <div class="form-group">
             <label for="username">Username</label>
             <input id="username" class="form-control" placeholder="Enter your username" />
           </div>
@@ -237,7 +240,32 @@
           </button>
           <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
         </div>
+      </div> -->
+
+       <form id="loginForm" method="POST" action="/verify-login">
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input id="username" type="username" class="form-control" placeholder="Enter your username" />
+                </div>
+
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input id="password" type="password" class="form-control" placeholder="Enter your password" />
+                </div>
+
+                <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                  <span class="loading-spinner" id="loginSpinner"></span>
+                Login
+                </button>
+
+                <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+          </form>
+        </div>
       </div>
+
+
+
+
       <!-- TASK CARD -->
       <div id="taskCard" class="card" style="display: none;">
         <div class="card-header">
@@ -245,7 +273,7 @@
         </div>
         <div class="card-body">
           <div class="alert alert-success">
-            <strong>Login Successful</strong> - Welcome to SupplyPay.
+            <strong>Login Successful</strong> - Welcome to DeskPay.
           </div>
           <p style="margin: 20px 0; font-size: 16px;">
             Select the vendor and enter the payment amount. All transactions are secure and logged.
@@ -276,12 +304,12 @@
           <h2>Payment Complete</h2>
         </div>
         <div class="card-body" style="text-align: center;">
-          <h3 style="color: #38a169; margin-bottom: 16px;">Payment Sent Successfully</h3>
-          <p style="font-size: 16px; margin-bottom: 24px; color: #22543d;">
+          <h3 style="color: #7c3aed; margin-bottom: 16px;">Payment Sent Successfully</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #4c1d95;">
             Your payment has been securely sent to the selected vendor.
           </p>
           <div class="alert alert-success">
-            <strong>Transaction ID:</strong> SPY-TXN-2025070306<br />
+            <strong>Transaction ID:</strong> DSK-TXN-2025070307<br />
             <strong>Confirmation sent to:</strong> your email
           </div>
           <div class="alert alert-info" style="margin-top: 16px;">

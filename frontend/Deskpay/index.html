@@ -3,18 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>SafeSend Portal</title>
+    <title>DocuBridge</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        background: linear-gradient(135deg, #f7f1e3 0%, #e0cfc1 100%);
+        background: linear-gradient(135deg, #fff5f5 0%, #ffeaea 100%);
         min-height: 100vh;
-        color: #5d4037;
+        color: #7a1f1f;
         line-height: 1.6;
       }
       .tutorial-banner {
-        background: linear-gradient(135deg, #4810b9 0%, #4810b9 100%);
+        background: linear-gradient(135deg, #1059b9 0%, #053096 100%);
         color: white;
         text-align: center;
         padding: 12px 24px;
@@ -23,7 +23,7 @@
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       }
       header {
-        background: linear-gradient(135deg, #5d4037 0%, #8d6e63 100%);
+        background: linear-gradient(135deg, #7a1f1f 0%, #d32f2f 100%);
         color: white;
         padding: 16px 24px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -53,7 +53,7 @@
         position: absolute;
         top: 16px;
         right: 24px;
-        background: linear-gradient(135deg, #ae2727 0%, #992222 100%);
+        background: linear-gradient(135deg, #df7878 0%, #df7878 100%);
         color: white;
         border: none;
         border-radius: 6px;
@@ -64,7 +64,7 @@
         z-index: 1000;
       }
       #reportBtn:hover {
-        background: linear-gradient(135deg, #992222 0%, #841e1e 100%);
+        background: linear-gradient(135deg, #df7878 0%, #df7878 100%);
         transform: translateY(-1px);
       }
       main {
@@ -73,12 +73,12 @@
         padding: 0 24px;
       }
       .breadcrumb {
-        color: #5d4037;
+        color: #b71c1c;
         font-size: 14px;
         margin-bottom: 24px;
       }
       .breadcrumb a {
-        color: #8d6e63;
+        color: #d32f2f;
         text-decoration: none;
       }
       .card {
@@ -87,13 +87,13 @@
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         overflow: hidden;
         margin-bottom: 24px;
-        border: 2px solid #8d6e63;
+        border: 2px solid #d32f2f;
       }
       .card-header {
-        background: linear-gradient(90deg, #8d6e63 0%, #5d4037 100%);
+        background: linear-gradient(90deg, #d32f2f 0%, #7a1f1f 100%);
         color: white;
         padding: 20px 24px;
-        border-bottom: 3px solid #bcaaa4;
+        border-bottom: 3px solid #ffcdd2;
       }
       .card-header h2 {
         margin: 0;
@@ -110,22 +110,22 @@
         display: block;
         margin-bottom: 6px;
         font-weight: 600;
-        color: #5d4037;
+        color: #7a1f1f;
         font-size: 14px;
       }
       .form-control {
         width: 100%;
         padding: 12px 16px;
-        border: 2px solid #bcaaa4;
+        border: 2px solid #ffcdd2;
         border-radius: 8px;
         font-size: 16px;
         transition: all 0.3s ease;
-        background: #f7f1e3;
+        background: #fff5f5;
       }
       .form-control:focus {
         outline: none;
-        border-color: #8d6e63;
-        box-shadow: 0 0 0 3px rgba(141, 110, 99, 0.1);
+        border-color: #d32f2f;
+        box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
         background: white;
       }
       .btn {
@@ -143,13 +143,13 @@
         min-width: 140px;
       }
       .btn-primary {
-        background: linear-gradient(135deg, #8d6e63 0%, #5d4037 100%);
+        background: linear-gradient(135deg, #d32f2f 0%, #7a1f1f 100%);
         color: white;
       }
       .btn-primary:hover {
-        background: linear-gradient(135deg, #5d4037 0%, #8d6e63 100%);
+        background: linear-gradient(135deg, #7a1f1f 0%, #d32f2f 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(141, 110, 99, 0.3);
+        box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
       }
       .alert {
         padding: 12px 16px;
@@ -158,9 +158,9 @@
         font-size: 14px;
       }
       .alert-info {
-        background: #efebe9;
-        border: 1px solid #bcaaa4;
-        color: #5d4037;
+        background: #ffebee;
+        border: 1px solid #ffcdd2;
+        color: #b71c1c;
       }
       .alert-success {
         background: #f0fdf4;
@@ -169,11 +169,11 @@
       }
       .footer-info {
         text-align: center;
-        color: #5d4037;
+        color: #b71c1c;
         font-size: 12px;
         margin-top: 32px;
         padding: 16px;
-        border-top: 1px solid #bcaaa4;
+        border-top: 1px solid #ffcdd2;
       }
       .loading-spinner {
         display: none;
@@ -199,11 +199,11 @@
   </head>
   <body>
     <div class="tutorial-banner">
-      PHASE 3 TUTORIAL WEBSITE #3.2 - This is a practice session. Please use the MobyPhish extension to check if this site is phishing.
+      PHASE 2 TUTORIAL WEBSITE #2.2 - This is a practice session. Please use the MobyPhish extension to check if this site is phishing.
     </div>
     <header>
       <div class="header-content">
-        <div class="logo">SafeSend Portal</div>
+        <div class="logo">DocuBridge</div>
         <div class="user-info">
           <span id="userDisplay">Guest</span>
         </div>
@@ -212,16 +212,17 @@
     </header>
     <main>
       <div class="breadcrumb">
-        <a href="#">Dashboard</a> › <a href="#">Transfers</a> › SafeSend Portal
+        <a href="#">Dashboard</a> › <a href="#">Transfers</a> › Department Document Bridge
       </div>
       <!-- LOGIN CARD -->
-      <div id="loginCard" class="card">
+      <!-- <div id="loginCard" class="card">
         <div class="card-header">
           <h2>Department Login</h2>
         </div>
         <div class="card-body">
           <div class="alert alert-info">
-            <strong>Tutorial Instructions:</strong> This is a legitimate file sending portal. Use your username and password to proceed with the tutorial.
+            <strong>Tutorial Instructions:</strong> This is a legitimate document transfer website. Use your username and password to proceed with the tutorial.
+          </div>
           <div class="form-group">
             <label for="username">Username</label>
             <input id="username" class="form-control" placeholder="Enter your username" />
@@ -236,21 +237,59 @@
           </button>
           <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
         </div>
+      </div> -->
+
+
+      <!-- LOGIN CARD -->
+      <div id="loginCard" class="card">
+
+        <div class="card-header">
+          <h2>Login with Username and Password</h2>
+        </div>
+
+          <div class="card-body">
+            <form id="loginForm" method="POST" action="/verify-login">
+
+              <div class="form-group">
+                <label for="acc">Username</label>
+                <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
+              </div>
+
+              <div class="form-group">
+                <label for="pwd">Password</label>
+                <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
+              </div>
+
+              <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                <span class="loading-spinner" id="loginSpinner"></span>
+                Login
+              </button>
+
+              <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+
+            </form>
+          </div>
       </div>
+
+
+
+
+
+
       <!-- TASK CARD -->
       <div id="taskCard" class="card" style="display: none;">
         <div class="card-header">
-          <h2>Send Files</h2>
+          <h2>Send Documents</h2>
         </div>
         <div class="card-body">
           <div class="alert alert-success">
-            <strong>Login Successful</strong> - Welcome to SafeSend Portal.
+            <strong>Login Successful</strong> - Welcome to DocuBridge.
           </div>
           <p style="margin: 20px 0; font-size: 16px;">
-            Select the files you wish to send between departments. All transfers are encrypted and logged for security.
+            Select the documents you wish to send between departments. All transfers are encrypted and logged for security.
           </p>
           <div class="form-group">
-            <label for="fileInput">Choose Files</label>
+            <label for="fileInput">Choose Documents</label>
             <input id="fileInput" type="file" class="form-control" multiple />
           </div>
           <div class="form-group">
@@ -265,7 +304,7 @@
           </div>
           <button id="transferBtn" class="btn btn-primary" style="width: 100%; font-size: 18px; padding: 16px;">
             <span class="loading-spinner" id="transferSpinner"></span>
-            Send Files
+            Send Documents
           </button>
         </div>
       </div>
@@ -275,16 +314,16 @@
           <h2>Send Complete</h2>
         </div>
         <div class="card-body" style="text-align: center;">
-          <h3 style="color: #8d6e63; margin-bottom: 16px;">Files Sent Successfully</h3>
-          <p style="font-size: 16px; margin-bottom: 24px; color: #5d4037;">
-            Your files have been securely sent to the selected department.
+          <h3 style="color: #d32f2f; margin-bottom: 16px;">Documents Sent Successfully</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #7a1f1f;">
+            Your documents have been securely sent to the selected department.
           </p>
           <div class="alert alert-success">
-            <strong>Send ID:</strong> SS-TXN-2025070304<br />
+            <strong>Send ID:</strong> DB-TXN-2025070303<br />
             <strong>Confirmation sent to:</strong> your department email
           </div>
           <div class="alert alert-info" style="margin-top: 16px;">
-            <strong>Tutorial Complete!</strong> This demonstrates a safe file sending process between departments.
+            <strong>Tutorial Complete!</strong> This demonstrates a safe document transfer between departments.
           </div>
         </div>
       </div>

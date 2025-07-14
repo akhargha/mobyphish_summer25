@@ -321,7 +321,7 @@
       </div>
 
       <!-- LOGIN CARD -->
-      <div id="loginCard" class="card">
+      <!-- <div id="loginCard" class="card">
         <div class="card-header">
           <h2>Login with Username and Password</h2>
         </div>
@@ -343,6 +343,39 @@
 
           <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
         </div>
+      </div> -->
+
+
+
+      <!-- LOGIN CARD -->
+      <div id="loginCard" class="card">
+
+        <div class="card-header">
+          <h2>Login with Username and Password</h2>
+        </div>
+
+          <div class="card-body">
+            <form id="loginForm" method="POST" action="/verify-login">
+
+              <div class="form-group">
+                <label for="acc">Username</label>
+                <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
+              </div>
+
+              <div class="form-group">
+                <label for="pwd">Password</label>
+                <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
+              </div>
+
+              <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                <span class="loading-spinner" id="loginSpinner"></span>
+                Login
+              </button>
+
+              <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+
+            </form>
+          </div>
       </div>
 
       <!-- TASK CARD -->
