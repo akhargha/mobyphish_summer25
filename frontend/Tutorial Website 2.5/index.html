@@ -1,0 +1,505 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Space Airwings</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(135deg, #e3f0ff 0%, #c9e7ff 100%);
+        min-height: 100vh;
+        color: #15396a;
+        line-height: 1.6;
+      }
+      .tutorial-banner {
+        background: linear-gradient(135deg, #1059b9 0%, #053096 100%);
+        color: white;
+        text-align: center;
+        padding: 12px 24px;
+        font-weight: 600;
+        font-size: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+      .security-notice {
+        background: linear-gradient(135deg, #b92e2e 0%, #7a1f1f 100%);
+        color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
+        text-align: center;
+        font-weight: 600;
+        border: 3px solid #7a1f1f;
+      }
+      header {
+        background: linear-gradient(135deg, #15396a 0%, #1059b9 100%);
+        color: white;
+        padding: 16px 24px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: relative;
+      }
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .logo {
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+        font-weight: 700;
+        color: #ffffff;
+      }
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 14px;
+      }
+      #reportBtn {
+        position: absolute;
+        top: 16px;
+        right: 24px;
+        background: linear-gradient(135deg, #b92e2e 0%, #7a1f1f 100%);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 12px;
+        z-index: 1000;
+      }
+      #reportBtn:hover {
+        background: linear-gradient(135deg, #7a1f1f 0%, #b92e2e 100%);
+        transform: translateY(-1px);
+      }
+      main {
+        max-width: 800px;
+        margin: 32px auto;
+        padding: 0 24px;
+      }
+      .breadcrumb {
+        color: #6b7280;
+        font-size: 14px;
+        margin-bottom: 24px;
+      }
+      .breadcrumb a {
+        color: #1059b9;
+        text-decoration: none;
+      }
+      .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        overflow: hidden;
+        margin-bottom: 24px;
+        border: 2px solid #1059b9;
+      }
+      .card-header {
+        background: linear-gradient(90deg, #1059b9 0%, #15396a 100%);
+        color: white;
+        padding: 20px 24px;
+        border-bottom: 3px solid #1059b9;
+      }
+      .card-header h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+      }
+      .card-body {
+        padding: 32px 24px;
+      }
+      .form-group {
+        margin-bottom: 20px;
+      }
+      .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #15396a;
+        font-size: 14px;
+      }
+      .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #c9e7ff;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: #f8fcff;
+      }
+      .form-control:focus {
+        outline: none;
+        border-color: #1059b9;
+        box-shadow: 0 0 0 3px rgba(16, 89, 185, 0.1);
+        background: white;
+      }
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        min-width: 140px;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, #1059b9 0%, #15396a 100%);
+        color: white;
+      }
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #15396a 0%, #1059b9 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(16, 89, 185, 0.3);
+      }
+      .btn-warning {
+        background: linear-gradient(135deg, #7a1f1f 0%, #b92e2e 100%);
+        color: white;
+      }
+      .btn-warning:hover {
+        background: linear-gradient(135deg, #b92e2e 0%, #7a1f1f 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(185, 46, 46, 0.3);
+      }
+      .alert {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-top: 16px;
+        font-size: 14px;
+      }
+      .alert-danger {
+        background: #ffebee;
+        border: 1px solid #ffcdd2;
+        color: #b92e2e;
+      }
+      .alert-warning {
+        background: #e3f0ff;
+        border: 1px solid #b3d8fd;
+        color: #1059b9;
+      }
+      .alert-info {
+        background: #e3f2fd;
+        border: 1px solid #bbdefb;
+        color: #1565c0;
+      }
+      .limitation-details {
+        background: #e3f0ff;
+        border: 2px solid #b3d8fd;
+        border-radius: 8px;
+        padding: 24px;
+        margin: 24px 0;
+      }
+      .limitation-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border-bottom: 1px solid #b3d8fd;
+      }
+      .limitation-row:last-child { border-bottom: none; }
+      .limitation-label { color: #15396a; font-weight: 500; }
+      .limitation-value { color: #b92e2e; font-weight: 600; }
+      .certificate-info {
+        background: #ffebee;
+        border: 2px solid #b92e2e;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 16px 0;
+        font-size: 12px;
+        color: #b92e2e;
+      }
+      .footer-info {
+        text-align: center;
+        color: #6b7280;
+        font-size: 12px;
+        margin-top: 32px;
+        padding: 16px;
+        border-top: 1px solid #e6f3ff;
+      }
+      .loading-spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid transparent;
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 8px;
+      }
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+      @media (max-width: 768px) {
+        .header-content { flex-direction: column; gap: 12px; text-align: center; }
+        main { margin: 16px auto; padding: 0 16px; }
+        .card-body { padding: 24px 16px; }
+        #reportBtn { position: relative; top: 8px; right: 0; margin-top: 8px; }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tutorial-banner">
+      PHASE 2 TUTORIAL WEBSITE #2.5 - Certificate Phishing Example. This is a practice session. You can use the MobyMail extension.
+    </div>
+    <header>
+      <div class="header-content">
+        <div class="logo">Space Airwings</div>
+        <div class="user-info">
+          <span id="userDisplay">Guest</span>
+        </div>
+      </div>
+      <button id="reportBtn">Report Phishing</button>
+    </header>
+    <main>
+      <div class="breadcrumb">
+        <a href="#">Home</a> › <a href="#">My Bookings</a> › Security Center
+      </div>
+      <!-- LOGIN CARD -->
+      <div id="loginCard" class="card">
+        <div class="card-header">
+          <h2>Account Security Check Required</h2>
+        </div>
+        <div class="card-body">
+          <div class="security-notice">
+            WARNING: This site simulates a certificate-based phishing attack targeting airline customers.
+          </div>
+          <div class="alert alert-info">
+            <strong>Instructions:</strong> Use the <b>MobyPhish browser extension</b> to check if this website is phishing.<br>
+            <br>
+            <strong>Look for:</strong>
+            <ul>
+              <li>Invalid or expired SSL certificate warnings</li>
+              <li>"Not Secure" indicators in your browser</li>
+              <li>Certificate issued to the wrong domain</li>
+            </ul>
+          </div>
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" type="username" class="form-control" placeholder="Enter your username" />
+          </div>
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" class="form-control" placeholder="Enter your password" />
+          </div>
+          <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+            <span class="loading-spinner" id="loginSpinner"></span>
+            Login
+          </button>
+          <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+        </div>
+      </div>
+      <!-- TASK CARD -->
+      <div id="taskCard" class="card" style="display: none;">
+        <div class="card-header">
+          <h2>Resolve Booking Limitation</h2>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-warning">
+            <strong>Booking Status:</strong> LIMITED - Immediate verification required to restore access
+          </div>
+          <div class="security-notice">
+            Your account will be permanently closed in 48 hours if not verified!
+          </div>
+          <p style="margin: 20px 0; font-size: 16px;">
+            We've detected unusual activity on your Space Airwings account. To restore full access, please confirm your identity by providing additional verification.
+          </p>
+          <div class="limitation-details">
+            <div class="limitation-row">
+              <span class="limitation-label">Booking Status:</span>
+              <span class="limitation-value">LIMITED ACCESS</span>
+            </div>
+            <div class="limitation-row">
+              <span class="limitation-label">Issue Date:</span>
+              <span class="limitation-value">July 2, 2025</span>
+            </div>
+            <div class="limitation-row">
+              <span class="limitation-label">Reason:</span>
+              <span class="limitation-value">Suspicious login attempts detected</span>
+            </div>
+            <div class="limitation-row">
+              <span class="limitation-label">Affected Services:</span>
+              <span class="limitation-value">Book Flights, Manage Bookings, Access Rewards</span>
+            </div>
+            <div class="limitation-row">
+              <span class="limitation-label">Resolution Required:</span>
+              <span class="limitation-value">Identity Verification</span>
+            </div>
+          </div>
+          <div class="certificate-info">
+            <strong>Security Notice:</strong> The invalid certificate on this site means your data transmission is not encrypted. Space Airwings always uses valid, secure certificates.
+          </div>
+          <div class="alert alert-danger">
+            <strong>Time Sensitive:</strong> Verify your identity within 48 hours to prevent permanent account closure and loss of bookings.
+          </div>
+          <div class="btn-wrapper">
+            <button id="verifyBtn" class="btn btn-warning" style="width: 100%; font-size: 18px; padding: 16px;">
+              <span class="loading-spinner" id="verifySpinner"></span>
+              Complete Identity Verification
+            </button>
+          </div>
+        </div>
+      </div>
+      <!-- SUCCESS CARD -->
+      <div id="doneCard" class="card" style="display: none;">
+        <div class="card-header">
+          <h2>Tutorial Complete - Certificate Phishing Detected</h2>
+        </div>
+        <div class="card-body" style="text-align: center;">
+          <h3 style="color: #b92e2e; margin-bottom: 16px;">This Was Certificate-Based Phishing</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #15396a;">
+            This website demonstrated certificate-based phishing tactics targeting airline customers, including invalid SSL certificates and security warnings.
+          </p>
+          <div class="alert alert-info">
+            <strong>Certificate Warning Signs:</strong><br>
+            • Invalid/expired SSL certificate warnings<br>
+            • "Not Secure" indicators in browser<br>
+            • Certificate issued to wrong domain<br>
+            • Security warnings from browser<br>
+            • Urgent threats and time pressure<br>
+            • Requests for sensitive verification
+          </div>
+          <div class="alert alert-warning" style="margin-top: 16px;">
+            <strong>Tutorial Complete!</strong> Always check for valid SSL certificates and security indicators. Never proceed on sites with certificate warnings.
+          </div>
+        </div>
+      </div>
+      <div class="footer-info">
+        Tutorial Website - Certificate Phishing Example<br>
+        This website is designed for the MobyPhish study tutorial
+      </div>
+    </main>
+    <script>
+      (() => {
+        const siteUrl = "wvw.spaceairwings.com";
+        const siteName = "SpaceAirWings";
+        const pageStart = Date.now();
+        const $ = (id) => document.getElementById(id);
+      
+        const loginBtn = $("loginBtn"),
+              verifyBtn = $("verifyBtn"),
+              loginCard = $("loginCard"),
+              taskCard = $("taskCard"),
+              doneCard = $("doneCard"),
+              loginErr = $("loginErr"),
+              loginSpinner = $("loginSpinner"),
+              verifySpinner = $("verifySpinner"),
+              userDisplay = $("userDisplay"),
+              reportBtn = $("reportBtn");
+      
+        let userId = localStorage.getItem("study_uid");
+        if (!userId) {
+          userId = Math.floor(Math.random() * 100000);
+          localStorage.setItem("study_uid", userId);
+        }
+      
+        const log = (msg) =>
+          fetch("http://localhost:5001/log", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: Number(userId), text: msg }),
+          }).catch(() => {});
+      
+        const markLogin = () =>
+          fetch("http://localhost:5001/login-event", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: Number(userId), site_url: siteUrl }),
+          }).catch(() => {});
+      
+        const finishTask = (type) =>
+          fetch("http://localhost:5001/complete-task", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: Number(userId),
+              site_url: siteUrl,
+              elapsed_ms: Date.now() - pageStart,
+              completion_type: type,
+            }),
+          }).catch(() => {});
+      
+        loginBtn.addEventListener("click", async function () {
+          loginErr.style.display = "none";
+          loginSpinner.style.display = "inline-block";
+          loginBtn.disabled = true;
+      
+          const username = $("username").value.trim();
+          const password = $("password").value.trim();
+      
+          if (!username || !password) {
+            loginErr.textContent = "Please enter both username and password.";
+            loginErr.style.display = "block";
+            loginSpinner.style.display = "none";
+            loginBtn.disabled = false;
+            return;
+          }
+      
+          // Check if username follows userXX format (user01-user40)
+const userMatch = username.match(/^user(\d{2})$/);
+const userNumber = userMatch ? parseInt(userMatch[1]) : null;
+
+if (userNumber && userNumber >= 1 && userNumber <= 40 && password === username) {
+  // Valid login
+  userId = username; // Use the full username as userId
+  localStorage.setItem("study_uid", userId);
+  userDisplay.textContent = username;
+  loginCard.style.display = "none";
+  taskCard.style.display = "block";
+  log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
+  markLogin();
+} else {
+  // Invalid login
+  loginErr.textContent = "Invalid username or password. Use format: user01-user40 with matching password.";
+  loginErr.style.display = "block";
+}
+      
+          loginSpinner.style.display = "none";
+          loginBtn.disabled = false;
+        });
+      
+        verifyBtn.addEventListener("click", async function () {
+          verifySpinner.style.display = "inline-block";
+          verifyBtn.disabled = true;
+      
+          try {
+            const res = await fetch("/api/verify", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" }
+            });
+            const data = await res.json();
+      
+            if (res.ok && data.success) {
+              taskCard.style.display = "none";
+              doneCard.style.display = "block";
+              finishTask("task_completed");
+            } else {
+              alert(data.message || "Verification failed.");
+            }
+          } catch (e) {
+            alert("Network error. Please try again.");
+          }
+      
+          verifySpinner.style.display = "none";
+          verifyBtn.disabled = false;
+        });
+      
+        reportBtn.addEventListener("click", function () {
+          log(`User ${userId} reported ${siteName} as phishing at ${new Date().toISOString()}`);
+          finishTask("reported_phishing");
+          alert("Thank you for reporting! This is a simulated phishing site for tutorial purposes.");
+          location.reload();
+        });
+      })();
+      </script>
+  </body>
+</html>

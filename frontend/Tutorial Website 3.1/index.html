@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Safe Bank</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%);
+        min-height: 100vh;
+        color: #1e3a8a;
+        line-height: 1.6;
+      }
+
+      .tutorial-banner {
+        background: linear-gradient(135deg, #4810b9 0%, #4810b9 100%);
+        color: white;
+        text-align: center;
+        padding: 12px 24px;
+        font-weight: 600;
+        font-size: 16px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      }
+
+      header {
+        background: linear-gradient(135deg, #1e97af 0%, #1e97af 100%);
+        color: white;
+        padding: 16px 24px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: relative;
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 14px;
+      }
+
+      main {
+        max-width: 800px;
+        margin: 32px auto;
+        padding: 0 24px;
+      }
+
+      .breadcrumb {
+        color: #6b7280;
+        font-size: 14px;
+        margin-bottom: 24px;
+      }
+
+      .breadcrumb a {
+        color: #1e40af;
+        text-decoration: none;
+      }
+
+      .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        overflow: hidden;
+        margin-bottom: 24px;
+      }
+
+      .card-header {
+        background: linear-gradient(90deg, #1e97af 0%, #1e97af 100%);
+        color: white;
+        padding: 20px 24px;
+        border-bottom: 3px solid #3b82f6;
+      }
+
+      .card-header h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .card-body {
+        padding: 32px 24px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #1e3a8a;
+        font-size: 14px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #dbeafe;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: #f8fafc;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        background: white;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        min-width: 140px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #1e97af 0%, #1e97af 100%);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+      }
+
+      .alert {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-top: 16px;
+        font-size: 14px;
+      }
+
+      .alert-danger {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+      }
+
+      .alert-success {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #059669;
+      }
+
+      .alert-info {
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #1e40af;
+      }
+
+      .account-balance {
+        background: #f8fafc;
+        border: 2px solid #dbeafe;
+        border-radius: 8px;
+        padding: 24px;
+        margin: 24px 0;
+        text-align: center;
+      }
+
+      .balance-amount {
+        font-size: 36px;
+        font-weight: 700;
+        color: #059669;
+        margin-bottom: 8px;
+      }
+
+      .balance-label {
+        color: #6b7280;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .transaction-details {
+        background: #f8fafc;
+        border: 2px solid #dbeafe;
+        border-radius: 8px;
+        padding: 24px;
+        margin: 24px 0;
+      }
+
+      .transaction-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #dbeafe;
+      }
+
+      .transaction-row:last-child {
+        border-bottom: none;
+      }
+
+      .transaction-label {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .transaction-value {
+        color: #1e3a8a;
+        font-weight: 600;
+      }
+
+      .footer-info {
+        text-align: center;
+        color: #6b7280;
+        font-size: 12px;
+        margin-top: 32px;
+        padding: 16px;
+        border-top: 1px solid #dbeafe;
+      }
+
+      .loading-spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid transparent;
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 8px;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      @media (max-width: 768px) {
+        .header-content {
+          flex-direction: column;
+          gap: 12px;
+          text-align: center;
+        }
+
+        main {
+          margin: 16px auto;
+          padding: 0 16px;
+        }
+
+        .card-body {
+          padding: 24px 16px;
+        }
+      }
+      #reportBtn {
+        position: absolute;
+        top: 16px;
+        right: 24px;
+        background: linear-gradient(135deg, #ae2727 0%, #992222 100%);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 12px;
+        z-index: 1000;
+      }
+      #reportBtn:hover {
+        background: linear-gradient(135deg, #992222 0%, #841e1e 100%);
+        transform: translateY(-1px);
+      }
+    </style>
+  </head>
+  <body>
+    <div class="tutorial-banner">
+      PHASE 3 TUTORIAL WEBSITE #3.1 - This is a practice session. Please use the <b>MobyMail and MobyWeb extensions</b> to check if this site is phishing.
+    </div>
+
+    <header>
+      <div class="header-content">
+        <div class="logo">Safe Bank</div>
+        <div class="user-info">
+        <span id="userDisplay">Guest</span>
+        </div>
+      </div>
+      <button id="reportBtn">Report Phishing</button>
+    </header>
+
+    <main>
+      <div class="breadcrumb">
+        <a href="#">Dashboard</a> › <a href="#">My Account</a> › Account Management
+      </div>
+
+      <!-- LOGIN CARD -->
+      <div id="loginCard" class="card">
+        <div class="card-header">
+          <h2>Secure Login</h2>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-info">
+            <strong>Tutorial Instructions:</strong> This is a legitimate banking website. Use your username and password to proceed with the tutorial.
+          </div>
+
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" class="form-control" placeholder="Enter your username" />
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" class="form-control" placeholder="Enter your password" />
+          </div>
+
+          <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+            <span class="loading-spinner" id="loginSpinner"></span>
+            Login
+          </button>
+
+          <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+        </div>
+      </div>
+
+      <!-- TASK CARD -->
+      <div id="taskCard" class="card" style="display: none;">
+        <div class="card-header">
+          <h2>Account Dashboard</h2>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-success">
+            <strong>Login Successful</strong> - Welcome to your Bank account dashboard.
+          </div>
+
+          <div class="account-balance">
+            <div class="balance-amount">$737.94</div>
+            <div class="balance-label">Current Account Balance</div>
+          </div>
+
+          <p style="margin: 20px 0; font-size: 16px;">
+            You have requested to <strong>transfer $5,000</strong> to your savings account. Please review the details below and confirm the transaction.
+          </p>
+
+          <div class="transaction-details">
+            <div class="transaction-row">
+              <span class="transaction-label">From Account:</span>
+              <span class="transaction-value">Checking Account (****9344)</span>
+            </div>
+            <div class="transaction-row">
+              <span class="transaction-label">To Account:</span>
+              <span class="transaction-value">Savings Account (****5121)</span>
+            </div>
+            <div class="transaction-row">
+              <span class="transaction-label">Transfer Amount:</span>
+              <span class="transaction-value">$5,000.00</span>
+            </div>
+            <div class="transaction-row">
+              <span class="transaction-label">Transfer Date:</span>
+              <span class="transaction-value">Today (Immediate)</span>
+            </div>
+            <div class="transaction-row">
+              <span class="transaction-label">Transaction Fee:</span>
+              <span class="transaction-value">$10.00</span>
+            </div>
+          </div>
+
+          <div class="btn-wrapper">
+            <button id="confirmBtn" class="btn btn-success" style="width: 100%; font-size: 18px; padding: 16px;">
+              <span class="loading-spinner" id="confirmSpinner"></span>
+              Confirm Transfer
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUCCESS CARD -->
+      <div id="doneCard" class="card" style="display: none;">
+        <div class="card-header">
+          <h2>Transfer Complete</h2>
+        </div>
+        <div class="card-body" style="text-align: center;">
+          <h3 style="color: #059669; margin-bottom: 16px;">Transaction Successful</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #1e3a8a;">
+            Your transfer of <strong>$5,000.00</strong> has been successfully completed.
+          </p>
+          <div class="alert alert-success">
+            <strong>Transaction ID:</strong> LZ-TAS-1025472501<br />
+            <strong>Confirmation sent to:</strong> your registered email address
+          </div>
+          <div class="alert alert-info" style="margin-top: 16px;">
+            <strong>Tutorial Complete!</strong> This demonstrates how a legitimate banking website operates. Users should feel confident completing tasks on trusted sites.
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-info">
+        Tutorial Website<br>
+        This website is designed for the MobyPhish study tutorial
+      </div>
+    </main>
+    <script>
+    (() => {
+      const siteUrl = "www.safebank.com";
+      const siteName = "SafeBank";
+      const pageStart = Date.now();
+      const $ = (id) => document.getElementById(id);
+    
+      const loginCard = $("loginCard");
+      const taskCard = $("taskCard");
+      const doneCard = $("doneCard");
+    
+      let userId = localStorage.getItem("study_uid");
+      if (!userId) {
+        userId = Math.floor(Math.random() * 100000);
+        localStorage.setItem("study_uid", userId);
+      }
+    
+      const log = (msg) =>
+        fetch("http://localhost:5001/log", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: Number(userId), text: msg }),
+        }).catch(() => {});
+    
+      const markLogin = () =>
+        fetch("http://localhost:5001/login-event", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ user_id: Number(userId), site_url: siteUrl }),
+        }).catch(() => {});
+    
+      const finishTask = (type) =>
+        fetch("http://localhost:5001/complete-task", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            user_id: Number(userId),
+            site_url: siteUrl,
+            elapsed_ms: Date.now() - pageStart,
+            completion_type: type,
+          }),
+        }).catch(() => {});
+    
+$("loginBtn").onclick = async () => {
+  const username = $("acc").value.trim();
+  const password = $("pwd").value.trim();
+  const spinner = $("loginSpinner");
+  const btn = $("loginBtn");
+
+  spinner.style.display = "inline-block";
+  btn.disabled = true;
+
+  try {
+    // NEW LOGIN LOGIC: Check if username matches userXX format and password matches username
+    const userPattern = /^user(0[1-9]|[1-3][0-9]|40)$/; // Matches user01-user40
+    const isValidUser = userPattern.test(username);
+    const isValidPassword = password === username;
+
+    if (isValidUser && isValidPassword) {
+      // Store the entire username (e.g., "user05")
+      userId = username;
+      localStorage.setItem("study_uid", userId);
+      $("loginErr").style.display = "none";
+      loginCard.style.display = "none";
+      taskCard.style.display = "block";
+      $("userDisplay").textContent = username;
+      log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
+      markLogin();
+    } else {
+      $("loginErr").textContent = "Invalid credentials. Please use userXX format (user01-user40) with matching password.";
+      $("loginErr").style.display = "block";
+    }
+  } catch (err) {
+    $("loginErr").textContent = "Login failed. Please try again.";
+    $("loginErr").style.display = "block";
+  } finally {
+    spinner.style.display = "none";
+    btn.disabled = false;
+  }
+};
+    
+      $("confirmBtn").onclick = () => {
+        const spinner = $("confirmSpinner");
+        const btn = $("confirmBtn");
+    
+        spinner.style.display = "inline-block";
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing Transfer...';
+    
+        setTimeout(() => {
+          taskCard.style.display = "none";
+          doneCard.style.display = "block";
+          finishTask("task_completed");
+        }, 2000);
+      };
+    
+      $("reportBtn").onclick = () => {
+        log(`User ${userId} reported ${siteName} as phishing at ${new Date().toISOString()}`);
+        finishTask("reported_phishing");
+        alert("Thank you for reporting! This is a simulated phishing site for tutorial purposes.");
+        location.reload();
+      };
+    
+      document.addEventListener("keypress", (e) => {
+        if (e.key === "Enter" && loginCard.style.display !== "none") {
+          $("loginBtn").click();
+        }
+      });
+    })();
+    </script>
+  </body>
+</html>

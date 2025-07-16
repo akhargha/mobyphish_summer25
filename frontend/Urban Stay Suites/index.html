@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Urban Stay Suites</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(135deg, #e3f2fd 0%, #90caf9 100%);
+        min-height: 100vh;
+        color: #0d47a1;
+        line-height: 1.6;
+      }
+
+      header {
+        background: linear-gradient(135deg, #1565c0 0%, #1976d2 100%);
+        color: white;
+        padding: 16px 24px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: relative;
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 14px;
+      }
+
+      #reportBtn {
+        position: absolute;
+        top: 16px;
+        right: 24px;
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        cursor: pointer;
+        box-shadow: 0 2px 8px rgba(231, 76, 60, 0.3);
+        font-weight: 600;
+        font-size: 12px;
+        z-index: 1000;
+      }
+
+      #reportBtn:hover {
+        background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.4);
+      }
+
+      main {
+        max-width: 800px;
+        margin: 32px auto;
+        padding: 0 24px;
+      }
+
+      .breadcrumb {
+        color: #1976d2;
+        font-size: 14px;
+        margin-bottom: 24px;
+      }
+
+      .breadcrumb a {
+        color: #1565c0;
+        text-decoration: none;
+      }
+
+      .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        overflow: hidden;
+        margin-bottom: 24px;
+      }
+
+      .card-header {
+        background: linear-gradient(90deg, #1976d2 0%, #1565c0 100%);
+        color: white;
+        padding: 20px 24px;
+        border-bottom: 3px solid #42a5f5;
+      }
+
+      .card-header h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .card-body {
+        padding: 32px 24px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #0d47a1;
+        font-size: 14px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #bbdefb;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: #e3f2fd;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #1976d2;
+        box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
+        background: white;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        min-width: 140px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #ff7043 0%, #f4511e 100%);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background: linear-gradient(135deg, #f4511e 0%, #d84315 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(255, 112, 67, 0.3);
+      }
+
+      .alert {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-top: 16px;
+        font-size: 14px;
+      }
+
+      .alert-danger {
+        background: #fdf2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+      }
+
+      .alert-success {
+        background: #e3f2fd;
+        border: 1px solid #bbdefb;
+        color: #0d47a1;
+      }
+
+      .transaction-details {
+        background: #e3f2fd;
+        border: 2px solid #bbdefb;
+        border-radius: 8px;
+        padding: 24px;
+        margin: 24px 0;
+      }
+
+      .transaction-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #e3f2fd;
+      }
+
+      .transaction-row:last-child {
+        border-bottom: none;
+        font-weight: 600;
+        font-size: 18px;
+        color: #0d47a1;
+      }
+
+      .transaction-label {
+        color: #1976d2;
+        font-weight: 500;
+      }
+
+      .transaction-value {
+        color: #0d47a1;
+        font-weight: 600;
+      }
+
+      .amount-highlight {
+        color: #ff7043;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .footer-info {
+        text-align: center;
+        color: #1976d2;
+        font-size: 12px;
+        margin-top: 32px;
+        padding: 16px;
+        border-top: 1px solid #e3f2fd;
+      }
+
+      .loading-spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid transparent;
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 8px;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      @media (max-width: 768px) {
+        .header-content {
+          flex-direction: column;
+          gap: 12px;
+          text-align: center;
+        }
+
+        #reportBtn {
+          position: static;
+          margin-top: 12px;
+        }
+
+        main {
+          margin: 16px auto;
+          padding: 0 16px;
+        }
+
+        .card-body {
+          padding: 24px 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <div class="logo">Urban Stay Suites</div>
+        <div class="user-info">
+          <span id="userDisplay">User</span>
+        </div>
+      </div>
+      <button id="reportBtn">Report Phishing</button>
+    </header>
+
+    <main>
+      <div class="breadcrumb">
+        <a href="#">Dashboard</a> › <a href="#">Reservations</a> › Change Reservation
+      </div>
+
+      <!-- LOGIN CARD -->
+      <div id="loginCard" class="card">
+        <div class="card-header">
+          <h2>Login with Username and Password</h2>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="acc">Username</label>
+            <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
+          </div>
+
+          <div class="form-group">
+            <label for="pwd">Password</label>
+            <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
+          </div>
+
+          <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+            <span class="loading-spinner" id="loginSpinner"></span>
+            Login
+          </button>
+
+          <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+        </div>
+      </div>
+
+      <!-- TASK CARD -->
+      <div id="taskCard" class="card" style="display: none;">
+        <div class="card-header">
+          <h2>Reservation Change Request</h2>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-success">
+            <strong>Authentication Successful</strong> - You are now authorized to process reservation changes.
+          </div>
+
+          <p style="margin: 20px 0; font-size: 16px;">
+            A <strong>reservation change</strong> requires your approval before processing. Please review the change request details below and approve if accurate.
+          </p>
+
+          <div class="transaction-details">
+            <div class="transaction-row">
+              <span class="transaction-label">Change Type:</span>
+              <span class="transaction-value">Date Modification</span>
+            </div>
+            <div class="transaction-row">
+              <span class="transaction-label">Guest Name:</span>
+              <span class="transaction-value">Sarah Johnson</span>
+            </div>
+            <div class="transaction-row">
+              <span class="transaction-label">Current Dates:</span>
+              <span class="transaction-value">July 15-18, 2025</span>
+            </div>
+            <div class="transaction-row">
+              <span class="transaction-label">New Dates:</span>
+              <span class="transaction-value">July 22-25, 2025</span>
+            </div>
+            <div class="transaction-row">
+              <span class="transaction-label">Confirmation:</span>
+              <span class="transaction-value">USS-2025-0715-SJ</span>
+            </div>
+            <div class="transaction-row">
+              <span class="transaction-label">Change Fee:</span>
+              <span class="transaction-value amount-highlight">$85.00</span>
+            </div>
+          </div>
+
+          <div class="btn-wrapper">
+            <button id="approveBtn" class="btn btn-success" style="width: 100%; font-size: 18px; padding: 16px;">
+              <span class="loading-spinner" id="approveSpinner"></span>
+              Approve & Process Change
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUCCESS CARD -->
+      <div id="doneCard" class="card" style="display: none;">
+        <div class="card-header">
+          <h2>Reservation Change Approved</h2>
+        </div>
+        <div class="card-body" style="text-align: center;">
+          <h3 style="color: #ff7043; margin-bottom: 16px;">Change Processed Successfully</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #0d47a1;">
+            The reservation change with fee of <strong>$85.00</strong> has been successfully approved and processed.
+          </p>
+          <div class="alert alert-success">
+            <strong>Reference ID:</strong> USS-CHG-2025070247X<br />
+            <strong>Confirmation sent to:</strong> reservations@urban-stay.com
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-info">
+        This website is for designed for the MobyPhish study
+      </div>
+    </main>
+
+    <script>
+      (() => {
+        const siteUrl = "urban-stay.com";
+        const siteName = "Urban Stay Suites";
+        const pageStart = Date.now();
+        const $ = (id) => document.getElementById(id);
+
+        const loginCard = $("loginCard"),
+              taskCard = $("taskCard"),
+              doneCard = $("doneCard");
+
+        let userId = localStorage.getItem("study_uid");
+        if (!userId) {
+          userId = Math.floor(Math.random() * 100000);
+          localStorage.setItem("study_uid", userId);
+        }
+
+        const log = (msg) =>
+          fetch("http://localhost:5001/log", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: Number(userId), text: msg }),
+          }).catch(() => {});
+
+        const markLogin = () =>
+          fetch("http://localhost:5001/login-event", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: Number(userId), site_url: siteUrl }),
+          }).catch(() => {});
+
+        function finishTask(type) {
+          fetch("http://localhost:5001/complete-task", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: Number(userId),
+              site_url: siteUrl,
+              elapsed_ms: Date.now() - pageStart,
+              completion_type: type,
+            }),
+          }).catch(() => {});
+        }
+$("loginBtn").onclick = async () => {
+  const username = $("acc").value.trim();
+  const password = $("pwd").value.trim();
+  const spinner = $("loginSpinner");
+  const btn = $("loginBtn");
+
+  spinner.style.display = "inline-block";
+  btn.disabled = true;
+
+  try {
+    // NEW LOGIN LOGIC: Check if username matches userXX format and password matches username
+    const userPattern = /^user(0[1-9]|[1-3][0-9]|40)$/; // Matches user01-user40
+    const isValidUser = userPattern.test(username);
+    const isValidPassword = password === username;
+
+    if (isValidUser && isValidPassword) {
+      // Store the entire username (e.g., "user05")
+      userId = username;
+      localStorage.setItem("study_uid", userId);
+      $("loginErr").style.display = "none";
+      loginCard.style.display = "none";
+      taskCard.style.display = "block";
+      $("userDisplay").textContent = username;
+      log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
+      markLogin();
+    } else {
+      $("loginErr").textContent = "Invalid credentials. Please use userXX format (user01-user40) with matching password.";
+      $("loginErr").style.display = "block";
+    }
+  } catch (err) {
+    $("loginErr").textContent = "Login failed. Please try again.";
+    $("loginErr").style.display = "block";
+  } finally {
+    spinner.style.display = "none";
+    btn.disabled = false;
+  }
+};
+
+        $("approveBtn").onclick = () => {
+          const spinner = $("approveSpinner");
+          const btn = $("approveBtn");
+
+          spinner.style.display = "inline-block";
+          btn.disabled = true;
+          btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing Change...';
+
+          setTimeout(() => {
+            taskCard.style.display = "none";
+            doneCard.style.display = "block";
+            finishTask("task_completed");
+          }, 2000);
+        };
+
+        $("reportBtn").onclick = () => {
+          if (!confirm("Report this site as phishing?")) return;
+          log(`User ${userId} reported ${siteName} as phishing at ${new Date().toISOString()}`);
+          finishTask("reported_phishing");
+          alert("Thank you for reporting. Please return to your email for next steps.");
+          location.reload();
+        };
+
+        document.addEventListener("keypress", (e) => {
+          if (e.key === "Enter" && loginCard.style.display !== "none") {
+            $("loginBtn").click();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>

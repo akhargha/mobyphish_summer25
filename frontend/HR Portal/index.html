@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>HR Portal</title>
+    <style>
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
+      body {
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+        background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%);
+        min-height: 100vh;
+        color: #1e3a8a;
+        line-height: 1.6;
+      }
+
+      header {
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        color: white;
+        padding: 16px 24px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        position: relative;
+      }
+
+      .header-content {
+        max-width: 1200px;
+        margin: 0 auto;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+
+      .logo {
+        display: flex;
+        align-items: center;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 14px;
+      }
+
+      #reportBtn {
+        position: absolute;
+        top: 16px;
+        right: 24px;
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        border: none;
+        border-radius: 6px;
+        padding: 8px 16px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 12px;
+        z-index: 1000;
+      }
+
+      #reportBtn:hover {
+        background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+        transform: translateY(-1px);
+      }
+
+      main {
+        max-width: 800px;
+        margin: 32px auto;
+        padding: 0 24px;
+      }
+
+      .breadcrumb {
+        color: #6b7280;
+        font-size: 14px;
+        margin-bottom: 24px;
+      }
+
+      .breadcrumb a {
+        color: #2563eb;
+        text-decoration: none;
+      }
+
+      .card {
+        background: white;
+        border-radius: 12px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        overflow: hidden;
+        margin-bottom: 24px;
+      }
+
+      .card-header {
+        background: linear-gradient(90deg, #1d4ed8 0%, #1e40af 100%);
+        color: white;
+        padding: 20px 24px;
+        border-bottom: 3px solid #3b82f6;
+      }
+
+      .card-header h2 {
+        margin: 0;
+        font-size: 20px;
+        font-weight: 600;
+      }
+
+      .card-body {
+        padding: 32px 24px;
+      }
+
+      .form-group {
+        margin-bottom: 20px;
+      }
+
+      .form-group label {
+        display: block;
+        margin-bottom: 6px;
+        font-weight: 600;
+        color: #1e3a8a;
+        font-size: 14px;
+      }
+
+      .form-control {
+        width: 100%;
+        padding: 12px 16px;
+        border: 2px solid #dbeafe;
+        border-radius: 8px;
+        font-size: 16px;
+        transition: all 0.3s ease;
+        background: #f8fafc;
+      }
+
+      .form-control:focus {
+        outline: none;
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        background: white;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 12px 24px;
+        border: none;
+        border-radius: 8px;
+        font-size: 16px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-decoration: none;
+        min-width: 140px;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background: linear-gradient(135deg, #2563eb 0%, #1d4ed8 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+      }
+
+      .btn-success {
+        background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background: linear-gradient(135deg, #0284c7 0%, #0369a1 100%);
+        transform: translateY(-1px);
+        box-shadow: 0 4px 12px rgba(14, 165, 233, 0.3);
+      }
+
+      .alert {
+        padding: 12px 16px;
+        border-radius: 8px;
+        margin-top: 16px;
+        font-size: 14px;
+      }
+
+      .alert-danger {
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
+      }
+
+      .alert-success {
+        background: #f0f9ff;
+        border: 1px solid #bae6fd;
+        color: #0369a1;
+      }
+
+      .alert-warning {
+        background: #fffbeb;
+        border: 1px solid #fed7aa;
+        color: #d97706;
+      }
+
+      .info-section {
+        background: #f8fafc;
+        border: 2px solid #dbeafe;
+        border-radius: 8px;
+        padding: 24px;
+        margin: 24px 0;
+      }
+
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #dbeafe;
+      }
+
+      .info-row:last-child {
+        border-bottom: none;
+      }
+
+      .info-label {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .info-value {
+        color: #1e3a8a;
+        font-weight: 600;
+      }
+
+      .update-form {
+        background: #f8fafc;
+        border: 2px solid #dbeafe;
+        border-radius: 8px;
+        padding: 24px;
+        margin: 24px 0;
+      }
+
+      .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 16px;
+      }
+
+      .form-row-full {
+        display: grid;
+        grid-template-columns: 1fr;
+        margin-bottom: 16px;
+      }
+
+      .footer-info {
+        text-align: center;
+        color: #6b7280;
+        font-size: 12px;
+        margin-top: 32px;
+        padding: 16px;
+        border-top: 1px solid #dbeafe;
+      }
+
+      .loading-spinner {
+        display: none;
+        width: 20px;
+        height: 20px;
+        border: 2px solid transparent;
+        border-top: 2px solid white;
+        border-radius: 50%;
+        animation: spin 1s linear infinite;
+        margin-right: 8px;
+      }
+
+      @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+      }
+
+      @media (max-width: 768px) {
+        .header-content {
+          flex-direction: column;
+          gap: 12px;
+          text-align: center;
+        }
+
+        main {
+          margin: 16px auto;
+          padding: 0 16px;
+        }
+
+        .card-body {
+          padding: 24px 16px;
+        }
+
+        .form-row {
+          grid-template-columns: 1fr;
+        }
+
+        #reportBtn {
+          position: relative;
+          top: 8px;
+          right: 0;
+          margin-top: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-content">
+        <div class="logo">HR Portal</div>
+        <div class="user-info">
+          <span id="userDisplay">User</span>
+        </div>
+      </div>
+      <button id="reportBtn">Report Phishing</button>
+    </header>
+
+    <main>
+      <div class="breadcrumb">
+        <a href="#">Dashboard</a> › <a href="#">Employee Services</a> › Update Personal Information
+      </div>
+
+      <!-- LOGIN CARD -->
+      <div id="loginCard" class="card">
+        <div class="card-header">
+          <h2>Login with Username and Password</h2>
+        </div>
+        <div class="card-body">
+          <div class="form-group">
+            <label for="acc">Username</label>
+            <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
+          </div>
+
+          <div class="form-group">
+            <label for="pwd">Password</label>
+            <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
+          </div>
+
+          <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+            <span class="loading-spinner" id="loginSpinner"></span>
+            Login
+          </button>
+
+          <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+        </div>
+      </div>
+
+      <!-- TASK CARD -->
+      <div id="taskCard" class="card" style="display: none;">
+        <div class="card-header">
+          <h2>Update Personal Information</h2>
+        </div>
+        <div class="card-body">
+          <div class="alert alert-success">
+            <strong>Authentication Successful</strong> - You are now authorized to update your personal information records.
+          </div>
+
+          <p style="margin: 20px 0; font-size: 16px;">
+            Your <strong>personal information update</strong> can be accessed below. Please review your current information and provide updated details where necessary.
+          </p>
+
+          <div class="info-section">
+            <h3 style="margin-bottom: 16px; color: #1e3a8a;">Current Information on File</h3>
+            <div class="info-row">
+              <span class="info-label">Full Name:</span>
+              <span class="info-value">Michael Thompson</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Employee ID:</span>
+              <span class="info-value">EMP-7924</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Department:</span>
+              <span class="info-value">Information Technology</span>
+            </div>
+            <div class="info-row">
+              <span class="info-label">Last Updated:</span>
+              <span class="info-value">January 15, 2024</span>
+            </div>
+          </div>
+
+          <div class="alert alert-warning">
+            <strong>Important:</strong> Please ensure all information is accurate and up-to-date. Changes will be reflected in payroll, benefits, and company records.
+          </div>
+
+          <div class="update-form">
+            <h3 style="margin-bottom: 20px; color: #1e3a8a;">Update Your Information</h3>
+            
+            <div class="form-row">
+              <div class="form-group">
+                <label for="firstName">First Name</label>
+                <input id="firstName" class="form-control" placeholder="Enter first name" value="Michael" />
+              </div>
+              <div class="form-group">
+                <label for="lastName">Last Name</label>
+                <input id="lastName" class="form-control" placeholder="Enter last name" value="Thompson" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="personalEmail">Personal Email</label>
+                <input id="personalEmail" type="email" class="form-control" placeholder="Enter personal email" />
+              </div>
+              <div class="form-group">
+                <label for="phoneNumber">Phone Number</label>
+                <input id="phoneNumber" class="form-control" placeholder="Enter phone number" />
+              </div>
+            </div>
+
+            <div class="form-row-full">
+              <div class="form-group">
+                <label for="homeAddress">Home Address</label>
+                <input id="homeAddress" class="form-control" placeholder="Enter complete home address" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="emergencyContact">Emergency Contact Name</label>
+                <input id="emergencyContact" class="form-control" placeholder="Enter emergency contact name" />
+              </div>
+              <div class="form-group">
+                <label for="emergencyPhone">Emergency Contact Phone</label>
+                <input id="emergencyPhone" class="form-control" placeholder="Enter emergency contact phone" />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <div class="form-group">
+                <label for="bankAccount">Bank Account Number</label>
+                <input id="bankAccount" class="form-control" placeholder="Enter bank account number" />
+              </div>
+              <div class="form-group">
+                <label for="routingNumber">Bank Routing Number</label>
+                <input id="routingNumber" class="form-control" placeholder="Enter routing number" />
+              </div>
+            </div>
+
+            <div class="form-row-full">
+              <div class="form-group">
+                <label for="socialSecurity">Social Security Number</label>
+                <input id="socialSecurity" class="form-control" placeholder="Enter SSN (XXX-XX-XXXX)" />
+              </div>
+            </div>
+          </div>
+
+          <div class="btn-wrapper">
+            <button id="approveBtn" class="btn btn-success" style="width: 100%; font-size: 18px; padding: 16px;">
+              <span class="loading-spinner" id="approveSpinner"></span>
+              Update Personal Information
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUCCESS CARD -->
+      <div id="doneCard" class="card" style="display: none;">
+        <div class="card-header">
+          <h2>Information Updated Successfully</h2>
+        </div>
+        <div class="card-body" style="text-align: center;">
+          <h3 style="color: #0284c7; margin-bottom: 16px;">Personal Information Updated</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #1e3a8a;">
+            Your personal information update has been successfully submitted. All changes will be processed and reflected in your <strong>employee records</strong> within 24-48 hours.
+          </p>
+          <div class="alert alert-success">
+            <strong>Reference ID:</strong> PII-UPD-2025070349Z<br />
+            <strong>Confirmation sent to:</strong> your registered email address
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-info">
+        This website is for designed for the MobyPhish study
+      </div>
+    </main>
+
+    <script>
+      (() => {
+        const siteUrl = "hrportal.com";
+        const siteName = "HR Portal";
+        const pageStart = Date.now();
+        const $ = (id) => document.getElementById(id);
+
+        const loginCard = $("loginCard"),
+              taskCard = $("taskCard"),
+              doneCard = $("doneCard");
+
+        let userId = localStorage.getItem("study_uid");
+        if (!userId) {
+          userId = Math.floor(Math.random() * 100000);
+          localStorage.setItem("study_uid", userId);
+        }
+
+        const log = (msg) =>
+          fetch("http://localhost:5001/log", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: Number(userId), text: msg }),
+          }).catch(() => {});
+
+        const markLogin = () =>
+          fetch("http://localhost:5001/login-event", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: Number(userId), site_url: siteUrl }),
+          }).catch(() => {});
+
+        function finishTask(type) {
+          fetch("http://localhost:5001/complete-task", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              user_id: Number(userId),
+              site_url: siteUrl,
+              elapsed_ms: Date.now() - pageStart,
+              completion_type: type,
+            }),
+          }).catch(() => {});
+        }
+
+$("loginBtn").onclick = async () => {
+  const username = $("acc").value.trim();
+  const password = $("pwd").value.trim();
+  const spinner = $("loginSpinner");
+  const btn = $("loginBtn");
+
+  spinner.style.display = "inline-block";
+  btn.disabled = true;
+
+  try {
+    // NEW LOGIN LOGIC: Check if username matches userXX format and password matches username
+    const userPattern = /^user(0[1-9]|[1-3][0-9]|40)$/; // Matches user01-user40
+    const isValidUser = userPattern.test(username);
+    const isValidPassword = password === username;
+
+    if (isValidUser && isValidPassword) {
+      // Store the entire username (e.g., "user05")
+      userId = username;
+      localStorage.setItem("study_uid", userId);
+      $("loginErr").style.display = "none";
+      loginCard.style.display = "none";
+      taskCard.style.display = "block";
+      $("userDisplay").textContent = username;
+      log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
+      markLogin();
+    } else {
+      $("loginErr").textContent = "Invalid credentials. Please use userXX format (user01-user40) with matching password.";
+      $("loginErr").style.display = "block";
+    }
+  } catch (err) {
+    $("loginErr").textContent = "Login failed. Please try again.";
+    $("loginErr").style.display = "block";
+  } finally {
+    spinner.style.display = "none";
+    btn.disabled = false;
+  }
+};
+
+        $("approveBtn").onclick = () => {
+          const spinner = $("approveSpinner");
+          const btn = $("approveBtn");
+
+          spinner.style.display = "inline-block";
+          btn.disabled = true;
+          btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing Update...';
+
+          setTimeout(() => {
+            taskCard.style.display = "none";
+            doneCard.style.display = "block";
+            finishTask("task_completed");
+          }, 2000);
+        };
+
+        $("reportBtn").onclick = () => {
+          if (!confirm("Report this site as phishing?")) return;
+          log(`User ${userId} reported ${siteName} as phishing at ${new Date().toISOString()}`);
+          finishTask("reported_phishing");
+          alert("Thank you for reporting. Please return to your email for next steps.");
+          location.reload();
+        };
+
+        document.addEventListener("keypress", (e) => {
+          if (e.key === "Enter" && loginCard.style.display !== "none") {
+            $("loginBtn").click();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
