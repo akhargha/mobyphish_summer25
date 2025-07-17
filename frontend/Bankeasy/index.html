@@ -59,24 +59,6 @@
         gap: 16px;
         font-size: 14px;
       }
-      #reportBtn {
-        position: absolute;
-        top: 16px;
-        right: 24px;
-        background: linear-gradient(135deg, #b92e2e 0%, #7a1f1f 100%);
-        color: white;
-        border: none;
-        border-radius: 6px;
-        padding: 8px 16px;
-        cursor: pointer;
-        font-weight: 600;
-        font-size: 12px;
-        z-index: 1000;
-      }
-      #reportBtn:hover {
-        background: linear-gradient(135deg, #7a1f1f 0%, #b92e2e 100%);
-        transform: translateY(-1px);
-      }
       main {
         max-width: 800px;
         margin: 32px auto;
@@ -243,7 +225,7 @@
         .header-content { flex-direction: column; gap: 12px; text-align: center; }
         main { margin: 16px auto; padding: 0 16px; }
         .card-body { padding: 24px 16px; }
-        #reportBtn { position: relative; top: 8px; right: 0; margin-top: 8px; }
+        
       }
     </style>
   </head>
@@ -258,7 +240,7 @@
           <span id="userDisplay">Guest</span>
         </div>
       </div>
-      <button id="reportBtn">Report Phishing</button>
+      
     </header>
     <main>
       <div class="breadcrumb">
@@ -419,7 +401,7 @@
       const loginSpinner = document.getElementById('loginSpinner');
       const verifySpinner = document.getElementById('verifySpinner');
       const userDisplay = document.getElementById('userDisplay');
-      const reportBtn = document.getElementById('reportBtn');
+      
 
       loginBtn.addEventListener('click', async function() {
         loginErr.style.display = 'none';
@@ -479,8 +461,6 @@
         verifyBtn.disabled = false;
       });
 
-      reportBtn.addEventListener('click', function() {
-        alert('Thank you for reporting! This is a simulated phishing site for tutorial purposes.');
-      });
+      
     </script>
   </body>
