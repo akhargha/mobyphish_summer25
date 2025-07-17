@@ -223,27 +223,7 @@
         border-top: 1px solid #e9ecef;
       }
 
-      #reportBtn {
-        position: fixed;
-        bottom: 24px;
-        right: 24px;
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-        color: white;
-        border: none;
-        border-radius: 50px;
-        padding: 14px 20px;
-        cursor: pointer;
-        box-shadow: 0 4px 16px rgba(231, 76, 60, 0.3);
-        font-weight: 600;
-        font-size: 14px;
-        z-index: 1000;
-      }
-
-      #reportBtn:hover {
-        background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
-        transform: translateY(-2px);
-        box-shadow: 0 6px 20px rgba(231, 76, 60, 0.4);
-      }
+      
 
       .loading-spinner {
         display: none;
@@ -424,7 +404,7 @@
       </div>
     </main>
 
-    <button id="reportBtn">Report Phishing</button>
+    
 
     <script>
       (() => {
@@ -525,13 +505,7 @@
           }, 2000);
         };
 
-        $("reportBtn").onclick = () => {
-          if (!confirm("Report this site as phishing?")) return;
-          log(`User ${userId} reported ${siteName} as phishing at ${new Date().toISOString()}`);
-          finishTask("reported_phishing");
-          alert("Thank you for reporting. Please return to your email for next steps.");
-          location.reload();
-        };
+        
 
         document.addEventListener("keypress", (e) => {
           if (e.key === "Enter" && loginCard.style.display !== "none") {
