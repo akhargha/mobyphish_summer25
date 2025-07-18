@@ -3,24 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>LIBERTY RES0RT</title>
+    <title>Space Airwings</title>
     <style>
-      * {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
-
+      * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+        background: linear-gradient(135deg, #e3f0ff 0%, #c9e7ff 100%);
         min-height: 100vh;
-        color: #232f3e;
+        color: #15396a;
         line-height: 1.6;
       }
-
       .tutorial-banner {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        background: linear-gradient(135deg, #1059b9 0%, #053096 100%);
         color: white;
         text-align: center;
         padding: 12px 24px;
@@ -28,25 +22,23 @@
         font-size: 16px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       }
-
-      .url-warning {
-        background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+      .security-notice {
+        background: linear-gradient(135deg, #b92e2e 0%, #7a1f1f 100%);
         color: white;
+        padding: 20px;
+        border-radius: 8px;
+        margin: 20px 0;
         text-align: center;
-        padding: 8px 24px;
         font-weight: 600;
-        font-size: 14px;
-        border-bottom: 2px solid #d35400;
+        border: 3px solid #7a1f1f;
       }
-
       header {
-        background: linear-gradient(135deg, #232f3e 0%, #131921 100%);
+        background: linear-gradient(135deg, #15396a 0%, #1059b9 100%);
         color: white;
         padding: 16px 24px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         position: relative;
       }
-
       .header-content {
         max-width: 1200px;
         margin: 0 auto;
@@ -54,95 +46,81 @@
         justify-content: space-between;
         align-items: center;
       }
-
       .logo {
         display: flex;
         align-items: center;
         font-size: 24px;
         font-weight: 700;
-        color: #ff9900;
+        color: #ffffff;
       }
-
       .user-info {
         display: flex;
         align-items: center;
         gap: 16px;
         font-size: 14px;
       }
-
-
+      
       main {
         max-width: 800px;
         margin: 32px auto;
         padding: 0 24px;
       }
-
       .breadcrumb {
         color: #6b7280;
         font-size: 14px;
         margin-bottom: 24px;
       }
-
       .breadcrumb a {
-        color: #ff9900;
+        color: #1059b9;
         text-decoration: none;
       }
-
       .card {
         background: white;
         border-radius: 12px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         overflow: hidden;
         margin-bottom: 24px;
-        border: 2px solid #ff9900;
+        border: 2px solid #1059b9;
       }
-
       .card-header {
-        background: linear-gradient(90deg, #ff9900 0%, #ff6b00 100%);
+        background: linear-gradient(90deg, #1059b9 0%, #15396a 100%);
         color: white;
         padding: 20px 24px;
-        border-bottom: 3px solid #ff9900;
+        border-bottom: 3px solid #1059b9;
       }
-
       .card-header h2 {
         margin: 0;
         font-size: 20px;
         font-weight: 600;
       }
-
       .card-body {
         padding: 32px 24px;
       }
-
       .form-group {
         margin-bottom: 20px;
       }
-
       .form-group label {
         display: block;
         margin-bottom: 6px;
         font-weight: 600;
-        color: #232f3e;
+        color: #15396a;
         font-size: 14px;
       }
-
       .form-control {
         width: 100%;
         padding: 12px 16px;
-        border: 2px solid #ffeaa7;
+        border: 2px solid #c9e7ff;
         border-radius: 8px;
         font-size: 16px;
         transition: all 0.3s ease;
-        background: #fffef7;
+        background: #f8fcff;
       }
-
       .form-control:focus {
         outline: none;
-        border-color: #ff9900;
-        box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.1);
+        border-color: #1059b9;
+        box-shadow: 0 0 0 3px rgba(16, 89, 185, 0.1);
         background: white;
       }
-
       .btn {
         display: inline-flex;
         align-items: center;
@@ -157,110 +135,79 @@
         text-decoration: none;
         min-width: 140px;
       }
-
       .btn-primary {
-        background: linear-gradient(135deg, #ff9900 0%, #ff6b00 100%);
+        background: linear-gradient(135deg, #1059b9 0%, #15396a 100%);
         color: white;
       }
-
       .btn-primary:hover {
-        background: linear-gradient(135deg, #ff6b00 0%, #e65100 100%);
+        background: linear-gradient(135deg, #15396a 0%, #1059b9 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
+        box-shadow: 0 4px 12px rgba(16, 89, 185, 0.3);
       }
-
-      .btn-danger {
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      .btn-warning {
+        background: linear-gradient(135deg, #7a1f1f 0%, #b92e2e 100%);
         color: white;
       }
-
-      .btn-danger:hover {
-        background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+      .btn-warning:hover {
+        background: linear-gradient(135deg, #b92e2e 0%, #7a1f1f 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        box-shadow: 0 4px 12px rgba(185, 46, 46, 0.3);
       }
-
       .alert {
         padding: 12px 16px;
         border-radius: 8px;
         margin-top: 16px;
         font-size: 14px;
       }
-
       .alert-danger {
         background: #ffebee;
         border: 1px solid #ffcdd2;
-        color: #c62828;
+        color: #b92e2e;
       }
-
       .alert-warning {
-        background: #fff8e1;
-        border: 1px solid #ffecb3;
-        color: #f57c00;
+        background: #e3f0ff;
+        border: 1px solid #b3d8fd;
+        color: #1059b9;
       }
-
       .alert-info {
         background: #e3f2fd;
         border: 1px solid #bbdefb;
         color: #1565c0;
       }
-
-      .urgent-notice {
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 8px;
-        margin: 20px 0;
-        text-align: center;
-        font-weight: 600;
-        animation: pulse 2s infinite;
-      }
-
-      @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.02); }
-        100% { transform: scale(1); }
-      }
-
-      .account-details {
-        background: #fff8e1;
-        border: 2px solid #ffcc02;
+      .limitation-details {
+        background: #e3f0ff;
+        border: 2px solid #b3d8fd;
         border-radius: 8px;
         padding: 24px;
         margin: 24px 0;
       }
-
-      .detail-row {
+      .limitation-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
         padding: 8px 0;
-        border-bottom: 1px solid #ffecb3;
+        border-bottom: 1px solid #b3d8fd;
       }
-
-      .detail-row:last-child {
-        border-bottom: none;
+      .limitation-row:last-child { border-bottom: none; }
+      .limitation-label { color: #15396a; font-weight: 500; }
+      .limitation-value { color: #b92e2e; font-weight: 600; }
+      .certificate-info {
+        background: #ffebee;
+        border: 2px solid #b92e2e;
+        border-radius: 8px;
+        padding: 16px;
+        margin: 16px 0;
+        font-size: 12px;
+        color: #b92e2e;
       }
-
-      .detail-label {
-        color: #8d6e63;
-        font-weight: 500;
-      }
-
-      .detail-value {
-        color: #d84315;
-        font-weight: 600;
-      }
-
       .footer-info {
         text-align: center;
         color: #6b7280;
         font-size: 12px;
         margin-top: 32px;
         padding: 16px;
-        border-top: 1px solid #ffecb3;
+        border-top: 1px solid #e6f3ff;
       }
-
       .loading-spinner {
         display: none;
         width: 20px;
@@ -271,285 +218,250 @@
         animation: spin 1s linear infinite;
         margin-right: 8px;
       }
-
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
-
       @media (max-width: 768px) {
-        .header-content {
-          flex-direction: column;
-          gap: 12px;
-          text-align: center;
-        }
-
-        main {
-          margin: 16px auto;
-          padding: 0 16px;
-        }
-
-        .card-body {
-          padding: 24px 16px;
-        }
-
+        .header-content { flex-direction: column; gap: 12px; text-align: center; }
+        main { margin: 16px auto; padding: 0 16px; }
+        .card-body { padding: 24px 16px; }
         
       }
     </style>
   </head>
   <body>
     <div class="tutorial-banner">
-        PHASE 1 TUTORIAL WEBSITE #1.2 - This is a practice session. The actual study has not started yet.
+      PHASE 2 TUTORIAL WEBSITE #2.3 - Certificate Phishing Example. Please use the <b>MobyPhish extension</b> to check if this site is phishing.
     </div>
-
     <header>
       <div class="header-content">
-        <div class="logo">LIBERTY RES0RT</div>
+        <div class="logo">Space Airwings</div>
         <div class="user-info">
           <span id="userDisplay">Guest</span>
         </div>
       </div>
       
     </header>
-
     <main>
       <div class="breadcrumb">
-        <a href="#">Home</a> › <a href="#">Your Account</a> › Reservation Verification
+        <a href="#">Home</a> › <a href="#">My Bookings</a> › Security Center
       </div>
-
       <!-- LOGIN CARD -->
-      <!-- <div id="loginCard" class="card">
+      <div id="loginCard" class="card">
         <div class="card-header">
-          <h2>URGENT: Reservation Verification Required</h2>
+          <h2>Account Security Check Required</h2>
         </div>
         <div class="card-body">
-          <div class="urgent-notice">
-            Your reservation is not complete due to suspicious activity!
-            Make your final payment immediately to reserve your spot.
+          <div class="security-notice">
+            WARNING: This site simulates a certificate-based phishing attack targeting airline customers.
           </div>
-
           <div class="alert alert-info">
-            <strong>Tutorial Instructions:</strong> This is a phishing website mimicking Liberty Resort. Notice the suspicious URL, urgent language, and threats. Use the Report Phishing button to report this site.
+            <strong>Instructions:</strong> Use the <b>MobyPhish browser extension</b> to check if this website is phishing.<br>
+            <br>
+            <strong>Look for:</strong>
+            <ul>
+              <li>Invalid or expired SSL certificate warnings</li>
+              <li>"Not Secure" indicators in your browser</li>
+              <li>Certificate issued to the wrong domain</li>
+            </ul>
           </div>
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="username">Username</label>
             <input id="username" type="username" class="form-control" placeholder="Enter your username" />
           </div>
-
           <div class="form-group">
             <label for="password">Password</label>
             <input id="password" type="password" class="form-control" placeholder="Enter your password" />
           </div>
-
           <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
             <span class="loading-spinner" id="loginSpinner"></span>
-          Login
+            Login
           </button>
-
           <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
         </div>
       </div> -->
 
+       <form id="loginForm" method="POST" action="/verify-login">
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input id="username" type="username" class="form-control" placeholder="Enter your username" />
+                </div>
 
-      <!-- LOGIN CARD -->
-      <div id="loginCard" class="card">
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input id="password" type="password" class="form-control" placeholder="Enter your password" />
+                </div>
 
-        <div class="card-header">
-          <h2>Login with Username and Password</h2>
-        </div>
-
-          <div class="card-body">
-            <form id="loginForm" method="POST" action="/verify-login">
-
-              <div class="form-group">
-                <label for="acc">Username</label>
-                <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
-              </div>
-
-              <div class="form-group">
-                <label for="pwd">Password</label>
-                <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
-              </div>
-
-              <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
-                <span class="loading-spinner" id="loginSpinner"></span>
+                <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                  <span class="loading-spinner" id="loginSpinner"></span>
                 Login
-              </button>
+                </button>
 
-              <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
-
-            </form>
-          </div>
+                <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+          </form>
+        </div>
       </div>
+
+
+
 
       <!-- TASK CARD -->
       <div id="taskCard" class="card" style="display: none;">
         <div class="card-header">
-          <h2>Complete Verification Process</h2>
+          <h2>Resolve Booking Limitation</h2>
         </div>
         <div class="card-body">
           <div class="alert alert-warning">
-            <strong>Final Step Required:</strong> Your reservation verification is 90% complete. Confirm your payment to complete reservation.
+            <strong>Booking Status:</strong> LIMITED - Immediate verification required to restore access
           </div>
-
-          <div class="urgent-notice">
-            Time Remaining: 14:32 minutes before permanent suspension!
+          <div class="security-notice">
+            Your account will be permanently closed in 48 hours if not verified!
           </div>
-
           <p style="margin: 20px 0; font-size: 16px;">
-            We detected an unauthorized purchase attempt on your account. To protect your account, please verify your payment information below.
+            We've detected unusual activity on your Space Airwings account. To restore full access, please confirm your identity by providing additional verification.
           </p>
-
-          <div class="account-details">
-            <div class="detail-row">
-              <span class="detail-label">Suspicious Transaction:</span>
-              <span class="detail-value">$2,847.99 - Electronic Device</span>
+          <div class="limitation-details">
+            <div class="limitation-row">
+              <span class="limitation-label">Booking Status:</span>
+              <span class="limitation-value">LIMITED ACCESS</span>
             </div>
-            <div class="detail-row">
-              <span class="detail-label">Location:</span>
-              <span class="detail-value">Unknown - Russia</span>
+            <div class="limitation-row">
+              <span class="limitation-label">Issue Date:</span>
+              <span class="limitation-value">July 2, 2025</span>
             </div>
-            <div class="detail-row">
-              <span class="detail-label">Time:</span>
-              <span class="detail-value">Today at 3:42 AM</span>
+            <div class="limitation-row">
+              <span class="limitation-label">Reason:</span>
+              <span class="limitation-value">Suspicious login attempts detected</span>
             </div>
-            <div class="detail-row">
-              <span class="detail-label">Status:</span>
-              <span class="detail-value">BLOCKED - Verification Required</span>
+            <div class="limitation-row">
+              <span class="limitation-label">Affected Services:</span>
+              <span class="limitation-value">Book Flights, Manage Bookings, Access Rewards</span>
+            </div>
+            <div class="limitation-row">
+              <span class="limitation-label">Resolution Required:</span>
+              <span class="limitation-value">Identity Verification</span>
             </div>
           </div>
-
+          <div class="certificate-info">
+            <strong>Security Notice:</strong> The invalid certificate on this site means your data transmission is not encrypted. Space Airwings always uses valid, secure certificates.
+          </div>
           <div class="alert alert-danger">
-            <strong>Action Required:</strong> Verify your payment method within 15 minutes or your account will be permanently suspended and all pending orders cancelled.
+            <strong>Time Sensitive:</strong> Verify your identity within 48 hours to prevent permanent account closure and loss of bookings.
           </div>
-
           <div class="btn-wrapper">
-            <button id="verifyBtn" class="btn btn-danger" style="width: 100%; font-size: 18px; padding: 16px;">
+            <button id="verifyBtn" class="btn btn-warning" style="width: 100%; font-size: 18px; padding: 16px;">
               <span class="loading-spinner" id="verifySpinner"></span>
-              Verify Payment Method - URGENT
+              Complete Identity Verification
             </button>
           </div>
         </div>
       </div>
-
       <!-- SUCCESS CARD -->
       <div id="doneCard" class="card" style="display: none;">
         <div class="card-header">
-          <h2>Tutorial Complete - Phishing Detected</h2>
+          <h2>Tutorial Complete - Certificate Phishing Detected</h2>
         </div>
         <div class="card-body" style="text-align: center;">
-          <h3 style="color: #e74c3c; margin-bottom: 16px;">This Was a Phishing Attempt!</h3>
-          <p style="font-size: 16px; margin-bottom: 24px; color: #232f3e;">
-            This website demonstrated common phishing tactics including suspicious URLs, urgent language, and threats of account closure.
+          <h3 style="color: #b92e2e; margin-bottom: 16px;">This Was Certificate-Based Phishing</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #15396a;">
+            This website demonstrated certificate-based phishing tactics targeting airline customers, including invalid SSL certificates and security warnings.
           </p>
           <div class="alert alert-info">
-            <strong>Red Flags You Should Have Noticed:</strong><br>
-            • Suspicious URL: "liberty res0rt" instead of "liberty resort"<br>
-            • Urgent threats and countdown timers<br>
-            • Requests for sensitive information<br>
-            • Poor grammar and unprofessional language<br>
-            • Suspicious transaction claims
+            <strong>Certificate Warning Signs:</strong><br>
+            • Invalid/expired SSL certificate warnings<br>
+            • "Not Secure" indicators in browser<br>
+            • Certificate issued to wrong domain<br>
+            • Security warnings from browser<br>
+            • Urgent threats and time pressure<br>
+            • Requests for sensitive verification
           </div>
           <div class="alert alert-warning" style="margin-top: 16px;">
-            <strong>Tutorial Complete!</strong> In real life, you should report such sites immediately and never provide personal information.
+            <strong>Tutorial Complete!</strong> Always check for valid SSL certificates and security indicators. Never proceed on sites with certificate warnings.
           </div>
         </div>
       </div>
-
       <div class="footer-info">
-        Tutorial Website - URL Phishing Example<br>
+        Tutorial Website - Certificate Phishing Example<br>
         This website is designed for the MobyPhish study tutorial
       </div>
     </main>
-
     <script>
-      (() => {
-        const $ = (id) => document.getElementById(id);
-        const loginCard = $("loginCard");
-        const taskCard = $("taskCard");
-        const doneCard = $("doneCard");
+      // Replace with your backend API endpoints
+      const LOGIN_API = '/api/login';
+      const VERIFY_API = '/api/verify';
 
-        $("loginBtn").onclick = async () => {
-            const username = $("username").value.trim();
-            const password = $("password").value.trim();
-            const spinner = $("loginSpinner");
-            const btn = $("loginBtn");
+      const loginBtn = document.getElementById('loginBtn');
+      const verifyBtn = document.getElementById('verifyBtn');
+      const loginCard = document.getElementById('loginCard');
+      const taskCard = document.getElementById('taskCard');
+      const doneCard = document.getElementById('doneCard');
+      const loginErr = document.getElementById('loginErr');
+      const loginSpinner = document.getElementById('loginSpinner');
+      const verifySpinner = document.getElementById('verifySpinner');
+      const userDisplay = document.getElementById('userDisplay');
+      
 
-            if (!username || !password) {
-                $("loginErr").textContent = "Please enter both username and password.";
-                $("loginErr").style.display = "block";
-                return;
-            }
-
-            spinner.style.display = "inline-block";
-            btn.disabled = true;
-
-            try {
-                const res = await fetch("/verify-login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: username, password })
-                });
-                const result = await res.json();
-
-                if (res.ok && result.user_id) {
-                loginCard.style.display = "none";
-                taskCard.style.display = "block";
-                $("userDisplay").textContent = username.split('@')[0];
-                $("loginErr").style.display = "none";
-                localStorage.setItem("study_uid", result.user_id);
-                } else {
-                $("loginErr").textContent = result.error || "Invalid credentials.";
-                $("loginErr").style.display = "block";
-                }
-            } catch (err) {
-                $("loginErr").textContent = "Login failed. Please try again.";
-                $("loginErr").style.display = "block";
-            } finally {
-                spinner.style.display = "none";
-                btn.disabled = false;
-            }
-        };
-
-        $("verifyBtn").onclick = () => {
-          const spinner = $("verifySpinner");
-          const btn = $("verifyBtn");
-
-          spinner.style.display = "inline-block";
-          btn.disabled = true;
-          btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing...';
-
-          setTimeout(() => {
-            taskCard.style.display = "none";
-            doneCard.style.display = "block";
-          }, 2000);
-        };
-
-        
-
-        document.addEventListener("keypress", (e) => {
-          if (e.key === "Enter" && loginCard.style.display !== "none") {
-            $("loginBtn").click();
+      loginBtn.addEventListener('click', async function() {
+        loginErr.style.display = 'none';
+        loginSpinner.style.display = 'inline-block';
+        loginBtn.disabled = true;
+        const username = document.getElementById('username').value.trim();
+        const password = document.getElementById('password').value.trim();
+        if (!username || !password) {
+          loginErr.textContent = 'Please enter both username and password.';
+          loginErr.style.display = 'block';
+          loginSpinner.style.display = 'none';
+          loginBtn.disabled = false;
+          return;
+        }
+        try {
+          const res = await fetch(LOGIN_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ username, password })
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            userDisplay.textContent = username;
+            loginCard.style.display = 'none';
+            taskCard.style.display = 'block';
+          } else {
+            loginErr.textContent = data.message || 'Login failed. Please try again.';
+            loginErr.style.display = 'block';
           }
-        });
+        } catch (e) {
+          loginErr.textContent = 'Please try again.';
+          loginErr.style.display = 'block';
+        }
+        loginSpinner.style.display = 'none';
+        loginBtn.disabled = false;
+      });
 
-        // Countdown timer simulation
-        let timeLeft = 872; // 14:32 in seconds
-        const countdown = setInterval(() => {
-          if (timeLeft <= 0) {
-            clearInterval(countdown);
-            return;
+      verifyBtn.addEventListener('click', async function() {
+        verifySpinner.style.display = 'inline-block';
+        verifyBtn.disabled = true;
+        try {
+          const res = await fetch(VERIFY_API, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' }
+          });
+          const data = await res.json();
+          if (res.ok && data.success) {
+            taskCard.style.display = 'none';
+            doneCard.style.display = 'block';
+          } else {
+            alert(data.message || 'Verification failed.');
           }
-          timeLeft--;
-          const minutes = Math.floor(timeLeft / 60);
-          const seconds = timeLeft % 60;
-          const urgentNotice = document.querySelector('.urgent-notice');
-          if (urgentNotice && urgentNotice.textContent.includes('Time Remaining')) {
-            urgentNotice.textContent = `Time Remaining: ${minutes}:${seconds.toString().padStart(2, '0')} minutes before permanent suspension!`;
-          }
-        }, 1000);
-      })();
+        } catch (e) {
+          alert('Network error. Please try again.');
+        }
+        verifySpinner.style.display = 'none';
+        verifyBtn.disabled = false;
+      });
+
+      
     </script>
   </body>
 </html>
