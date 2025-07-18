@@ -3,18 +3,24 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Horizon Airways</title>
+    <title>Bank Easy</title>
     <style>
-      * { box-sizing: border-box; margin: 0; padding: 0; }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        background: linear-gradient(135deg, #e3f0ff 0%, #c9e7ff 100%);
+        background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%);
         min-height: 100vh;
-        color: #15396a;
+        color: #1e3a8a;
         line-height: 1.6;
       }
+
       .tutorial-banner {
-        background: linear-gradient(135deg, #4810b9 0%, #4810b9 100%);
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
         text-align: center;
         padding: 12px 24px;
@@ -22,23 +28,15 @@
         font-size: 16px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       }
-      .security-notice {
-        background: linear-gradient(135deg, #b92e2e 0%, #7a1f1f 100%);
-        color: white;
-        padding: 20px;
-        border-radius: 8px;
-        margin: 20px 0;
-        text-align: center;
-        font-weight: 600;
-        border: 3px solid #7a1f1f;
-      }
+
       header {
-        background: linear-gradient(135deg, #15396a 0%, #1059b9 100%);
+        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
         color: white;
         padding: 16px 24px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         position: relative;
       }
+
       .header-content {
         max-width: 1200px;
         margin: 0 auto;
@@ -46,80 +44,92 @@
         justify-content: space-between;
         align-items: center;
       }
+
       .logo {
         display: flex;
         align-items: center;
         font-size: 24px;
         font-weight: 700;
-        color: #ffffff;
       }
+
       .user-info {
         display: flex;
         align-items: center;
         gap: 16px;
         font-size: 14px;
       }
+
       main {
         max-width: 800px;
         margin: 32px auto;
         padding: 0 24px;
       }
+
       .breadcrumb {
         color: #6b7280;
         font-size: 14px;
         margin-bottom: 24px;
       }
+
       .breadcrumb a {
-        color: #1059b9;
+        color: #1e40af;
         text-decoration: none;
       }
+
       .card {
         background: white;
         border-radius: 12px;
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         overflow: hidden;
         margin-bottom: 24px;
-        border: 2px solid #1059b9;
       }
+
       .card-header {
-        background: linear-gradient(90deg, #1059b9 0%, #15396a 100%);
+        background: linear-gradient(90deg, #1e3a8a 0%, #1e40af 100%);
         color: white;
         padding: 20px 24px;
-        border-bottom: 3px solid #1059b9;
+        border-bottom: 3px solid #3b82f6;
       }
+
       .card-header h2 {
         margin: 0;
         font-size: 20px;
         font-weight: 600;
       }
+
       .card-body {
         padding: 32px 24px;
       }
+
       .form-group {
         margin-bottom: 20px;
       }
+
       .form-group label {
         display: block;
         margin-bottom: 6px;
         font-weight: 600;
-        color: #15396a;
+        color: #1e3a8a;
         font-size: 14px;
       }
+
       .form-control {
         width: 100%;
         padding: 12px 16px;
-        border: 2px solid #c9e7ff;
+        border: 2px solid #dbeafe;
         border-radius: 8px;
         font-size: 16px;
         transition: all 0.3s ease;
-        background: #f8fcff;
+        background: #f8fafc;
       }
+
       .form-control:focus {
         outline: none;
-        border-color: #1059b9;
-        box-shadow: 0 0 0 3px rgba(16, 89, 185, 0.1);
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         background: white;
       }
+
       .btn {
         display: inline-flex;
         align-items: center;
@@ -134,79 +144,115 @@
         text-decoration: none;
         min-width: 140px;
       }
+
       .btn-primary {
-        background: linear-gradient(135deg, #1059b9 0%, #15396a 100%);
+        background: linear-gradient(135deg, #1e40af 0%, #1e3a8a 100%);
         color: white;
       }
+
       .btn-primary:hover {
-        background: linear-gradient(135deg, #15396a 0%, #1059b9 100%);
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(16, 89, 185, 0.3);
+        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
       }
-      .btn-warning {
-        background: linear-gradient(135deg, #7a1f1f 0%, #b92e2e 100%);
+
+      .btn-success {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
         color: white;
       }
-      .btn-warning:hover {
-        background: linear-gradient(135deg, #b92e2e 0%, #7a1f1f 100%);
+
+      .btn-success:hover {
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(185, 46, 46, 0.3);
+        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
       }
+
       .alert {
         padding: 12px 16px;
         border-radius: 8px;
         margin-top: 16px;
         font-size: 14px;
       }
+
       .alert-danger {
-        background: #ffebee;
-        border: 1px solid #ffcdd2;
-        color: #b92e2e;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
       }
-      .alert-warning {
-        background: #e3f0ff;
-        border: 1px solid #b3d8fd;
-        color: #1059b9;
+
+      .alert-success {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #059669;
       }
+
       .alert-info {
-        background: #e3f2fd;
-        border: 1px solid #bbdefb;
-        color: #1565c0;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #1e40af;
       }
-      .limitation-details {
-        background: #e3f0ff;
-        border: 2px solid #b3d8fd;
+
+      .account-balance {
+        background: #f8fafc;
+        border: 2px solid #dbeafe;
+        border-radius: 8px;
+        padding: 24px;
+        margin: 24px 0;
+        text-align: center;
+      }
+
+      .balance-amount {
+        font-size: 36px;
+        font-weight: 700;
+        color: #059669;
+        margin-bottom: 8px;
+      }
+
+      .balance-label {
+        color: #6b7280;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .transaction-details {
+        background: #f8fafc;
+        border: 2px solid #dbeafe;
         border-radius: 8px;
         padding: 24px;
         margin: 24px 0;
       }
-      .limitation-row {
+
+      .transaction-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 8px 0;
-        border-bottom: 1px solid #b3d8fd;
+        padding: 12px 0;
+        border-bottom: 1px solid #dbeafe;
       }
-      .limitation-row:last-child { border-bottom: none; }
-      .limitation-label { color: #15396a; font-weight: 500; }
-      .limitation-value { color: #b92e2e; font-weight: 600; }
-      .certificate-info {
-        background: #ffebee;
-        border: 2px solid #b92e2e;
-        border-radius: 8px;
-        padding: 16px;
-        margin: 16px 0;
-        font-size: 12px;
-        color: #b92e2e;
+
+      .transaction-row:last-child {
+        border-bottom: none;
       }
+
+      .transaction-label {
+        color: #6b7280;
+        font-weight: 500;
+      }
+
+      .transaction-value {
+        color: #1e3a8a;
+        font-weight: 600;
+      }
+
       .footer-info {
         text-align: center;
         color: #6b7280;
         font-size: 12px;
         margin-top: 32px;
         padding: 16px;
-        border-top: 1px solid #e6f3ff;
+        border-top: 1px solid #dbeafe;
       }
+
       .loading-spinner {
         display: none;
         width: 20px;
@@ -217,250 +263,259 @@
         animation: spin 1s linear infinite;
         margin-right: 8px;
       }
+
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
+
       @media (max-width: 768px) {
-        .header-content { flex-direction: column; gap: 12px; text-align: center; }
-        main { margin: 16px auto; padding: 0 16px; }
-        .card-body { padding: 24px 16px; }
-        
+        .header-content {
+          flex-direction: column;
+          gap: 12px;
+          text-align: center;
+        }
+
+        main {
+          margin: 16px auto;
+          padding: 0 16px;
+        }
+
+        .card-body {
+          padding: 24px 16px;
+        }
       }
+      
     </style>
   </head>
   <body>
     <div class="tutorial-banner">
-      PHASE 2 TUTORIAL WEBSITE #2.3 - Certificate Phishing Example. Please use the <b>MobyPhish extension</b> to check if this site is phishing.
+      PHASE 1 TUTORIAL WEBSITE #1.1 - This is a practice session. The actual study has not started yet.
     </div>
+
     <header>
       <div class="header-content">
-        <div class="logo">Horizon Airways</div>
+        <div class="logo">Bank Easy</div>
         <div class="user-info">
-          <span id="userDisplay">Guest</span>
+        <span id="userDisplay">Guest</span>
         </div>
       </div>
       
     </header>
+
     <main>
       <div class="breadcrumb">
-        <a href="#">Home</a> › <a href="#">My Bookings</a> › Security Center
+        <a href="#">Dashboard</a> › <a href="#">My Account</a> › Account Management
       </div>
+
       <!-- LOGIN CARD -->
-      <div id="loginCard" class="card">
+      <!-- <div id="loginCard" class="card">
         <div class="card-header">
-          <h2>Account Security Check Required</h2>
+          <h2>Secure Login</h2>
         </div>
         <div class="card-body">
-          <div class="security-notice">
-            WARNING: This site simulates a certificate-based phishing attack targeting airline customers.
-          </div>
           <div class="alert alert-info">
-            <strong>Instructions:</strong> Use the <b>MobyPhish browser extension</b> to check if this website is phishing.<br>
-            <br>
-            <strong>Look for:</strong>
-            <ul>
-              <li>Invalid or expired SSL certificate warnings</li>
-              <li>"Not Secure" indicators in your browser</li>
-              <li>Certificate issued to the wrong domain</li>
-            </ul>
+            <strong>Tutorial Instructions:</strong> This is a legitimate banking website. Use your username and password to proceed with the tutorial.
           </div>
 
-
-
-          <!-- <div class="form-group">
+          <div class="form-group">
             <label for="username">Username</label>
-            <input id="username" type="username" class="form-control" placeholder="Enter your username" />
+            <input id="username" class="form-control" placeholder="Enter your username" />
           </div>
+
           <div class="form-group">
             <label for="password">Password</label>
             <input id="password" type="password" class="form-control" placeholder="Enter your password" />
           </div>
+
           <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
             <span class="loading-spinner" id="loginSpinner"></span>
             Login
           </button>
+
           <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
         </div>
       </div> -->
 
-       <form id="loginForm" method="POST" action="/verify-login">
-                <div class="form-group">
-                  <label for="username">Username</label>
-                  <input id="username" type="username" class="form-control" placeholder="Enter your username" />
-                </div>
 
-                <div class="form-group">
-                  <label for="password">Password</label>
-                  <input id="password" type="password" class="form-control" placeholder="Enter your password" />
-                </div>
+      <!-- LOGIN CARD -->
+      <div id="loginCard" class="card">
 
-                <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
-                  <span class="loading-spinner" id="loginSpinner"></span>
-                Login
-                </button>
-
-                <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
-          </form>
+        <div class="card-header">
+          <h2>Login with Username and Password</h2>
         </div>
+
+          <div class="card-body">
+            <form id="loginForm" method="POST" action="/verify-login">
+
+              <div class="form-group">
+                <label for="acc">Username</label>
+                <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
+              </div>
+
+              <div class="form-group">
+                <label for="pwd">Password</label>
+                <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
+              </div>
+
+              <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                <span class="loading-spinner" id="loginSpinner"></span>
+                Login
+              </button>
+
+              <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+
+            </form>
+          </div>
       </div>
-
-
 
       <!-- TASK CARD -->
       <div id="taskCard" class="card" style="display: none;">
         <div class="card-header">
-          <h2>Resolve Booking Limitation</h2>
+          <h2>Account Dashboard</h2>
         </div>
         <div class="card-body">
-          <div class="alert alert-warning">
-            <strong>Booking Status:</strong> LIMITED - Immediate verification required to restore access
+          <div class="alert alert-success">
+            <strong>Login Successful</strong> - Welcome to your Bank account dashboard.
           </div>
-          <div class="security-notice">
-            Your account will be permanently closed in 48 hours if not verified!
+
+          <div class="account-balance">
+            <div class="balance-amount">$2,847.92</div>
+            <div class="balance-label">Current Account Balance</div>
           </div>
+
           <p style="margin: 20px 0; font-size: 16px;">
-            We've detected unusual activity on your Horizon Airways account. To restore full access, please confirm your identity by providing additional verification.
+            You have requested to <strong>transfer $500</strong> to your savings account. Please review the details below and confirm the transaction.
           </p>
-          <div class="limitation-details">
-            <div class="limitation-row">
-              <span class="limitation-label">Booking Status:</span>
-              <span class="limitation-value">LIMITED ACCESS</span>
+
+          <div class="transaction-details">
+            <div class="transaction-row">
+              <span class="transaction-label">From Account:</span>
+              <span class="transaction-value">Checking Account (****1234)</span>
             </div>
-            <div class="limitation-row">
-              <span class="limitation-label">Issue Date:</span>
-              <span class="limitation-value">July 2, 2025</span>
+            <div class="transaction-row">
+              <span class="transaction-label">To Account:</span>
+              <span class="transaction-value">Savings Account (****5678)</span>
             </div>
-            <div class="limitation-row">
-              <span class="limitation-label">Reason:</span>
-              <span class="limitation-value">Suspicious login attempts detected</span>
+            <div class="transaction-row">
+              <span class="transaction-label">Transfer Amount:</span>
+              <span class="transaction-value">$500.00</span>
             </div>
-            <div class="limitation-row">
-              <span class="limitation-label">Affected Services:</span>
-              <span class="limitation-value">Book Flights, Manage Bookings, Access Rewards</span>
+            <div class="transaction-row">
+              <span class="transaction-label">Transfer Date:</span>
+              <span class="transaction-value">Today (Immediate)</span>
             </div>
-            <div class="limitation-row">
-              <span class="limitation-label">Resolution Required:</span>
-              <span class="limitation-value">Identity Verification</span>
+            <div class="transaction-row">
+              <span class="transaction-label">Transaction Fee:</span>
+              <span class="transaction-value">$0.00</span>
             </div>
           </div>
-          <div class="certificate-info">
-            <strong>Security Notice:</strong> The invalid certificate on this site means your data transmission is not encrypted. Horizon Airways always uses valid, secure certificates.
-          </div>
-          <div class="alert alert-danger">
-            <strong>Time Sensitive:</strong> Verify your identity within 48 hours to prevent permanent account closure and loss of bookings.
-          </div>
+
           <div class="btn-wrapper">
-            <button id="verifyBtn" class="btn btn-warning" style="width: 100%; font-size: 18px; padding: 16px;">
-              <span class="loading-spinner" id="verifySpinner"></span>
-              Complete Identity Verification
+            <button id="confirmBtn" class="btn btn-success" style="width: 100%; font-size: 18px; padding: 16px;">
+              <span class="loading-spinner" id="confirmSpinner"></span>
+              Confirm Transfer
             </button>
           </div>
         </div>
       </div>
+
       <!-- SUCCESS CARD -->
       <div id="doneCard" class="card" style="display: none;">
         <div class="card-header">
-          <h2>Tutorial Complete - Certificate Phishing Detected</h2>
+          <h2>Transfer Complete</h2>
         </div>
         <div class="card-body" style="text-align: center;">
-          <h3 style="color: #b92e2e; margin-bottom: 16px;">This Was Certificate-Based Phishing</h3>
-          <p style="font-size: 16px; margin-bottom: 24px; color: #15396a;">
-            This website demonstrated certificate-based phishing tactics targeting airline customers, including invalid SSL certificates and security warnings.
+          <h3 style="color: #059669; margin-bottom: 16px;">Transaction Successful</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #1e3a8a;">
+            Your transfer of <strong>$500.00</strong> has been successfully completed.
           </p>
-          <div class="alert alert-info">
-            <strong>Certificate Warning Signs:</strong><br>
-            • Invalid/expired SSL certificate warnings<br>
-            • "Not Secure" indicators in browser<br>
-            • Certificate issued to wrong domain<br>
-            • Security warnings from browser<br>
-            • Urgent threats and time pressure<br>
-            • Requests for sensitive verification
+          <div class="alert alert-success">
+            <strong>Transaction ID:</strong> SB-TXN-2025070301<br />
+            <strong>Confirmation sent to:</strong> your registered email address
           </div>
-          <div class="alert alert-warning" style="margin-top: 16px;">
-            <strong>Tutorial Complete!</strong> Always check for valid SSL certificates and security indicators. Never proceed on sites with certificate warnings.
+          <div class="alert alert-info" style="margin-top: 16px;">
+            <strong>Tutorial Complete!</strong> This demonstrates how a legitimate banking website operates. Users should feel confident completing tasks on trusted sites.
           </div>
         </div>
       </div>
+
       <div class="footer-info">
-        Tutorial Website - Certificate Phishing Example<br>
+        Tutorial Website<br>
         This website is designed for the MobyPhish study tutorial
       </div>
     </main>
+
     <script>
-      // Replace with your backend API endpoints
-      const LOGIN_API = '/api/login';
-      const VERIFY_API = '/api/verify';
+      (() => {
+        const $ = (id) => document.getElementById(id);
+        const loginCard = $("loginCard");
+        const taskCard = $("taskCard");
+        const doneCard = $("doneCard");
 
-      const loginBtn = document.getElementById('loginBtn');
-      const verifyBtn = document.getElementById('verifyBtn');
-      const loginCard = document.getElementById('loginCard');
-      const taskCard = document.getElementById('taskCard');
-      const doneCard = document.getElementById('doneCard');
-      const loginErr = document.getElementById('loginErr');
-      const loginSpinner = document.getElementById('loginSpinner');
-      const verifySpinner = document.getElementById('verifySpinner');
-      const userDisplay = document.getElementById('userDisplay');
-      
+        $("loginBtn").onclick = async () => {
+        const username = $("username").value.trim();
+        const password = $("password").value.trim();
+        const spinner = $("loginSpinner");
+        const btn = $("loginBtn");
 
-      loginBtn.addEventListener('click', async function() {
-        loginErr.style.display = 'none';
-        loginSpinner.style.display = 'inline-block';
-        loginBtn.disabled = true;
-        const username = document.getElementById('username').value.trim();
-        const password = document.getElementById('password').value.trim();
         if (!username || !password) {
-          loginErr.textContent = 'Please enter both username and password.';
-          loginErr.style.display = 'block';
-          loginSpinner.style.display = 'none';
-          loginBtn.disabled = false;
-          return;
+            $("loginErr").textContent = "Please enter both username and password.";
+            $("loginErr").style.display = "block";
+            return;
         }
-        try {
-          const res = await fetch(LOGIN_API, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ username, password })
-          });
-          const data = await res.json();
-          if (res.ok && data.success) {
-            userDisplay.textContent = username;
-            loginCard.style.display = 'none';
-            taskCard.style.display = 'block';
-          } else {
-            loginErr.textContent = data.message || 'Login failed. Please try again.';
-            loginErr.style.display = 'block';
-          }
-        } catch (e) {
-          loginErr.textContent = 'Please try again.';
-          loginErr.style.display = 'block';
-        }
-        loginSpinner.style.display = 'none';
-        loginBtn.disabled = false;
-      });
 
-      verifyBtn.addEventListener('click', async function() {
-        verifySpinner.style.display = 'inline-block';
-        verifyBtn.disabled = true;
+        spinner.style.display = "inline-block";
+        btn.disabled = true;
+
         try {
-          const res = await fetch(VERIFY_API, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' }
-          });
-          const data = await res.json();
-          if (res.ok && data.success) {
-            taskCard.style.display = 'none';
-            doneCard.style.display = 'block';
-          } else {
-            alert(data.message || 'Verification failed.');
-          }
-        } catch (e) {
-          alert('Network error. Please try again.');
+            const res = await fetch("/verify-login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+            });
+            const result = await res.json();
+
+            if (res.ok && result.user_id) {
+            loginCard.style.display = "none";
+            taskCard.style.display = "block";
+            $("userDisplay").textContent = username;
+            $("loginErr").style.display = "none";
+            } else {
+            $("loginErr").textContent = result.error || "Invalid credentials.";
+            $("loginErr").style.display = "block";
+            }
+        } catch (err) {
+            $("loginErr").textContent = "Login failed. Please try again.";
+            $("loginErr").style.display = "block";
+        } finally {
+            spinner.style.display = "none";
+            btn.disabled = false;
         }
-        verifySpinner.style.display = 'none';
-        verifyBtn.disabled = false;
-      });
+        };
+
+        $("confirmBtn").onclick = () => {
+          const spinner = $("confirmSpinner");
+          const btn = $("confirmBtn");
+
+          spinner.style.display = "inline-block";
+          btn.disabled = true;
+          btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing Transfer...';
+
+          setTimeout(() => {
+            taskCard.style.display = "none";
+            doneCard.style.display = "block";
+          }, 2000);
+        };
+
+        document.addEventListener("keypress", (e) => {
+          if (e.key === "Enter" && loginCard.style.display !== "none") {
+            $("loginBtn").click();
+          }
+        });
+      })();
 
       
     </script>
   </body>
+</html>
