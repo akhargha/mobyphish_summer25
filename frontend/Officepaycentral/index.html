@@ -3,18 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>DeskPay</title>
+    <title>OfficePay Central</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        background: #f5f3ff;
+        background: #f8fafc;
         min-height: 100vh;
-        color: #4c1d95;
+        color: #2d3748;
         line-height: 1.6;
       }
       .tutorial-banner {
-        background: linear-gradient(135deg, #4810b9 0%, #4810b9 100%);
+        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
         color: white;
         text-align: center;
         padding: 12px 24px;
@@ -23,7 +23,7 @@
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       }
       header {
-        background: #7c3aed;
+        background: #f59e42;
         color: white;
         padding: 16px 24px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -49,19 +49,19 @@
         gap: 16px;
         font-size: 14px;
       }
-      
+     
       main {
         max-width: 800px;
         margin: 32px auto;
         padding: 0 24px;
       }
       .breadcrumb {
-        color: #4c1d95;
+        color: #a15c1b;
         font-size: 14px;
         margin-bottom: 24px;
       }
       .breadcrumb a {
-        color: #7c3aed;
+        color: #f59e42;
         text-decoration: none;
       }
       .card {
@@ -70,13 +70,13 @@
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         overflow: hidden;
         margin-bottom: 24px;
-        border: 2px solid #7c3aed;
+        border: 2px solid #f59e42;
       }
       .card-header {
-        background: #7c3aed;
+        background: #f59e42;
         color: white;
         padding: 20px 24px;
-        border-bottom: 3px solid #ddd6fe;
+        border-bottom: 3px solid #fcd9b6;
       }
       .card-header h2 {
         margin: 0;
@@ -93,22 +93,22 @@
         display: block;
         margin-bottom: 6px;
         font-weight: 600;
-        color: #4c1d95;
+        color: #a15c1b;
         font-size: 14px;
       }
       .form-control {
         width: 100%;
         padding: 12px 16px;
-        border: 2px solid #ddd6fe;
+        border: 2px solid #fcd9b6;
         border-radius: 8px;
         font-size: 16px;
         transition: all 0.3s ease;
-        background: #f5f3ff;
+        background: #fffaf3;
       }
       .form-control:focus {
         outline: none;
-        border-color: #7c3aed;
-        box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.1);
+        border-color: #f59e42;
+        box-shadow: 0 0 0 3px rgba(245, 158, 66, 0.1);
         background: white;
       }
       .btn {
@@ -126,13 +126,13 @@
         min-width: 140px;
       }
       .btn-primary {
-        background: #7c3aed;
+        background: #f59e42;
         color: white;
       }
       .btn-primary:hover {
-        background: #4c1d95;
+        background: #a15c1b;
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(124, 58, 237, 0.3);
+        box-shadow: 0 4px 12px rgba(245, 158, 66, 0.3);
       }
       .alert {
         padding: 12px 16px;
@@ -141,9 +141,9 @@
         font-size: 14px;
       }
       .alert-info {
-        background: #ede9fe;
-        border: 1px solid #ddd6fe;
-        color: #4c1d95;
+        background: #fffaf3;
+        border: 1px solid #fcd9b6;
+        color: #a15c1b;
       }
       .alert-success {
         background: #f0fdf4;
@@ -152,11 +152,11 @@
       }
       .footer-info {
         text-align: center;
-        color: #4c1d95;
+        color: #a15c1b;
         font-size: 12px;
         margin-top: 32px;
         padding: 16px;
-        border-top: 1px solid #ddd6fe;
+        border-top: 1px solid #fcd9b6;
       }
       .loading-spinner {
         display: none;
@@ -182,23 +182,26 @@
   </head>
   <body>
     <div class="tutorial-banner">
-      PHASE 3 TUTORIAL WEBSITE #3.3 - This is a practice session. Please use the MobyPhish extension to check if this site is phishing.
+      PHASE 1 TUTORIAL WEBSITE #1.3 - This is a practice session. The actual study has not started yet.
     </div>
     <header>
       <div class="header-content">
-        <div class="logo">DeskPay</div>
+        <div class="logo">OfficePay Central</div>
         <div class="user-info">
           <span id="userDisplay">Guest</span>
         </div>
       </div>
-      
+     
     </header>
     <main>
       <div class="breadcrumb">
         <a href="#">Dashboard</a> › <a href="#">Payments</a> › Office Supply Vendors
       </div>
       <!-- LOGIN CARD -->
-      <div id="loginCard" class="card">
+
+
+
+      <!-- <div id="loginCard" class="card">
         <div class="card-header">
           <h2>Vendor Login</h2>
         </div>
@@ -206,10 +209,7 @@
           <div class="alert alert-info">
             <strong>Tutorial Instructions:</strong> This is a legitimate office supply payment website. Use your username and password to proceed.
           </div>
-
-
-
-          <!-- <div class="form-group">
+          <div class="form-group">
             <label for="username">Username</label>
             <input id="username" class="form-control" placeholder="Enter your username" />
           </div>
@@ -225,26 +225,38 @@
         </div>
       </div> -->
 
-       <form id="loginForm" method="POST" action="/verify-login">
-                <div class="form-group">
-                  <label for="username">Username</label>
-                  <input id="username" type="username" class="form-control" placeholder="Enter your username" />
-                </div>
 
-                <div class="form-group">
-                  <label for="password">Password</label>
-                  <input id="password" type="password" class="form-control" placeholder="Enter your password" />
-                </div>
+      <!-- LOGIN CARD -->
+      <div id="loginCard" class="card">
 
-                <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
-                  <span class="loading-spinner" id="loginSpinner"></span>
-                Login
-                </button>
-
-                <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
-          </form>
+        <div class="card-header">
+          <h2>Login with Username and Password</h2>
         </div>
+
+          <div class="card-body">
+            <form id="loginForm" method="POST" action="/verify-login">
+
+              <div class="form-group">
+                <label for="acc">Username</label>
+                <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
+              </div>
+
+              <div class="form-group">
+                <label for="pwd">Password</label>
+                <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
+              </div>
+
+              <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                <span class="loading-spinner" id="loginSpinner"></span>
+                Login
+              </button>
+
+              <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+
+            </form>
+          </div>
       </div>
+
 
 
 
@@ -256,7 +268,7 @@
         </div>
         <div class="card-body">
           <div class="alert alert-success">
-            <strong>Login Successful</strong> - Welcome to DeskPay.
+            <strong>Login Successful</strong> - Welcome to OfficePay Central.
           </div>
           <p style="margin: 20px 0; font-size: 16px;">
             Select the vendor and enter the payment amount. All transactions are secure and logged.
@@ -287,12 +299,12 @@
           <h2>Payment Complete</h2>
         </div>
         <div class="card-body" style="text-align: center;">
-          <h3 style="color: #7c3aed; margin-bottom: 16px;">Payment Sent Successfully</h3>
-          <p style="font-size: 16px; margin-bottom: 24px; color: #4c1d95;">
+          <h3 style="color: #f59e42; margin-bottom: 16px;">Payment Sent Successfully</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #a15c1b;">
             Your payment has been securely sent to the selected vendor.
           </p>
           <div class="alert alert-success">
-            <strong>Transaction ID:</strong> DSK-TXN-2025070307<br />
+            <strong>Transaction ID:</strong> OPC-TXN-2025070305<br />
             <strong>Confirmation sent to:</strong> your email
           </div>
           <div class="alert alert-info" style="margin-top: 16px;">
