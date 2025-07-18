@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Cruise Airways</title>
+    <title>Sapphire lnn</title>
     <style>
       * {
         box-sizing: border-box;
@@ -13,14 +13,14 @@
 
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+        background: linear-gradient(135deg, #e6f3ff 0%, #f0f8ff 100%);
         min-height: 100vh;
-        color: #003087;
+        color: #232f3e;
         line-height: 1.6;
       }
 
       .tutorial-banner {
-        background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+        background: linear-gradient(135deg, #4810b9 0%, #4810b9 100%);
         color: white;
         text-align: center;
         padding: 12px 24px;
@@ -29,40 +29,18 @@
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       }
 
-      .certificate-warning {
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      .url-warning {
+        background: linear-gradient(135deg, #3fa7f5 0%, #1e90ff 100%);
         color: white;
         text-align: center;
-        padding: 10px 24px;
+        padding: 8px 24px;
         font-weight: 600;
         font-size: 14px;
-        border-bottom: 2px solid #a93226;
-        animation: blink 2s infinite;
-      }
-
-      @keyframes blink {
-        0%, 50% { opacity: 1; }
-        51%, 100% { opacity: 0.7; }
-      }
-
-      .ssl-indicator {
-        background: #2c3e50;
-        color: white;
-        padding: 8px 24px;
-        font-size: 12px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 8px;
-      }
-
-      .ssl-fake {
-        color: #e74c3c;
-        font-weight: bold;
+        border-bottom: 2px solid #1976d2;
       }
 
       header {
-        background: linear-gradient(135deg, #003087 0%, #0070ba 100%);
+        background: linear-gradient(135deg, #232f3e 0%, #131921 100%);
         color: white;
         padding: 16px 24px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -75,13 +53,14 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-      }
+      } 
 
       .logo {
         display: flex;
         align-items: center;
         font-size: 24px;
         font-weight: 700;
+        color: #ffffff;
       }
 
       .user-info {
@@ -92,6 +71,7 @@
       }
 
       
+
       main {
         max-width: 800px;
         margin: 32px auto;
@@ -105,7 +85,7 @@
       }
 
       .breadcrumb a {
-        color: #0070ba;
+        color: #1976d2;
         text-decoration: none;
       }
 
@@ -115,14 +95,14 @@
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         overflow: hidden;
         margin-bottom: 24px;
-        border: 2px solid #0070ba;
+        border: 2px solid #1976d2;
       }
 
       .card-header {
-        background: linear-gradient(90deg, #003087 0%, #0070ba 100%);
+        background: linear-gradient(90deg, #1976d2 0%, #1565c0 100%);
         color: white;
         padding: 20px 24px;
-        border-bottom: 3px solid #0070ba;
+        border-bottom: 3px solid #1976d2;
       }
 
       .card-header h2 {
@@ -143,7 +123,7 @@
         display: block;
         margin-bottom: 6px;
         font-weight: 600;
-        color: #003087;
+        color: #232f3e;
         font-size: 14px;
       }
 
@@ -159,8 +139,8 @@
 
       .form-control:focus {
         outline: none;
-        border-color: #0070ba;
-        box-shadow: 0 0 0 3px rgba(0, 112, 186, 0.1);
+        border-color: #1976d2;
+        box-shadow: 0 0 0 3px rgba(25, 118, 210, 0.1);
         background: white;
       }
 
@@ -180,25 +160,25 @@
       }
 
       .btn-primary {
-        background: linear-gradient(135deg, #0070ba 0%, #003087 100%);
+        background: linear-gradient(135deg, #1976d2 0%, #1565c0 100%);
         color: white;
       }
 
       .btn-primary:hover {
-        background: linear-gradient(135deg, #003087 0%, #001f5b 100%);
+        background: linear-gradient(135deg, #1565c0 0%, #0d47a1 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(0, 112, 186, 0.3);
+        box-shadow: 0 4px 12px rgba(25, 118, 210, 0.3);
       }
 
-      .btn-warning {
-        background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+      .btn-danger {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
         color: white;
       }
 
-      .btn-warning:hover {
-        background: linear-gradient(135deg, #e67e22 0%, #d35400 100%);
+      .btn-danger:hover {
+        background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(243, 156, 18, 0.3);
+        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
       }
 
       .alert {
@@ -226,7 +206,7 @@
         color: #1565c0;
       }
 
-      .security-notice {
+      .urgent-notice {
         background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
         color: white;
         padding: 20px;
@@ -234,18 +214,24 @@
         margin: 20px 0;
         text-align: center;
         font-weight: 600;
-        border: 3px solid #a93226;
+        animation: pulse 2s infinite;
       }
 
-      .limitation-details {
-        background: #fff8e1;
-        border: 2px solid #ffcc02;
+      @keyframes pulse {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.02); }
+        100% { transform: scale(1); }
+      }
+
+      .account-details {
+        background: #f0f8ff;
+        border: 2px solid #90caf9;
         border-radius: 8px;
         padding: 24px;
         margin: 24px 0;
       }
 
-      .limitation-row {
+      .detail-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -253,28 +239,18 @@
         border-bottom: 1px solid #ffecb3;
       }
 
-      .limitation-row:last-child {
+      .detail-row:last-child {
         border-bottom: none;
       }
 
-      .limitation-label {
-        color: #8d6e63;
+      .detail-label {
+        color: #1976d2;
         font-weight: 500;
       }
 
-      .limitation-value {
-        color: #d84315;
+      .detail-value {
+        color: #0d47a1;
         font-weight: 600;
-      }
-
-      .certificate-info {
-        background: #ffebee;
-        border: 2px solid #e74c3c;
-        border-radius: 8px;
-        padding: 16px;
-        margin: 16px 0;
-        font-size: 12px;
-        color: #c62828;
       }
 
       .footer-info {
@@ -324,12 +300,12 @@
   </head>
   <body>
     <div class="tutorial-banner">
-      PHASE 1 TUTORIAL WEBSITE #1.3 - This is a practice session. The actual study has not started yet.
+        PHASE 3 TUTORIAL WEBSITE #3.2 - This is a practice session. Please use the MobyPhish extension to check if this site is phishing.
     </div>
 
     <header>
       <div class="header-content">
-        <div class="logo">Cruise Airways</div>
+        <div class="logo">Sapphire lnn</div>
         <div class="user-info">
           <span id="userDisplay">Guest</span>
         </div>
@@ -339,24 +315,32 @@
 
     <main>
       <div class="breadcrumb">
-        <a href="#">Home</a> › <a href="#">My Account</a> › Security Center
+        <a href="#">Home</a> › <a href="#">Your Account</a> › Reservation Change Verification
       </div>
 
       <!-- LOGIN CARD -->
-      <!-- <div id="loginCard" class="card">
+      <div id="loginCard" class="card">
         <div class="card-header">
-          <h2>Account Security Check Required</h2>
+          <h2>URGENT: Reservation Change Verification Required</h2>
         </div>
         <div class="card-body">
-          <div class="security-notice">
-            IMMEDIATE ACTION REQUIRED: Your account has been limited due to security concerns
+          <div class="urgent-notice">
+            Your Reservation Change is not complete due to suspicious activity!
+            Make your final payment immediately to reserve your spot.
           </div>
 
           <div class="alert alert-info">
-            <strong>Tutorial Instructions:</strong> This demonstrates certificate-based phishing. Notice the invalid SSL certificate warnings above. Use the Report Phishing button to report this site.
+          <strong>Instructions:</strong> Use the <b>MobyPhish browser extension</b> to check if this website is phishing.<br>
+            <br>
+            <strong>Look for:</strong>
+            <ul>
+              <li>Suspicious or misspelled URLs (e.g. <span class="fake-url">paypa1-security.com</span>)</li>
+              <li>Unusual domain names or subdomains</li>
+              <li>Links that do not match the real service</li>
+            </ul>
           </div>
 
-          <div class="form-group">
+          <!-- <div class="form-group">
             <label for="username">Username</label>
             <input id="username" type="username" class="form-control" placeholder="Enter your username" />
           </div>
@@ -368,97 +352,80 @@
 
           <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
             <span class="loading-spinner" id="loginSpinner"></span>
-            Login
+          Login
           </button>
 
           <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
         </div>
       </div> -->
 
-      <!-- LOGIN CARD -->
-      <div id="loginCard" class="card">
 
-        <div class="card-header">
-          <h2>Login with Username and Password</h2>
-        </div>
+       <form id="loginForm" method="POST" action="/verify-login">
+                <div class="form-group">
+                  <label for="username">Username</label>
+                  <input id="username" type="username" class="form-control" placeholder="Enter your username" />
+                </div>
 
-          <div class="card-body">
-            <form id="loginForm" method="POST" action="/verify-login">
+                <div class="form-group">
+                  <label for="password">Password</label>
+                  <input id="password" type="password" class="form-control" placeholder="Enter your password" />
+                </div>
 
-              <div class="form-group">
-                <label for="acc">Username</label>
-                <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
-              </div>
-
-              <div class="form-group">
-                <label for="pwd">Password</label>
-                <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
-              </div>
-
-              <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
-                <span class="loading-spinner" id="loginSpinner"></span>
+                <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                  <span class="loading-spinner" id="loginSpinner"></span>
                 Login
-              </button>
+                </button>
 
-              <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
-
-            </form>
-          </div>
+                <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+          </form>
+        </div>
       </div>
 
       <!-- TASK CARD -->
       <div id="taskCard" class="card" style="display: none;">
         <div class="card-header">
-          <h2>Resolve Account Limitation</h2>
+          <h2>Complete Verification Process</h2>
         </div>
         <div class="card-body">
           <div class="alert alert-warning">
-            <strong>Account Status:</strong> LIMITED - Immediate verification required to restore access
+            <strong>Final Step Required:</strong> Your Reservation Change verification is 90% complete. Confirm your payment to complete Reservation Change.
           </div>
 
-          <div class="security-notice">
-            Your account will be permanently closed in 48 hours if not verified!
+          <div class="urgent-notice">
+            Time Remaining: 14:32 minutes before permanent suspension!
           </div>
 
           <p style="margin: 20px 0; font-size: 16px;">
-            We've detected unusual activity on your account. To restore full access, please confirm your identity by providing additional verification.
+            We detected an unauthorized purchase attempt on your account. To protect your account, please verify your payment information below.
           </p>
 
-          <div class="limitation-details">
-            <div class="limitation-row">
-              <span class="limitation-label">Account Status:</span>
-              <span class="limitation-value">LIMITED ACCESS</span>
+          <div class="account-details">
+            <div class="detail-row">
+              <span class="detail-label">Suspicious Transaction:</span>
+              <span class="detail-value">$2,847.99 - Electronic Device</span>
             </div>
-            <div class="limitation-row">
-              <span class="limitation-label">Issue Date:</span>
-              <span class="limitation-value">July 2, 2025</span>
+            <div class="detail-row">
+              <span class="detail-label">Location:</span>
+              <span class="detail-value">Unknown - Turkey</span>
             </div>
-            <div class="limitation-row">
-              <span class="limitation-label">Reason:</span>
-              <span class="limitation-value">Suspicious login attempts detected</span>
+            <div class="detail-row">
+              <span class="detail-label">Time:</span>
+              <span class="detail-value">Today at 3:42 AM</span>
             </div>
-            <div class="limitation-row">
-              <span class="limitation-label">Affected Services:</span>
-              <span class="limitation-value">Booking Flights, Cancelling Flights, Changing Flights</span>
+            <div class="detail-row">
+              <span class="detail-label">Status:</span>
+              <span class="detail-value">BLOCKED - Verification Required</span>
             </div>
-            <div class="limitation-row">
-              <span class="limitation-label">Resolution Required:</span>
-              <span class="limitation-value">Identity Verification</span>
-            </div>
-          </div>
-
-          <div class="certificate-info">
-            <strong>🔒 Security Notice:</strong> The invalid certificate on this site means your data transmission is not encrypted. Cruise Airways always uses valid, secure certificates.
           </div>
 
           <div class="alert alert-danger">
-            <strong>Time Sensitive:</strong> Verify your identity within 48 hours to prevent permanent account closure and loss of funds.
+            <strong>Action Required:</strong> Verify your payment method within 15 minutes or your account will be permanently suspended and all pending orders cancelled.
           </div>
 
           <div class="btn-wrapper">
-            <button id="verifyBtn" class="btn btn-warning" style="width: 100%; font-size: 18px; padding: 16px;">
+            <button id="verifyBtn" class="btn btn-danger" style="width: 100%; font-size: 18px; padding: 16px;">
               <span class="loading-spinner" id="verifySpinner"></span>
-              Complete Identity Verification
+              Verify Payment Method - URGENT
             </button>
           </div>
         </div>
@@ -467,30 +434,29 @@
       <!-- SUCCESS CARD -->
       <div id="doneCard" class="card" style="display: none;">
         <div class="card-header">
-          <h2>Tutorial Complete - Certificate Phishing Detected</h2>
+          <h2>Tutorial Complete - Phishing Detected</h2>
         </div>
         <div class="card-body" style="text-align: center;">
-          <h3 style="color: #e74c3c; margin-bottom: 16px;">This Was Certificate-Based Phishing!</h3>
-          <p style="font-size: 16px; margin-bottom: 24px; color: #003087;">
-            This website demonstrated certificate-based phishing tactics including invalid SSL certificates and security warnings.
+          <h3 style="color: #e74c3c; margin-bottom: 16px;">This Was a Phishing Attempt!</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #232f3e;">
+            This website demonstrated common phishing tactics including suspicious URLs, urgent language, and threats of account closure.
           </p>
           <div class="alert alert-info">
-            <strong>Certificate Warning Signs You Should Have Noticed:</strong><br>
-            • Invalid/expired SSL certificate warnings<br>
-            • "Not Secure" indicators in browser<br>
-            • Certificate issued to wrong domain<br>
-            • Security warnings from browser<br>
-            • Urgent threats and time pressure<br>
-            • Requests for sensitive verification
+            <strong>Red Flags You Should Have Noticed:</strong><br>
+            • Suspicious URL: "Sapphire lnn" instead of "Sapphire Inn"<br>
+            • Urgent threats and countdown timers<br>
+            • Requests for sensitive information<br>
+            • Poor grammar and unprofessional language<br>
+            • Suspicious transaction claims
           </div>
           <div class="alert alert-warning" style="margin-top: 16px;">
-            <strong>Tutorial Complete!</strong> Always check for valid SSL certificates and security indicators. Never proceed on sites with certificate warnings.
+            <strong>Tutorial Complete!</strong> In real life, you should report such sites immediately and never provide personal information.
           </div>
         </div>
       </div>
 
       <div class="footer-info">
-        Tutorial Website - Certificate Phishing Example<br>
+        Tutorial Website - URL Phishing Example<br>
         This website is designed for the MobyPhish study tutorial
       </div>
     </main>
@@ -501,15 +467,15 @@
         const loginCard = $("loginCard");
         const taskCard = $("taskCard");
         const doneCard = $("doneCard");
-       
+
         $("loginBtn").onclick = async () => {
-            const email = $("email").value.trim();
+            const username = $("username").value.trim();
             const password = $("password").value.trim();
             const spinner = $("loginSpinner");
             const btn = $("loginBtn");
 
-            if (!email || !password) {
-                $("loginErr").textContent = "Please enter both email and password.";
+            if (!username || !password) {
+                $("loginErr").textContent = "Please enter both username and password.";
                 $("loginErr").style.display = "block";
                 return;
             }
@@ -521,14 +487,14 @@
                 const res = await fetch("/verify-login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: email, password })
+                body: JSON.stringify({ username: username, password })
                 });
                 const result = await res.json();
 
                 if (res.ok && result.user_id) {
                 loginCard.style.display = "none";
                 taskCard.style.display = "block";
-                $("userDisplay").textContent = email.split('@')[0];
+                $("userDisplay").textContent = username.split('@')[0];
                 $("loginErr").style.display = "none";
                 localStorage.setItem("study_uid", result.user_id);
                 } else {
@@ -543,13 +509,14 @@
                 btn.disabled = false;
             }
         };
+
         $("verifyBtn").onclick = () => {
           const spinner = $("verifySpinner");
           const btn = $("verifyBtn");
 
           spinner.style.display = "inline-block";
           btn.disabled = true;
-          btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing Verification...';
+          btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing...';
 
           setTimeout(() => {
             taskCard.style.display = "none";
@@ -565,32 +532,21 @@
           }
         });
 
-        // Simulate browser security warnings
-        setTimeout(() => {
-          if (Math.random() > 0.5) {
-            const warning = document.createElement('div');
-            warning.style.cssText = `
-              position: fixed;
-              top: 20px;
-              right: 20px;
-              background: #e74c3c;
-              color: white;
-              padding: 12px;
-              border-radius: 6px;
-              font-size: 12px;
-              z-index: 10000;
-              box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            `;
-            warning.textContent = '🔒 Browser Security Warning: Invalid Certificate';
-            document.body.appendChild(warning);
-            
-            setTimeout(() => {
-              if (warning.parentNode) {
-                warning.parentNode.removeChild(warning);
-              }
-            }, 5000);
+        // Countdown timer simulation
+        let timeLeft = 872; // 14:32 in seconds
+        const countdown = setInterval(() => {
+          if (timeLeft <= 0) {
+            clearInterval(countdown);
+            return;
           }
-        }, 3000);
+          timeLeft--;
+          const minutes = Math.floor(timeLeft / 60);
+          const seconds = timeLeft % 60;
+          const urgentNotice = document.querySelector('.urgent-notice');
+          if (urgentNotice && urgentNotice.textContent.includes('Time Remaining')) {
+            urgentNotice.textContent = `Time Remaining: ${minutes}:${seconds.toString().padStart(2, '0')} minutes before permanent suspension!`;
+          }
+        }, 1000);
       })();
     </script>
   </body>
