@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Relax In</title>
+    <title>Safe Bank</title>
     <style>
       * {
         box-sizing: border-box;
@@ -13,14 +13,14 @@
 
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        background: linear-gradient(135deg, #cdfdff 0%, #cdfdff 100%);
+        background: linear-gradient(135deg, #f0f9ff 0%, #dbeafe 100%);
         min-height: 100vh;
-        color: #232f3e;
+        color: #1e3a8a;
         line-height: 1.6;
       }
 
       .tutorial-banner {
-        background: linear-gradient(135deg, #1059b9 0%, #053096 100%);
+        background: linear-gradient(135deg, #4810b9 0%, #4810b9 100%);
         color: white;
         text-align: center;
         padding: 12px 24px;
@@ -29,18 +29,8 @@
         box-shadow: 0 2px 8px rgba(0,0,0,0.1);
       }
 
-      .url-warning {
-        background: linear-gradient(135deg, #a8f312 0%, #a8f312 100%);
-        color: white;
-        text-align: center;
-        padding: 8px 24px;
-        font-weight: 600;
-        font-size: 14px;
-        border-bottom: 2px solid #cdfdff;
-      }
-
       header {
-        background: linear-gradient(135deg, #232f3e 0%, #131921 100%);
+        background: linear-gradient(135deg, #1e97af 0%, #1e97af 100%);
         color: white;
         padding: 16px 24px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
@@ -60,7 +50,6 @@
         align-items: center;
         font-size: 24px;
         font-weight: 700;
-        color: #fdfdfd;
       }
 
       .user-info {
@@ -69,8 +58,6 @@
         gap: 16px;
         font-size: 14px;
       }
-
-      
 
       main {
         max-width: 800px;
@@ -85,7 +72,7 @@
       }
 
       .breadcrumb a {
-        color: #002aff;
+        color: #1e40af;
         text-decoration: none;
       }
 
@@ -95,14 +82,13 @@
         box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         overflow: hidden;
         margin-bottom: 24px;
-        border: 2px solid #12a1f3;
       }
 
       .card-header {
-        background: linear-gradient(90deg, #12a1f3 0%, #12a1f3 100%);
+        background: linear-gradient(90deg, #1e97af 0%, #1e97af 100%);
         color: white;
         padding: 20px 24px;
-        border-bottom: 3px solid #12a1f3;
+        border-bottom: 3px solid #3b82f6;
       }
 
       .card-header h2 {
@@ -123,24 +109,24 @@
         display: block;
         margin-bottom: 6px;
         font-weight: 600;
-        color: #232f3e;
+        color: #1e3a8a;
         font-size: 14px;
       }
 
       .form-control {
         width: 100%;
         padding: 12px 16px;
-        border: 2px solid #ffeaa7;
+        border: 2px solid #dbeafe;
         border-radius: 8px;
         font-size: 16px;
         transition: all 0.3s ease;
-        background: #fffef7;
+        background: #f8fafc;
       }
 
       .form-control:focus {
         outline: none;
-        border-color: #ff9900;
-        box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.1);
+        border-color: #3b82f6;
+        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
         background: white;
       }
 
@@ -160,25 +146,25 @@
       }
 
       .btn-primary {
-        background: linear-gradient(135deg, #12a1f3 0%, #12a1f3 100%);
+        background: linear-gradient(135deg, #1e97af 0%, #1e97af 100%);
         color: white;
       }
 
       .btn-primary:hover {
-        background: linear-gradient(135deg, #12bff3 0%, #12bff3 100%);
+        background: linear-gradient(135deg, #1e3a8a 0%, #1e40af 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
+        box-shadow: 0 4px 12px rgba(30, 64, 175, 0.3);
       }
 
-      .btn-danger {
-        background: linear-gradient(135deg, #12a1f3 0%, #12a1f3 100%);
+      .btn-success {
+        background: linear-gradient(135deg, #059669 0%, #047857 100%);
         color: white;
       }
 
-      .btn-danger:hover {
-        background: linear-gradient(135deg, #12a1f3 0%, #12a1f3 100%);
+      .btn-success:hover {
+        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
       }
 
       .alert {
@@ -189,67 +175,72 @@
       }
 
       .alert-danger {
-        background: #ffebee;
-        border: 1px solid #ffcdd2;
-        color: #c62828;
+        background: #fef2f2;
+        border: 1px solid #fecaca;
+        color: #dc2626;
       }
 
-      .alert-warning {
-        background: #fff8e1;
-        border: 1px solid #ffecb3;
-        color: #f57c00;
+      .alert-success {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #059669;
       }
 
       .alert-info {
-        background: #e3f2fd;
-        border: 1px solid #bbdefb;
-        color: #1565c0;
+        background: #eff6ff;
+        border: 1px solid #bfdbfe;
+        color: #1e40af;
       }
 
-      .urgent-notice {
-        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
-        color: white;
-        padding: 20px;
+      .account-balance {
+        background: #f8fafc;
+        border: 2px solid #dbeafe;
         border-radius: 8px;
-        margin: 20px 0;
+        padding: 24px;
+        margin: 24px 0;
         text-align: center;
-        font-weight: 600;
-        animation: pulse 2s infinite;
       }
 
-      @keyframes pulse {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.02); }
-        100% { transform: scale(1); }
+      .balance-amount {
+        font-size: 36px;
+        font-weight: 700;
+        color: #059669;
+        margin-bottom: 8px;
       }
 
-      .account-details {
-        background: #fff8e1;
-        border: 2px solid #ffcc02;
+      .balance-label {
+        color: #6b7280;
+        font-size: 14px;
+        font-weight: 500;
+      }
+
+      .transaction-details {
+        background: #f8fafc;
+        border: 2px solid #dbeafe;
         border-radius: 8px;
         padding: 24px;
         margin: 24px 0;
       }
 
-      .detail-row {
+      .transaction-row {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        padding: 8px 0;
-        border-bottom: 1px solid #ffecb3;
+        padding: 12px 0;
+        border-bottom: 1px solid #dbeafe;
       }
 
-      .detail-row:last-child {
+      .transaction-row:last-child {
         border-bottom: none;
       }
 
-      .detail-label {
-        color: #8d6e63;
+      .transaction-label {
+        color: #6b7280;
         font-weight: 500;
       }
 
-      .detail-value {
-        color: #d84315;
+      .transaction-value {
+        color: #1e3a8a;
         font-weight: 600;
       }
 
@@ -259,7 +250,7 @@
         font-size: 12px;
         margin-top: 32px;
         padding: 16px;
-        border-top: 1px solid #ffecb3;
+        border-top: 1px solid #dbeafe;
       }
 
       .loading-spinner {
@@ -293,20 +284,20 @@
         .card-body {
           padding: 24px 16px;
         }
-
       }
+      
     </style>
   </head>
   <body>
     <div class="tutorial-banner">
-        PHASE 2 TUTORIAL WEBSITE #2.2 - This is a practice session. Please use the MobyPhish extension to check if this site is phishing.
+      PHASE 3 TUTORIAL WEBSITE #3.1 - This is a practice session. Please use the MobyPhish extension to check if this site is phishing.
     </div>
 
     <header>
       <div class="header-content">
-        <div class="logo">Relax In</div>
+        <div class="logo">Safe Bank</div>
         <div class="user-info">
-          <span id="userDisplay">Guest</span>
+        <span id="userDisplay">Guest</span>
         </div>
       </div>
       
@@ -314,32 +305,39 @@
 
     <main>
       <div class="breadcrumb">
-        <a href="#">Home</a> › <a href="#">Your Account</a> › Cancellation Verification
+        <a href="#">Dashboard</a> › <a href="#">My Account</a> › Account Management
       </div>
 
       <!-- LOGIN CARD -->
       <div id="loginCard" class="card">
         <div class="card-header">
-          <h2>URGENT: Cancellation Verification Required</h2>
+          <h2>Secure Login</h2>
         </div>
         <div class="card-body">
-          <div class="urgent-notice">
-            Your cancellation is not complete due to suspicious activity!
-            Make your final payment immediately to confirm your cancellation.
-          </div>
-
           <div class="alert alert-info">
-            <strong>Instructions:</strong> Use the <b>MobyPhish browser extension</b> to check if this website is phishing.<br>
-            <br>
-            <strong>Look for:</strong>
-            <ul>
-              <li>Suspicious or misspelled URLs (e.g. <span class="fake-url">paypa1-security.com</span>)</li>
-              <li>Unusual domain names or subdomains</li>
-              <li>Links that do not match the real service</li>
-            </ul>
+            <strong>Tutorial Instructions:</strong> This is a legitimate banking website. Use your username and password to proceed with the tutorial.
           </div>
 
-          <form id="loginForm" method="POST" action="/verify-login">
+          <div class="form-group">
+            <label for="username">Username</label>
+            <input id="username" class="form-control" placeholder="Enter your username" />
+          </div>
+
+          <!-- <div class="form-group">
+            <label for="password">Password</label>
+            <input id="password" type="password" class="form-control" placeholder="Enter your password" />
+          </div>
+
+          <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+            <span class="loading-spinner" id="loginSpinner"></span>
+            Login
+          </button>
+
+          <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+        </div>
+      </div> -->
+
+       <form id="loginForm" method="POST" action="/verify-login">
                 <div class="form-group">
                   <label for="username">Username</label>
                   <input id="username" type="username" class="form-control" placeholder="Enter your username" />
@@ -363,48 +361,49 @@
       <!-- TASK CARD -->
       <div id="taskCard" class="card" style="display: none;">
         <div class="card-header">
-          <h2>Complete Verification Process</h2>
+          <h2>Account Dashboard</h2>
         </div>
         <div class="card-body">
-          <div class="alert alert-warning">
-            <strong>Final Step Required:</strong> Your cancellation verification is 90% complete. Confirm your payment to complete cancellation.
+          <div class="alert alert-success">
+            <strong>Login Successful</strong> - Welcome to your Bank account dashboard.
           </div>
 
-          <div class="urgent-notice">
-            Time Remaining: 14:32 minutes before permanent suspension!
+          <div class="account-balance">
+            <div class="balance-amount">$737.94</div>
+            <div class="balance-label">Current Account Balance</div>
           </div>
 
           <p style="margin: 20px 0; font-size: 16px;">
-            We detected an unauthorized purchase attempt on your account. To protect your account, please verify your payment information below.
+            You have requested to <strong>transfer $5,000</strong> to your savings account. Please review the details below and confirm the transaction.
           </p>
 
-          <div class="account-details">
-            <div class="detail-row">
-              <span class="detail-label">Suspicious Transaction:</span>
-              <span class="detail-value">$2,847.99 - Electronic Device</span>
+          <div class="transaction-details">
+            <div class="transaction-row">
+              <span class="transaction-label">From Account:</span>
+              <span class="transaction-value">Checking Account (****9344)</span>
             </div>
-            <div class="detail-row">
-              <span class="detail-label">Location:</span>
-              <span class="detail-value">Unknown - Spain</span>
+            <div class="transaction-row">
+              <span class="transaction-label">To Account:</span>
+              <span class="transaction-value">Savings Account (****5121)</span>
             </div>
-            <div class="detail-row">
-              <span class="detail-label">Time:</span>
-              <span class="detail-value">Today at 3:42 AM</span>
+            <div class="transaction-row">
+              <span class="transaction-label">Transfer Amount:</span>
+              <span class="transaction-value">$5,000.00</span>
             </div>
-            <div class="detail-row">
-              <span class="detail-label">Status:</span>
-              <span class="detail-value">BLOCKED - Verification Required</span>
+            <div class="transaction-row">
+              <span class="transaction-label">Transfer Date:</span>
+              <span class="transaction-value">Today (Immediate)</span>
             </div>
-          </div>
-
-          <div class="alert alert-danger">
-            <strong>Action Required:</strong> Verify your payment method within 15 minutes or your account will be permanently suspended and all pending orders cancelled.
+            <div class="transaction-row">
+              <span class="transaction-label">Transaction Fee:</span>
+              <span class="transaction-value">$10.00</span>
+            </div>
           </div>
 
           <div class="btn-wrapper">
-            <button id="verifyBtn" class="btn btn-danger" style="width: 100%; font-size: 18px; padding: 16px;">
-              <span class="loading-spinner" id="verifySpinner"></span>
-              Verify Payment Method - URGENT
+            <button id="confirmBtn" class="btn btn-success" style="width: 100%; font-size: 18px; padding: 16px;">
+              <span class="loading-spinner" id="confirmSpinner"></span>
+              Confirm Transfer
             </button>
           </div>
         </div>
@@ -413,29 +412,25 @@
       <!-- SUCCESS CARD -->
       <div id="doneCard" class="card" style="display: none;">
         <div class="card-header">
-          <h2>Tutorial Complete - Phishing Detected</h2>
+          <h2>Transfer Complete</h2>
         </div>
         <div class="card-body" style="text-align: center;">
-          <h3 style="color: #e74c3c; margin-bottom: 16px;">This Was a Phishing Attempt!</h3>
-          <p style="font-size: 16px; margin-bottom: 24px; color: #232f3e;">
-            This website demonstrated common phishing tactics including suspicious URLs, urgent language, and threats of account closure.
+          <h3 style="color: #059669; margin-bottom: 16px;">Transaction Successful</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #1e3a8a;">
+            Your transfer of <strong>$5,000.00</strong> has been successfully completed.
           </p>
-          <div class="alert alert-info">
-            <strong>Red Flags You Should Have Noticed:</strong><br>
-            • Suspicious URL: "Relax In" instead of "Relax Inn"<br>
-            • Urgent threats and countdown timers<br>
-            • Requests for sensitive information<br>
-            • Poor grammar and unprofessional language<br>
-            • Suspicious transaction claims
+          <div class="alert alert-success">
+            <strong>Transaction ID:</strong> LZ-TAS-1025472501<br />
+            <strong>Confirmation sent to:</strong> your registered email address
           </div>
-          <div class="alert alert-warning" style="margin-top: 16px;">
-            <strong>Tutorial Complete!</strong> In real life, you should report such sites immediately and never provide personal information.
+          <div class="alert alert-info" style="margin-top: 16px;">
+            <strong>Tutorial Complete!</strong> This demonstrates how a legitimate banking website operates. Users should feel confident completing tasks on trusted sites.
           </div>
         </div>
       </div>
 
       <div class="footer-info">
-        Tutorial Website - URL Phishing Example<br>
+        Tutorial Website<br>
         This website is designed for the MobyPhish study tutorial
       </div>
     </main>
@@ -448,54 +443,53 @@
         const doneCard = $("doneCard");
 
         $("loginBtn").onclick = async () => {
-            const username = $("username").value.trim();
-            const password = $("password").value.trim();
-            const spinner = $("loginSpinner");
-            const btn = $("loginBtn");
+        const username = $("username").value.trim();
+        const password = $("password").value.trim();
+        const spinner = $("loginSpinner");
+        const btn = $("loginBtn");
 
-            if (!username || !password) {
-                $("loginErr").textContent = "Please enter both username and password.";
-                $("loginErr").style.display = "block";
-                return;
+        if (!username || !password) {
+            $("loginErr").textContent = "Please enter both username and password.";
+            $("loginErr").style.display = "block";
+            return;
+        }
+
+        spinner.style.display = "inline-block";
+        btn.disabled = true;
+
+        try {
+            const res = await fetch("/verify-login", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ username, password })
+            });
+            const result = await res.json();
+
+            if (res.ok && result.user_id) {
+            loginCard.style.display = "none";
+            taskCard.style.display = "block";
+            $("userDisplay").textContent = username;
+            $("loginErr").style.display = "none";
+            } else {
+            $("loginErr").textContent = result.error || "Invalid credentials.";
+            $("loginErr").style.display = "block";
             }
-
-            spinner.style.display = "inline-block";
-            btn.disabled = true;
-
-            try {
-                const res = await fetch("/verify-login", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: username, password })
-                });
-                const result = await res.json();
-
-                if (res.ok && result.user_id) {
-                loginCard.style.display = "none";
-                taskCard.style.display = "block";
-                $("userDisplay").textContent = username.split('@')[0];
-                $("loginErr").style.display = "none";
-                localStorage.setItem("study_uid", result.user_id);
-                } else {
-                $("loginErr").textContent = result.error || "Invalid credentials.";
-                $("loginErr").style.display = "block";
-                }
-            } catch (err) {
-                $("loginErr").textContent = "Login failed. Please try again.";
-                $("loginErr").style.display = "block";
-            } finally {
-                spinner.style.display = "none";
-                btn.disabled = false;
-            }
+        } catch (err) {
+            $("loginErr").textContent = "Login failed. Please try again.";
+            $("loginErr").style.display = "block";
+        } finally {
+            spinner.style.display = "none";
+            btn.disabled = false;
+        }
         };
 
-        $("verifyBtn").onclick = () => {
-          const spinner = $("verifySpinner");
-          const btn = $("verifyBtn");
+        $("confirmBtn").onclick = () => {
+          const spinner = $("confirmSpinner");
+          const btn = $("confirmBtn");
 
           spinner.style.display = "inline-block";
           btn.disabled = true;
-          btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing...';
+          btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing Transfer...';
 
           setTimeout(() => {
             taskCard.style.display = "none";
@@ -503,29 +497,14 @@
           }, 2000);
         };
 
-        
         document.addEventListener("keypress", (e) => {
           if (e.key === "Enter" && loginCard.style.display !== "none") {
             $("loginBtn").click();
           }
         });
-
-        // Countdown timer simulation
-        let timeLeft = 872; // 14:32 in seconds
-        const countdown = setInterval(() => {
-          if (timeLeft <= 0) {
-            clearInterval(countdown);
-            return;
-          }
-          timeLeft--;
-          const minutes = Math.floor(timeLeft / 60);
-          const seconds = timeLeft % 60;
-          const urgentNotice = document.querySelector('.urgent-notice');
-          if (urgentNotice && urgentNotice.textContent.includes('Time Remaining')) {
-            urgentNotice.textContent = `Time Remaining: ${minutes}:${seconds.toString().padStart(2, '0')} minutes before permanent suspension!`;
-          }
-        }, 1000);
       })();
+
+      
     </script>
   </body>
 </html>
