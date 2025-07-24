@@ -423,14 +423,14 @@
           fetch("http://localhost:5001/log", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id: Number(userId), text: msg }),
+            body: JSON.stringify({ user_id: userId, text: msg }),
           }).catch(() => {});
 
         const markLogin = () =>
           fetch("http://localhost:5001/login-event", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id: Number(userId), site_url: siteUrl }),
+            body: JSON.stringify({ user_id: userId, site_url: siteUrl }),
           }).catch(() => {});
 
         function finishTask(type) {
@@ -438,7 +438,7 @@
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-              user_id: Number(userId),
+              user_id: userId,
               site_url: siteUrl,
               elapsed_ms: Date.now() - pageStart,
               completion_type: type,

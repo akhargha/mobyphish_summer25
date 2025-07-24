@@ -46,21 +46,21 @@ def queue_random(uid: int):
          .eq("user_id", uid).is_("completed_at", "null") \
          .execute().data:
         return None
-
     pick = unseen_task_for(uid)
     if not pick:
         return None
-
     now = dt.datetime.utcnow().isoformat()
-    row = supabase.table("assignments").insert({
-        "user_id": uid,
-        "task_id": pick["task_id"],
-        "sent_at": now
-    }).execute().data[0]
-
+    
     # Get username for logging
     user_result = supabase.table("users").select("username").eq("id", uid).limit(1).execute().data
     username = user_result[0]["username"] if user_result else str(uid)
+    
+    row = supabase.table("assignments").insert({
+        "user_id": uid,
+        "task_id": pick["task_id"],
+        "sent_at": now,
+        "username": username
+    }).execute().data[0]
     
     append_log(username, f"{now}  assigned '{pick['task_name']}' ({pick['site_url']})")
     return {"assignment_id": row["assignment_id"],
