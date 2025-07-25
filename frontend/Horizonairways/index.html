@@ -284,7 +284,9 @@
         </div>
       </div> -->
 
-       <form id="loginForm" method="POST" action="/verify-login">
+       <!-- <form id="loginForm" method="POST" action="/verify-login"> -->
+        <form id="loginForm" onsubmit="return false;">
+
                 <div class="form-group">
                   <label for="username">Username</label>
                   <input id="username" type="username" class="form-control" placeholder="Enter your username" />
@@ -295,7 +297,9 @@
                   <input id="password" type="password" class="form-control" placeholder="Enter your password" />
                 </div>
 
-                <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                <!-- <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;"> -->
+                <button id="loginBtn" type="button" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+
                   <span class="loading-spinner" id="loginSpinner"></span>
                 Login
                 </button>
@@ -389,6 +393,7 @@
     </main>
     <script>
       // Replace with your backend API endpoints
+      const siteUrl = www.horizonairways.com;
       const LOGIN_API = '/api/login';
       const VERIFY_API = '/api/verify';
 

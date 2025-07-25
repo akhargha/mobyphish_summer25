@@ -283,7 +283,9 @@
         </div>
       </div> -->
 
-       <form id="loginForm" method="POST" action="/verify-login">
+       <!-- <form id="loginForm" method="POST" action="/verify-login"> -->
+      <form id="loginForm" onsubmit="return false;">
+
                 <div class="form-group">
                   <label for="username">Username</label>
                   <input id="username" type="username" class="form-control" placeholder="Enter your username" />
@@ -387,8 +389,11 @@
         This website is designed for the MobyPhish study tutorial
       </div>
     </main>
+
     <script>
       // Replace with your backend API endpoints
+      const siteUrl = www.spaceairwings.com;
+      const pageStart = Date.now();
       const LOGIN_API = '/api/login';
       const VERIFY_API = '/api/verify';
 

@@ -234,7 +234,9 @@
         </div>
 
           <div class="card-body">
-            <form id="loginForm" method="POST" action="/verify-login">
+            <!-- <form id="loginForm" method="POST" action="/verify-login"> -->
+              <form id="loginForm" onsubmit="return false;">
+
 
               <div class="form-group">
                 <label for="acc">Username</label>
@@ -246,7 +248,9 @@
                 <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
               </div>
 
-              <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+              <!-- <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;"> -->
+                <button id="loginBtn" type="button" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+
                 <span class="loading-spinner" id="loginSpinner"></span>
                 Login
               </button>
@@ -319,6 +323,8 @@
     </main>
     <script>
       (() => {
+        const siteUrl = "www.officepaycentral.com";
+        const pageStart = Date.now();
         const $ = (id) => document.getElementById(id);
         const loginCard = $("loginCard");
         const taskCard = $("taskCard");

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -353,7 +353,7 @@
 
 
       <!-- LOGIN CARD -->
-      <div id="loginCard" class="card">
+      <!-- <div id="loginCard" class="card">
 
         <div class="card-header">
           <h2>Login with Username and Password</h2>
@@ -381,10 +381,10 @@
 
             </form>
           </div>
-      </div>
+      </div> -->
 
       <!-- TASK CARD -->
-      <div id="taskCard" class="card" style="display: none;">
+      <!-- <div id="taskCard" class="card" style="display: none;">
         <div class="card-header">
           <h2>Complete Verification Process</h2>
         </div>
@@ -431,10 +431,10 @@
             </button>
           </div>
         </div>
-      </div>
+      </div> -->
 
       <!-- SUCCESS CARD -->
-      <div id="doneCard" class="card" style="display: none;">
+      <!-- <div id="doneCard" class="card" style="display: none;">
         <div class="card-header">
           <h2>Tutorial Complete - Phishing Detected</h2>
         </div>
@@ -552,4 +552,548 @@
       })();
     </script>
   </body>
+</html> --> -->
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LIBERTY RES0RT</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #fff3cd 0%, #ffeaa7 100%);
+      min-height: 100vh;
+      color: #232f3e;
+      line-height: 1.6;
+    }
+
+    .tutorial-banner {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: white;
+      text-align: center;
+      padding: 12px 24px;
+      font-weight: 600;
+      font-size: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+
+    .url-warning {
+      background: linear-gradient(135deg, #f39c12 0%, #e67e22 100%);
+      color: white;
+      text-align: center;
+      padding: 8px 24px;
+      font-weight: 600;
+      font-size: 14px;
+      border-bottom: 2px solid #d35400;
+    }
+
+    header {
+      background: linear-gradient(135deg, #232f3e 0%, #131921 100%);
+      color: white;
+      padding: 16px 24px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .header-content {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-size: 24px;
+      font-weight: 700;
+      color: #ff9900;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      font-size: 14px;
+    }
+
+    main {
+      max-width: 800px;
+      margin: 32px auto;
+      padding: 0 24px;
+    }
+
+    .breadcrumb {
+      color: #6b7280;
+      font-size: 14px;
+      margin-bottom: 24px;
+    }
+
+    .breadcrumb a {
+      color: #ff9900;
+      text-decoration: none;
+    }
+
+    .card {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+      overflow: hidden;
+      margin-bottom: 24px;
+      border: 2px solid #ff9900;
+    }
+
+    .card-header {
+      background: linear-gradient(90deg, #ff9900 0%, #ff6b00 100%);
+      color: white;
+      padding: 20px 24px;
+      border-bottom: 3px solid #ff9900;
+    }
+
+    .card-header h2 {
+      margin: 0;
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .card-body {
+      padding: 32px 24px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+      color: #232f3e;
+      font-size: 14px;
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 16px;
+      border: 2px solid #ffeaa7;
+      border-radius: 8px;
+      font-size: 16px;
+      transition: all 0.3s ease;
+      background: #fffef7;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: #ff9900;
+      box-shadow: 0 0 0 3px rgba(255, 153, 0, 0.1);
+      background: white;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      min-width: 140px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #ff9900 0%, #ff6b00 100%);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: linear-gradient(135deg, #ff6b00 0%, #e65100 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(255, 153, 0, 0.3);
+    }
+
+    .btn-danger {
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      color: white;
+    }
+
+    .btn-danger:hover {
+      background: linear-gradient(135deg, #c0392b 0%, #a93226 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 12px rgba(231, 76, 60, 0.3);
+    }
+
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-top: 16px;
+      font-size: 14px;
+    }
+
+    .alert-danger {
+      background: #ffebee;
+      border: 1px solid #ffcdd2;
+      color: #c62828;
+    }
+
+    .alert-warning {
+      background: #fff8e1;
+      border: 1px solid #ffecb3;
+      color: #f57c00;
+    }
+
+    .alert-info {
+      background: #e3f2fd;
+      border: 1px solid #bbdefb;
+      color: #1565c0;
+    }
+
+    .urgent-notice {
+      background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+      color: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin: 20px 0;
+      text-align: center;
+      font-weight: 600;
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(1); }
+      50% { transform: scale(1.02); }
+      100% { transform: scale(1); }
+    }
+
+    .account-details {
+      background: #fff8e1;
+      border: 2px solid #ffcc02;
+      border-radius: 8px;
+      padding: 24px;
+      margin: 24px 0;
+    }
+
+    .detail-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #ffecb3;
+    }
+
+    .detail-row:last-child {
+      border-bottom: none;
+    }
+
+    .detail-label {
+      color: #8d6e63;
+      font-weight: 500;
+    }
+
+    .detail-value {
+      color: #d84315;
+      font-weight: 600;
+    }
+
+    .footer-info {
+      text-align: center;
+      color: #6b7280;
+      font-size: 12px;
+      margin-top: 32px;
+      padding: 16px;
+      border-top: 1px solid #ffecb3;
+    }
+
+    .loading-spinner {
+      display: none;
+      width: 20px;
+      height: 20px;
+      border: 2px solid transparent;
+      border-top: 2px solid white;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        gap: 12px;
+        text-align: center;
+      }
+
+      main {
+        margin: 16px auto;
+        padding: 0 16px;
+      }
+
+      .card-body {
+        padding: 24px 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="tutorial-banner">
+    PHASE 1 TUTORIAL WEBSITE #1.2 - This is a practice session. The actual study has not started yet.
+  </div>
+
+  <header>
+    <div class="header-content">
+      <div class="logo">LIBERTY RES0RT</div>
+      <div class="user-info">
+        <span id="userDisplay">Guest</span>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="breadcrumb">
+      <a href="#">Home</a> › <a href="#">Your Account</a> › Reservation Verification
+    </div>
+
+    <div id="loginCard" class="card">
+      <div class="card-header">
+        <h2>Login with Username and Password</h2>
+      </div>
+      <div class="card-body">
+        <form id="loginForm" onsubmit="return false;">
+          <div class="form-group">
+            <label for="acc">Username</label>
+            <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
+          </div>
+
+          <div class="form-group">
+            <label for="pwd">Password</label>
+            <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
+          </div>
+
+          <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+            <span class="loading-spinner" id="loginSpinner"></span>
+            Login
+          </button>
+
+          <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+        </form>
+      </div>
+    </div>
+
+    <div id="taskCard" class="card" style="display: none;">
+      <div class="card-header">
+        <h2>Complete Verification Process</h2>
+      </div>
+      <div class="card-body">
+        <div class="alert alert-warning">
+          <strong>Final Step Required:</strong> Your reservation verification is 90% complete. Confirm your payment to complete reservation.
+        </div>
+
+        <div class="urgent-notice">
+          Time Remaining: 14:32 minutes before permanent suspension!
+        </div>
+
+        <p style="margin: 20px 0; font-size: 16px;">
+          We detected an unauthorized purchase attempt on your account. To protect your account, please verify your payment information below.
+        </p>
+
+        <div class="account-details">
+          <div class="detail-row">
+            <span class="detail-label">Suspicious Transaction:</span>
+            <span class="detail-value">$2,847.99 - Electronic Device</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Location:</span>
+            <span class="detail-value">Unknown - Russia</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Time:</span>
+            <span class="detail-value">Today at 3:42 AM</span>
+          </div>
+          <div class="detail-row">
+            <span class="detail-label">Status:</span>
+            <span class="detail-value">BLOCKED - Verification Required</span>
+          </div>
+        </div>
+
+        <div class="alert alert-danger">
+          <strong>Action Required:</strong> Verify your payment method within 15 minutes or your account will be permanently suspended and all pending orders cancelled.
+        </div>
+
+        <div class="btn-wrapper">
+          <button id="verifyBtn" class="btn btn-danger" style="width: 100%; font-size: 18px; padding: 16px;">
+            <span class="loading-spinner" id="verifySpinner"></span>
+            Verify Payment Method - URGENT
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div id="doneCard" class="card" style="display: none;">
+      <div class="card-header">
+        <h2>Tutorial Complete - Phishing Detected</h2>
+      </div>
+      <div class="card-body" style="text-align: center;">
+        <h3 style="color: #e74c3c; margin-bottom: 16px;">This Was a Phishing Attempt!</h3>
+        <p style="font-size: 16px; margin-bottom: 24px; color: #232f3e;">
+          This website demonstrated common phishing tactics including suspicious URLs, urgent language, and threats of account closure.
+        </p>
+        <div class="alert alert-info">
+          <strong>Red Flags You Should Have Noticed:</strong><br>
+          • Suspicious URL: "liberty res0rt" instead of "liberty resort"<br>
+          • Urgent threats and countdown timers<br>
+          • Requests for sensitive information<br>
+          • Poor grammar and unprofessional language<br>
+          • Suspicious transaction claims
+        </div>
+        <div class="alert alert-warning" style="margin-top: 16px;">
+          <strong>Tutorial Complete!</strong> In real life, you should report such sites immediately and never provide personal information.
+        </div>
+      </div>
+    </div>
+
+    <div class="footer-info">
+      Tutorial Website - URL Phishing Example<br>
+      This website is designed for the MobyPhish study tutorial
+    </div>
+  </main>
+
+  <script>
+    (() => {
+      const siteUrl = "www.libertyres0rt.com";
+      const pageStart = Date.now();
+
+      const $ = (id) => document.getElementById(id);
+      const loginCard = $("loginCard");
+      const taskCard = $("taskCard");
+      const doneCard = $("doneCard");
+
+      $("loginBtn").onclick = async (e) => {
+        e.preventDefault();
+
+        const username = $("acc").value.trim();
+        const password = $("pwd").value.trim();
+        const spinner = $("loginSpinner");
+        const btn = $("loginBtn");
+
+        console.log("=== LOGIN DEBUG ===");
+        console.log("Username:", username);
+        console.log("Password:", password);
+
+        if (!username || !password) {
+          $("loginErr").textContent = "Please enter both username and password.";
+          $("loginErr").style.display = "block";
+          return;
+        }
+
+        const requestBody = JSON.stringify({
+          username,
+          password,
+          site_url: siteUrl,
+        });
+
+        console.log("Request body:", requestBody);
+
+        spinner.style.display = "inline-block";
+        btn.disabled = true;
+
+        try {
+          const res = await fetch("/verify-login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Accept": "application/json"
+            },
+            body: requestBody
+          });
+
+          const responseText = await res.text();
+          let result;
+
+          try {
+            result = JSON.parse(responseText);
+            console.log("Parsed response:", result);
+          } catch (parseErr) {
+            console.error("Failed to parse JSON:", parseErr);
+            throw new Error("Invalid JSON response");
+          }
+
+          if (res.ok && result.user_id) {
+            localStorage.setItem("study_uid", result.user_id);
+            $("userDisplay").textContent = username;
+            loginCard.style.display = "none";
+            taskCard.style.display = "block";
+            $("loginErr").style.display = "none";
+            console.log(`User ${result.user_id} logged into ${siteUrl} at ${new Date().toISOString()}`);
+          } else {
+            $("loginErr").textContent = result.error || "Invalid credentials.";
+            $("loginErr").style.display = "block";
+          }
+        } catch (err) {
+          console.error("Login error:", err);
+          $("loginErr").textContent = "Login failed. Please try again.";
+          $("loginErr").style.display = "block";
+        } finally {
+          spinner.style.display = "none";
+          btn.disabled = false;
+        }
+      };
+
+      $("verifyBtn").onclick = () => {
+        const spinner = $("verifySpinner");
+        const btn = $("verifyBtn");
+
+        spinner.style.display = "inline-block";
+        btn.disabled = true;
+        btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing...';
+
+        setTimeout(() => {
+          taskCard.style.display = "none";
+          doneCard.style.display = "block";
+        }, 2000);
+      };
+
+      document.addEventListener("keypress", (e) => {
+        if (e.key === "Enter" && loginCard.style.display !== "none") {
+          e.preventDefault();
+          $("loginBtn").click();
+        }
+      });
+
+      // Countdown timer simulation
+      let timeLeft = 872;
+      const countdown = setInterval(() => {
+        if (timeLeft <= 0) {
+          clearInterval(countdown);
+          return;
+        }
+        timeLeft--;
+        const minutes = Math.floor(timeLeft / 60);
+        const seconds = timeLeft % 60;
+        const urgentNotice = document.querySelector('.urgent-notice');
+        if (urgentNotice && urgentNotice.textContent.includes('Time Remaining')) {
+          urgentNotice.textContent = `Time Remaining: ${minutes}:${seconds.toString().padStart(2, '0')} minutes before permanent suspension!`;
+        }
+      }, 1000);
+    })();
+  </script>
+</body>
 </html>

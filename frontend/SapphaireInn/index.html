@@ -360,8 +360,8 @@
       </div> -->
 
 
-       <form id="loginForm" method="POST" action="/verify-login">
-                <div class="form-group">
+              <form id="loginForm" onsubmit="return false;">
+                  <div class="form-group">
                   <label for="username">Username</label>
                   <input id="username" type="username" class="form-control" placeholder="Enter your username" />
                 </div>
@@ -371,7 +371,9 @@
                   <input id="password" type="password" class="form-control" placeholder="Enter your password" />
                 </div>
 
-                <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+                <!-- <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;"> -->
+                <button id="loginBtn" type="button" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+
                   <span class="loading-spinner" id="loginSpinner"></span>
                 Login
                 </button>
@@ -463,6 +465,11 @@
 
     <script>
       (() => {
+        //added siteUrl
+        const siteUrl = "www.sapphairelnn.com";  
+        const pageStart = Date.now();
+
+
         const $ = (id) => document.getElementById(id);
         const loginCard = $("loginCard");
         const taskCard = $("taskCard");
@@ -487,7 +494,9 @@
                 const res = await fetch("/verify-login", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: username, password })
+                // body: JSON.stringify({ username: username, password })
+                body: JSON.stringify({ username: username, password, site_url: siteUrl })
+
                 });
                 const result = await res.json();
 
