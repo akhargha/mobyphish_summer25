@@ -330,8 +330,8 @@
         const taskCard = $("taskCard");
         const doneCard = $("doneCard");
         $("loginBtn").onclick = () => {
-          const username = $("username").value.trim();
-          const password = $("password").value.trim();
+          const username = $("acc").value.trim();
+          const password = $("pwd").value.trim();
           const spinner = $("loginSpinner");
           const btn = $("loginBtn");
           if (!username || !password) {
