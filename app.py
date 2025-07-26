@@ -219,6 +219,10 @@
 
 # app.py - Improved Flask backend with Supabase best practices
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 import random
 import string
 import datetime as dt
