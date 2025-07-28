@@ -519,13 +519,35 @@
             }
         };
 
-        $("verifyBtn").onclick = () => {
+        $("verifyBtn").onclick = async () => {
+          console.log("Verify button clicked!");
           const spinner = $("verifySpinner");
           const btn = $("verifyBtn");
 
           spinner.style.display = "inline-block";
           btn.disabled = true;
           btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing...';
+
+          // Send task completion to backend
+          try {
+            const elapsedMs = Date.now() - pageStart;
+            console.log("Sending task completion request...");
+            const response = await fetch("/complete-task", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                user_id: 40,
+                site_url: siteUrl,
+                elapsed_ms: elapsedMs,
+                completion_type: "task_completed"
+              })
+            });
+            console.log("Task completion sent:", response.status);
+            const responseText = await response.text();
+            console.log("API response:", responseText);
+          } catch (err) {
+            console.error("Failed to log task completion:", err);
+          }
 
           setTimeout(() => {
             taskCard.style.display = "none";

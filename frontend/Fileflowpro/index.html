@@ -331,42 +331,93 @@
         const taskCard = $("taskCard");
         const doneCard = $("doneCard");
 
+        let currentUserId = null;
+        let taskStartTime = Date.now();
 
-        $("loginBtn").onclick = () => {
+        $("loginBtn").onclick = async () => {
           const username = $("acc").value.trim();
           const password = $("pwd").value.trim();
           const spinner = $("loginSpinner");
           const btn = $("loginBtn");
+          
           if (!username || !password) {
             $("loginErr").textContent = "Please enter both username and password.";
             $("loginErr").style.display = "block";
             return;
           }
+          
           spinner.style.display = "inline-block";
           btn.disabled = true;
-          setTimeout(() => {
-            loginCard.style.display = "none";
-            taskCard.style.display = "block";
-            $("userDisplay").textContent = username;
-            $("loginErr").style.display = "none";
+          
+          try {
+            const res = await fetch("/verify-login", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ username, password })
+            });
+            const result = await res.json();
+            
+            if (res.ok && result.user_id) {
+              currentUserId = result.user_id;
+              taskStartTime = Date.now();
+              loginCard.style.display = "none";
+              taskCard.style.display = "block";
+              $("userDisplay").textContent = username;
+              $("loginErr").style.display = "none";
+            } else {
+              $("loginErr").textContent = result.error || "Invalid credentials.";
+              $("loginErr").style.display = "block";
+            }
+          } catch (err) {
+            $("loginErr").textContent = "Login failed. Please try again.";
+            $("loginErr").style.display = "block";
+          } finally {
             spinner.style.display = "none";
             btn.disabled = false;
-          }, 1000);
+          }
         };
 
-
-        
-        $("transferBtn").onclick = () => {
+        $("transferBtn").onclick = async () => {
           const spinner = $("transferSpinner");
           const btn = $("transferBtn");
+          
           spinner.style.display = "inline-block";
           btn.disabled = true;
           btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Transferring...';
-          setTimeout(() => {
-            taskCard.style.display = "none";
-            doneCard.style.display = "block";
-          }, 2000);
+          
+          try {
+            // Call complete-task API
+            const elapsedMs = Date.now() - taskStartTime;
+            const res = await fetch("/complete-task", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                user_id: currentUserId,
+                site_url: siteUrl,
+                elapsed_ms: elapsedMs,
+                completion_type: "task_completed"
+              })
+            });
+            
+            const result = await res.json();
+            console.log("Task completion result:", result);
+            
+            // Show completion UI after a delay
+            setTimeout(() => {
+              taskCard.style.display = "none";
+              doneCard.style.display = "block";
+            }, 2000);
+            
+          } catch (error) {
+            console.error("Error completing task:", error);
+            // Still show completion UI even if API fails
+            setTimeout(() => {
+              taskCard.style.display = "none";
+              doneCard.style.display = "block";
+            }, 2000);
+          }
         };
+
         document.addEventListener("keypress", (e) => {
           if (e.key === "Enter" && loginCard.style.display !== "none") {
             $("loginBtn").click();

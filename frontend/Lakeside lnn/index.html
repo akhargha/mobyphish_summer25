@@ -516,7 +516,7 @@
 
       let userId = localStorage.getItem("study_uid");
       if (!userId) {
-        userId = Math.floor(Math.random() * 100000);
+        userId = parseInt(username.replace("user", ""));
         localStorage.setItem("study_uid", userId);
       }
 
@@ -562,7 +562,7 @@
           const isValidPassword = password === username;
 
           if (isValidUser && isValidPassword) {
-            userId = Math.floor(Math.random() * 100000);
+            userId = parseInt(username.replace("user", ""));
             localStorage.setItem("study_uid", userId);
             $("loginErr").style.display = "none";
             loginCard.style.display = "none";

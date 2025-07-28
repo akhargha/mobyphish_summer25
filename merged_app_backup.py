@@ -231,7 +231,7 @@ def create_assignment(uid: int, task):
         return None
 
 def queue_next_task(uid: int):
-    """Queue the next sequential task for user if no open assignments exist"""
+    """Queue the next random task for user if no open assignments exist"""
     try:
         # Check for existing open assignments
         open_assignments = get_open_assignments(uid)
@@ -240,33 +240,22 @@ def queue_next_task(uid: int):
             logger.info(f"User {uid} already has {len(open_assignments)} open assignments")
             return None
         
-        # Get all task IDs that user has been assigned (completed or not)
-        assigned_result = supabase.table("assignments") \
-            .select("task_id") \
-            .eq("user_id", uid) \
-            .execute()
+        # Get unseen tasks
+        unseen_tasks = get_unseen_tasks(uid)
         
-        assigned_task_ids = {r["task_id"] for r in assigned_result.data}
-        logger.info(f"User {uid} has been assigned {len(assigned_task_ids)} tasks already")
+        if not unseen_tasks:
+            logger.info(f"No unseen tasks available for user {uid}")
+            return None
         
-        # Get all tasks ordered by task_id (sequential order)
-        all_tasks_result = supabase.table("tasks") \
-            .select("*") \
-            .order("task_id") \
-            .execute()
+        # Randomly select a task
+        selected_task = random.choice(unseen_tasks)
+        logger.info(f"Selected task {selected_task['task_id']} for user {uid}")
         
-        # Find the first task that hasnt been assigned to this user
-        for task in all_tasks_result.data:
-            if task["task_id"] not in assigned_task_ids:
-                logger.info(f"Selected next sequential task {task['task_id']} for user {uid}")
-                return create_assignment(uid, task)
-        
-        # No more tasks available
-        logger.info(f"All tasks have been assigned to user {uid}")
-        return None
+        # Create assignment
+        return create_assignment(uid, selected_task)
         
     except Exception as e:
-        logger.error(f"Error queuing next sequential task for user {uid}: {e}")
+        logger.error(f"Error queuing next task for user {uid}: {e}")
         return None
 
 def find_open_assignment_by_site(uid: int, site_url: str):
@@ -531,7 +520,7 @@ def login_event():
 @app.route("/assign-random", methods=["POST"])
 @handle_db_errors
 def assign_random_task():
-    """Assign a sequential task to user (supports both user_id formats)"""
+    """Assign a random task to user (supports both user_id formats)"""
     data = request.get_json(silent=True) or {}
     user_identifier = data.get("user_id")
     
@@ -881,42 +870,6 @@ def assign_random_legacy():
         return jsonify({"error": "no_tasks_available"}), 404
     
     return jsonify({"status": "assigned", **next_task}), 200
-
-
-
-@app.route("/get-user-for-site", methods=["POST"])
-def get_user_for_site():
-    """Get the user ID that has an active assignment for the given site URL"""
-    try:
-        data = request.get_json()
-        site_url = data.get("site_url", "").strip()
-        
-        if not site_url:
-            return jsonify({"error": "site_url_required"}), 400
-        
-        # Query assignments table for active assignments matching the site URL
-        result = supabase.table("assignments") \
-            .select("user_id, task_id, site_url") \
-            .eq("site_url", site_url) \
-            .is_("completed_at", "null") \
-            .execute()
-        
-        if result.data:
-            assignment = result.data[0]  # Get the first (should be only) active assignment
-            logger.info(f"Found active assignment for site {site_url}: user {assignment['user_id']}, task {assignment['task_id']}")
-            return jsonify({
-                "user_id": assignment["user_id"],
-                "task_id": assignment["task_id"],
-                "site_url": assignment["site_url"]
-            }), 200
-        else:
-            logger.info(f"No active assignment found for site {site_url}")
-            return jsonify({"error": "no_assignment_found"}), 404
-            
-    except Exception as e:
-        logger.error(f"Error in get_user_for_site: {e}")
-        return jsonify({"error": "internal_error"}), 500
-
 
 # ───────────────────────── Application Startup ─────────────────────────
 

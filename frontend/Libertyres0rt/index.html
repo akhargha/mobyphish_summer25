@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
@@ -469,6 +469,8 @@
         const loginCard = $("loginCard");
         const taskCard = $("taskCard");
         const doneCard = $("doneCard");
+\n        let currentUserId = null;
+        let taskStartTime = Date.now();
 
         $("loginBtn").onclick = async () => {
             const username = $("username").value.trim();
@@ -494,6 +496,8 @@
                 const result = await res.json();
 
                 if (res.ok && result.user_id) {
+              currentUserId = result.user_id;
+              taskStartTime = Date.now();
                 loginCard.style.display = "none";
                 taskCard.style.display = "block";
                 $("userDisplay").textContent = username.split('@')[0];
@@ -512,7 +516,7 @@
             }
         };
 
-        $("verifyBtn").onclick = () => {
+        $("verifyBtn").onclick = async () => {
           const spinner = $("verifySpinner");
           const btn = $("verifyBtn");
 
@@ -520,10 +524,37 @@
           btn.disabled = true;
           btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing...';
 
-          setTimeout(() => {
-            taskCard.style.display = "none";
-            doneCard.style.display = "block";
-          }, 2000);
+          try {
+            // Call complete-task API
+            const elapsedMs = Date.now() - taskStartTime;
+            const res = await fetch("/complete-task", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                user_id: currentUserId,
+                site_url: "www.libertyres0rt.com",
+                elapsed_ms: elapsedMs,
+                completion_type: "task_completed"
+              })
+            });
+
+            const result = await res.json();
+            console.log("Task completion result:", result);
+
+            // Show completion UI after a delay
+            setTimeout(() => {
+              taskCard.style.display = "none";
+              doneCard.style.display = "block";
+            }, 2000);
+
+          } catch (error) {
+            console.error("Error completing task:", error);
+            // Still show completion UI even if API fails
+            setTimeout(() => {
+              taskCard.style.display = "none";
+              doneCard.style.display = "block";
+            }, 2000);
+          }
         };
 
         
@@ -985,6 +1016,8 @@
       const loginCard = $("loginCard");
       const taskCard = $("taskCard");
       const doneCard = $("doneCard");
+\n        let currentUserId = null;
+        let taskStartTime = Date.now();
 
       $("loginBtn").onclick = async (e) => {
         e.preventDefault();
@@ -1037,6 +1070,8 @@
           }
 
           if (res.ok && result.user_id) {
+              currentUserId = result.user_id;
+              taskStartTime = Date.now();
             localStorage.setItem("study_uid", result.user_id);
             $("userDisplay").textContent = username;
             loginCard.style.display = "none";
@@ -1057,19 +1092,46 @@
         }
       };
 
-      $("verifyBtn").onclick = () => {
-        const spinner = $("verifySpinner");
-        const btn = $("verifyBtn");
+        $("verifyBtn").onclick = async () => {
+          const spinner = $("verifySpinner");
+          const btn = $("verifyBtn");
 
-        spinner.style.display = "inline-block";
-        btn.disabled = true;
-        btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing...';
+          spinner.style.display = "inline-block";
+          btn.disabled = true;
+          btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing...';
 
-        setTimeout(() => {
-          taskCard.style.display = "none";
-          doneCard.style.display = "block";
-        }, 2000);
-      };
+          try {
+            // Call complete-task API
+            const elapsedMs = Date.now() - taskStartTime;
+            const res = await fetch("/complete-task", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                user_id: currentUserId,
+                site_url: "www.libertyres0rt.com",
+                elapsed_ms: elapsedMs,
+                completion_type: "task_completed"
+              })
+            });
+
+            const result = await res.json();
+            console.log("Task completion result:", result);
+
+            // Show completion UI after a delay
+            setTimeout(() => {
+              taskCard.style.display = "none";
+              doneCard.style.display = "block";
+            }, 2000);
+
+          } catch (error) {
+            console.error("Error completing task:", error);
+            // Still show completion UI even if API fails
+            setTimeout(() => {
+              taskCard.style.display = "none";
+              doneCard.style.display = "block";
+            }, 2000);
+          }
+        };
 
       document.addEventListener("keypress", (e) => {
         if (e.key === "Enter" && loginCard.style.display !== "none") {

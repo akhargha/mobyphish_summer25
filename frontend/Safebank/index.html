@@ -490,7 +490,54 @@
         }
         };
 
+        // Enhanced confirm button handler with better event binding
+        document.addEventListener("DOMContentLoaded", function() {
+          const confirmBtn = document.getElementById("confirmBtn");
+          if (confirmBtn) {
+            console.log("Confirm button found, adding event listener");
+            confirmBtn.addEventListener("click", async function() {
+              console.log("Confirm button clicked!");
+              const spinner = document.getElementById("confirmSpinner");
+              const btn = document.getElementById("confirmBtn");
+
+              spinner.style.display = "inline-block";
+              btn.disabled = true;
+              btn.innerHTML = '<span class="loading-spinner" style="display: inline-block;"></span>Processing Transfer...';
+
+              // Send task completion to backend
+              try {
+                const elapsedMs = Date.now() - pageStart;
+                console.log("Sending task completion request...");
+                const response = await fetch("/complete-task", {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({
+                    user_id: 40,
+                    site_url: siteUrl,
+                    elapsed_ms: elapsedMs,
+                    completion_type: "task_completed"
+                  })
+                });
+                console.log("Task completion sent:", response.status);
+                const responseText = await response.text();
+                console.log("API response:", responseText);
+              } catch (err) {
+                console.error("Failed to log task completion:", err);
+              }
+
+              setTimeout(() => {
+                taskCard.style.display = "none";
+                doneCard.style.display = "block";
+              }, 2000);
+            });
+          } else {
+            console.error("Confirm button not found!");
+          }
+        });
+
         $("confirmBtn").onclick = () => {
+          // Fallback in case addEventListener fails
+          console.log("Fallback onclick triggered");
           const spinner = $("confirmSpinner");
           const btn = $("confirmBtn");
 
