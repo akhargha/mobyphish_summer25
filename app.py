@@ -5,7 +5,8 @@ from flask_cors import CORS
 from supabase import create_client, Client
 from OpenSSL import SSL
 import socket
-from zoneinfo import ZoneInfo  # ← NEW
+from zoneinfo import ZoneInfo
+from urllib.parse import urlparse  # ← NEW
 
 app = Flask(__name__)
 CORS(app, origins="*", methods=["GET", "POST", "OPTIONS"],
@@ -17,7 +18,26 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # ───────────────────────── config ─────────────────────────
 HARDCODED_USERNAME = 'user27'
-EST_TZ = ZoneInfo("America/New_York")   # ← single source of truth
+EST_TZ = ZoneInfo("America/New_York")
+
+# ── Hardcoded study stage (1, 2, or 3)
+STUDY_STAGE = 1  # ← change to 2 or 3 when needed
+
+# Blocklists by stage — hostnames only (no scheme). Lowercase.
+STAGE_BLOCKLISTS = {
+    1: {
+        "citytrust.com",
+        "cltytrust.com",
+        "citytrustbank.com",
+    },
+    2: {
+        # ← fill with hostnames to block during stage 2
+        # e.g., "example.com", "foo.bar"
+    },
+    3: {
+        # ← fill with hostnames to block during stage 3
+    },
+}
 
 def current_username() -> str:
     return HARDCODED_USERNAME
@@ -25,6 +45,32 @@ def current_username() -> str:
 def now_est_iso() -> str:
     """Current time in America/New_York as ISO-8601 with offset."""
     return dt.datetime.now(EST_TZ).isoformat(timespec="seconds")
+
+# ───────────────────────── URL helpers (stage filtering) ─────────────────────────
+def normalize_host(url_or_host: str) -> str:
+    """
+    Return the hostname for equality checks.
+    Accepts bare domains ('example.com') or URLs ('https://example.com/path').
+    """
+    if not isinstance(url_or_host, str):
+        return ""
+    s = url_or_host.strip().lower()
+    if not s:
+        return ""
+    # If it's already a bare hostname, urlparse would put it in 'path'.
+    # Prepend scheme so hostname gets parsed reliably.
+    if "://" not in s:
+        s = "https://" + s
+    try:
+        host = urlparse(s).hostname or ""
+        return host.lstrip(".")
+    except Exception:
+        return url_or_host.strip().lower().lstrip(".")
+
+def is_blocked_for_stage(site_url: str) -> bool:
+    blockset = STAGE_BLOCKLISTS.get(STUDY_STAGE, set())
+    host = normalize_host(site_url)
+    return host in blockset
 
 # ───────────────────────── helpers ─────────────────────────
 def append_log(uid: str, line: str):
@@ -43,11 +89,18 @@ def get_user_id(username: str):
     return result[0]["id"] if result else None
 
 def unseen_task_for(uid: int):
+    """Get a random unseen, stage-allowed task for the user"""
     seen = {r["task_id"] for r in supabase.table("assignments")
                                     .select("task_id")
                                     .eq("user_id", uid).execute().data}
-    pool = [t for t in supabase.table("tasks").select("*").execute().data
-            if t["task_id"] not in seen]
+    all_tasks = supabase.table("tasks").select("*").execute().data
+
+    # Exclude previously seen AND stage-blocked by hostname
+    pool = [
+        t for t in all_tasks
+        if t["task_id"] not in seen and not is_blocked_for_stage(t.get("site_url", ""))
+    ]
+
     return random.choice(pool) if pool else None
 
 def queue_random(uid: int, username: str | None = None):
@@ -68,7 +121,7 @@ def queue_random(uid: int, username: str | None = None):
     row = supabase.table("assignments").insert({
         "user_id": uid,
         "task_id": pick["task_id"],
-        "sent_at": now_est_iso(),            # ← EST ISO
+        "sent_at": now_est_iso(),            # EST ISO
         "username": username
     }).execute().data[0]
 
@@ -171,7 +224,7 @@ def complete_task():
         return jsonify({"error": "no_pending_assignment"}), 409
 
     supabase.table("assignments").update({
-            "completed_at": now_est_iso(),     # ← EST ISO
+            "completed_at": now_est_iso(),     # EST ISO
             "time_taken":   f"{elapsed/1000:.1f}s",
             "completion_type": ctype}) \
         .eq("assignment_id", row["assignment_id"]).execute()
@@ -220,8 +273,11 @@ def certificate_chain(hostname):
 # ───────────────────────── sanity ─────────────────────────
 @app.route("/test")
 def test():
-    return jsonify({"est": now_est_iso(),
-                    "user": current_username()})
+    return jsonify({
+        "est": now_est_iso(),
+        "user": current_username(),
+        "study_stage": STUDY_STAGE
+    })
 
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5001, debug=True)
