@@ -6,7 +6,7 @@ from supabase import create_client, Client
 from OpenSSL import SSL
 import socket
 from zoneinfo import ZoneInfo
-from urllib.parse import urlparse  # ← NEW
+from urllib.parse import urlparse
 
 app = Flask(__name__)
 CORS(app, origins="*", methods=["GET", "POST", "OPTIONS"],
@@ -21,22 +21,13 @@ HARDCODED_USERNAME = 'user27'
 EST_TZ = ZoneInfo("America/New_York")
 
 # ── Hardcoded study stage (1, 2, or 3)
-STUDY_STAGE = 1  # ← change to 2 or 3 when needed
+STUDY_STAGE = 3 # ← change to 2 or 3 when needed
 
 # Blocklists by stage — hostnames only (no scheme). Lowercase.
 STAGE_BLOCKLISTS = {
-    1: {
-        "citytrust.com",
-        "cltytrust.com",
-        "citytrustbank.com",
-    },
-    2: {
-        # ← fill with hostnames to block during stage 2
-        # e.g., "example.com", "foo.bar"
-    },
-    3: {
-        # ← fill with hostnames to block during stage 3
-    },
+    1: {"citytrust.com", "cltytrust.com", "citytrustbank.com"},
+    2: {"citytrust.com", "cltytrust.com", "citytrustbank.com"}, # fill as needed
+    3: {"citytrust.com", "cltytrust.com", "citytrustbank.com"},  # fill as needed
 }
 
 def current_username() -> str:
@@ -57,8 +48,6 @@ def normalize_host(url_or_host: str) -> str:
     s = url_or_host.strip().lower()
     if not s:
         return ""
-    # If it's already a bare hostname, urlparse would put it in 'path'.
-    # Prepend scheme so hostname gets parsed reliably.
     if "://" not in s:
         s = "https://" + s
     try:
@@ -88,20 +77,117 @@ def get_user_id(username: str):
     result = supabase.table("users").select("id").eq("username", username).limit(1).execute().data
     return result[0]["id"] if result else None
 
+# ───────────────────────── stage quotas & selection ─────────────────────────
+def stage_quota(stage: int) -> dict:
+    """
+    CUMULATIVE quotas by stage.
+    Stage 1 increments:  regular=5, url=2, email=2, cert=1  -> total 10
+    Stage 2 increments:  regular=5, url=2, email=2, cert=1  -> cumulative 20 (10 new across all cats)
+    Stage 3 increments:  regular=5, url=2, email=4, cert=1  -> cumulative 32 (12 new across all cats)
+    """
+    increments = {
+        1: {"regular": 5, "url": 2, "email": 2, "cert": 1},
+        2: {"regular": 5, "url": 2, "email": 2, "cert": 1},
+        3: {"regular": 5, "url": 2, "email": 4, "cert": 1},
+    }
+    total = {"regular": 0, "url": 0, "email": 0, "cert": 0}
+    for s in range(1, max(1, min(3, stage)) + 1):
+        inc = increments[s]
+        total["regular"] += inc["regular"]
+        total["url"]     += inc["url"]
+        total["email"]   += inc["email"]
+        total["cert"]    += inc["cert"]
+    return total
+
+def classify_task(task: dict) -> str | None:
+    """
+    Map a task row to a category: 'regular' | 'url' | 'email' | 'cert' | None.
+    """
+    is_phish = bool(task.get("is_phishing"))
+    ptype = (task.get("phishing_type") or "").strip().upper()
+    if not is_phish:
+        return "regular"
+    if ptype == "URL":
+        return "url"
+    if ptype == "EMAIL":
+        return "email"
+    if ptype == "CERT":
+        return "cert"
+    return None
+
+def task_matches_stage_category(task: dict, category: str) -> bool:
+    """
+    Apply blocklist rules per category for current stage:
+      - regular/url/email: site_url must NOT be in blocklist
+      - cert: site_url MUST be in blocklist
+    """
+    site = task.get("site_url", "")
+    blocked = is_blocked_for_stage(site)
+    if category == "cert":
+        return blocked
+    else:
+        # regular/url/email
+        return not blocked
+
+def get_user_seen_task_ids(uid: int) -> set[int]:
+    rows = supabase.table("assignments").select("task_id") \
+        .eq("user_id", uid).execute().data
+    return {r["task_id"] for r in rows if r.get("task_id") is not None}
+
+def counts_for_stage(uid: int) -> dict:
+    """
+    Count how many assignments (already assigned) for the current stage buckets.
+    Uses current stage blocklist rules to decide which assigned tasks count
+    toward current stage quotas. This lets you flip STUDY_STAGE later and
+    have fresh counts.
+    """
+    # Pull assignments joined to tasks
+    rows = supabase.table("assignments") \
+        .select("task_id, tasks(is_phishing, phishing_type, site_url)") \
+        .eq("user_id", uid).execute().data
+
+    counts = {"regular": 0, "url": 0, "email": 0, "cert": 0}
+    for r in rows:
+        t = r.get("tasks") or {}
+        cat = classify_task(t)
+        if cat and task_matches_stage_category(t, cat):
+            counts[cat] += 1
+    return counts
+
 def unseen_task_for(uid: int):
-    """Get a random unseen, stage-allowed task for the user"""
-    seen = {r["task_id"] for r in supabase.table("assignments")
-                                    .select("task_id")
-                                    .eq("user_id", uid).execute().data}
+    """
+    Return ONE task that advances current stage quotas.
+    Duplicates are allowed: we do NOT filter out tasks previously assigned.
+    Selection order:
+      - Choose a category that still has remaining quota (random among remaining categories)
+      - From that category, pick randomly from tasks that satisfy stage rules
+      - If none available in that category, try other remaining categories
+    """
+    desired = stage_quota(STUDY_STAGE)
+    current = counts_for_stage(uid)
+    remaining = {k: max(desired[k] - current.get(k, 0), 0) for k in desired}
+
+    if sum(remaining.values()) == 0:
+        return None
+
     all_tasks = supabase.table("tasks").select("*").execute().data
 
-    # Exclude previously seen AND stage-blocked by hostname
-    pool = [
-        t for t in all_tasks
-        if t["task_id"] not in seen and not is_blocked_for_stage(t.get("site_url", ""))
-    ]
+    def pool_for(category: str) -> list[dict]:
+        return [
+            t for t in all_tasks
+            if classify_task(t) == category
+            and task_matches_stage_category(t, category)
+        ]
 
-    return random.choice(pool) if pool else None
+    categories = [k for k, v in remaining.items() if v > 0]
+    random.shuffle(categories)
+
+    for cat in categories:
+        pool = pool_for(cat)
+        if pool:
+            return random.choice(pool)
+
+    return None
 
 def queue_random(uid: int, username: str | None = None):
     """Queue a random task for the user if no assignment is pending"""
@@ -199,6 +285,7 @@ def assign_random():
 
     nxt = queue_random(uid, username=username)
     if not nxt:
+        # To preserve compatibility, keep the same error for "no more tasks" or "pending exists".
         return jsonify({"error": "pending_assignment_exists"}), 409
     return jsonify({"status": "assigned", **nxt}), 200
 
