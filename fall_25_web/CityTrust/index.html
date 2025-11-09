@@ -277,30 +277,7 @@
         <a href="#">Dashboard</a> › <a href="#">Pending Approvals</a> › Payment Authorization
       </div>
 
-      <!-- LOGIN CARD -->
-      <!-- <div id="loginCard" class="card">
-        <div class="card-header">
-          <h2>Login with Username and Password</h2>
-        </div>
-        <div class="card-body">
-          <div class="form-group">
-            <label for="acc">Username</label>
-            <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
-          </div>
-
-          <div class="form-group">
-            <label for="pwd">Password</label>
-            <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
-          </div>
-
-          <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
-            <span class="loading-spinner" id="loginSpinner"></span>
-            Login
-          </button>
-
-          <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
-        </div>
-      </div> -->
+     
       
       <!-- LOGIN CARD -->
       <div id="loginCard" class="card">
@@ -334,7 +311,7 @@
       </div>
 
 
-      <!-- TASK CARD -->
+          
       <div id="taskCard" class="card" style="display: none;">
         <div class="card-header">
           <h2>Pending Payment Approval</h2>
@@ -343,47 +320,47 @@
           <div class="alert alert-success">
             <strong>Authentication Successful</strong> - You are now authorized to approve business payments.
           </div>
-
           <p style="margin: 20px 0; font-size: 16px;">
             A <strong>business payment</strong> requires your approval before processing. Please review the payment details below and approve if accurate.
           </p>
-
           <div class="transaction-details">
             <div class="transaction-row">
               <span class="transaction-label">Payment Type:</span>
               <span class="transaction-value">ACH Business Payment</span>
             </div>
-            <div class="transaction-row">
-              <span class="transaction-label">Payee:</span>
-              <span class="transaction-value">Metro Office Supplies</span>
-            </div>
+
             <div class="transaction-row">
               <span class="transaction-label">Account Number:</span>
               <span class="transaction-value">445632187</span>
             </div>
-            <div class="transaction-row">
-              <span class="transaction-label">Reference:</span>
-              <span class="transaction-value">PAY-2025-0702-MOS</span>
-            </div>
-            <div class="transaction-row">
-              <span class="transaction-label">Payment Purpose:</span>
-              <span class="transaction-value">Office Equipment Purchase</span>
-            </div>
-            <div class="transaction-row">
-              <span class="transaction-label">Requested By:</span>
-              <span class="transaction-value">Operations Department</span>
-            </div>
+
             <div class="transaction-row">
               <span class="transaction-label">Amount:</span>
               <span class="transaction-value amount-highlight">$3,420.00</span>
             </div>
           </div>
-
           <div class="btn-wrapper">
             <button id="approveBtn" class="btn btn-success" style="width: 100%; font-size: 18px; padding: 16px;">
               <span class="loading-spinner" id="approveSpinner"></span>
               Approve & Process Payment
             </button>
+          </div>
+        </div>
+      </div>
+
+      <div id="doneCard" class="card" style="display: none;">
+        <div class="card-header">
+          <h2>Payment Approved Successfully</h2>
+        </div>
+        <div class="card-body" style="text-align: center;">
+          <h3 style="color: #059669; margin-bottom: 16px;">Payment Authorized</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #14532d;">
+            The business payment of <strong>$3,420.00</strong> has been successfully approved and will be processed within 1–2 business days.
+          </p>
+          <div class="alert alert-success">
+            
+            <h3>Return to  Mobymail to continue</h3>
+
           </div>
         </div>
       </div>
@@ -428,21 +405,21 @@
         }
 
         const log = (msg) =>
-          fetch("/log", {
+          fetch("http://127.0.0.1:5001/log", {                             //hardocding port for local testing. remove when hosting
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ user_id: Number(userId), text: msg }),
           }).catch(() => {});
 
         const markLogin = () =>
-          fetch("/login-event", {
+          fetch("http://127.0.0.1:5001/login-event", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ user_id: Number(userId), site_url: siteUrl }),
           }).catch(() => {});
 
         function finishTask(type) {
-          fetch("/complete-task", {
+          fetch("http://127.0.0.1:5001/complete-task", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -464,7 +441,7 @@
           btn.disabled = true;
 
           try {
-            const res = await fetch("/verify-login", {
+            const res = await fetch("http://127.0.0.1:5001/verify-login", {
               method: "POST",
               headers: { "Content-Type": "application/json" },
               body: JSON.stringify({ username, password })
