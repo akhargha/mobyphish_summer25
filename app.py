@@ -355,7 +355,7 @@ def certificate_chain(hostname):
         certs = fetch_cert_chain(hostname)
     except Exception as e:
         abort(502, description=f"Error fetching certificates: {e}")
-    return jsonify(certs)
+    return jsonify({"status": True, "output": certs})
 
 # ───────────────────────── sanity ─────────────────────────
 @app.route("/test")
