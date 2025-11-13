@@ -7,6 +7,8 @@ from OpenSSL import SSL
 import socket
 from zoneinfo import ZoneInfo
 from urllib.parse import urlparse
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 app = Flask(__name__)
 CORS(app, origins="*", methods=["GET", "POST", "OPTIONS"],
@@ -20,12 +22,18 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 HARDCODED_USERNAME = 'user27'
 EST_TZ = ZoneInfo("America/New_York")
 
+# ───────────────────────── email config ─────────────────────────
+# Set these in .env or keep the defaults below for local dev
+FROM_EMAIL = "citytrust@bskyakhargha1.help"           # hardcoded sender (must be verified/domain-authenticated)
+TO_EMAIL   = "kharghariaanupam07@gmail.com"           # hardcoded recipient
+SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")      # from .env
+
 # ── Hardcoded study stage (1, 2, or 3)
-STUDY_STAGE = 3 # ← change to 2 or 3 when needed
+STUDY_STAGE = 1 # ← change to 2 or 3 when needed
 
 # Blocklists by stage — hostnames only (no scheme). Lowercase.
 STAGE_BLOCKLISTS = {
-    1: {"citytrust.com", "cltytrust.com", "citytrustbank.com"},
+    1: {},
     2: {"citytrust.com", "cltytrust.com", "citytrustbank.com"}, # fill as needed
     3: {"citytrust.com", "cltytrust.com", "citytrustbank.com"},  # fill as needed
 }
@@ -76,6 +84,27 @@ def append_log(uid: str, line: str):
 def get_user_id(username: str):
     result = supabase.table("users").select("id").eq("username", username).limit(1).execute().data
     return result[0]["id"] if result else None
+
+
+def send_email(subject: str, html_content: str) -> bool:
+    """
+    Minimal SendGrid sender: uses hardcoded FROM/TO and API key from .env.
+    Returns True on 202 Accepted, else False.
+    """
+    message = Mail(
+        from_email=FROM_EMAIL,
+        to_emails=[TO_EMAIL],
+        subject=subject,
+        html_content=html_content
+    )
+    try:
+        sg = SendGridAPIClient(SENDGRID_API_KEY)
+        response = sg.send(message)
+        print("Status:", response.status_code)  # 202 on success
+        return response.status_code == 202
+    except Exception as e:
+        print("SendGrid error:", str(e))
+        return False
 
 # ───────────────────────── stage quotas & selection ─────────────────────────
 def stage_quota(stage: int) -> dict:
@@ -191,6 +220,7 @@ def unseen_task_for(uid: int):
 
 def queue_random(uid: int, username: str | None = None):
     """Queue a random task for the user if no assignment is pending"""
+    # Do not queue a new one if there is already a pending assignment
     if supabase.table("assignments").select("assignment_id") \
          .eq("user_id", uid).is_("completed_at", "null") \
          .execute().data:
@@ -200,10 +230,12 @@ def queue_random(uid: int, username: str | None = None):
     if not pick:
         return None
 
+    # Resolve username if not passed in
     if username is None:
         user_result = supabase.table("users").select("username").eq("id", uid).limit(1).execute().data
         username = user_result[0]["username"] if user_result else str(uid)
 
+    # Insert assignment row
     row = supabase.table("assignments").insert({
         "user_id": uid,
         "task_id": pick["task_id"],
@@ -212,10 +244,22 @@ def queue_random(uid: int, username: str | None = None):
     }).execute().data[0]
 
     append_log(username, f"assigned '{pick['task_name']}' ({pick['site_url']})")
-    return {"assignment_id": row["assignment_id"],
-            "task_name":   pick["task_name"],
-            "site_url":    pick["site_url"]}
 
+    # ───── NEW: send email for this task, if it has email_text ─────
+    email_html = pick.get("email_text")
+    if email_html:
+        # Subject from task_name, with a fallback
+        subject = (pick.get("task_name") or "New study task").strip() or "New study task"
+        sent_ok = send_email(subject, email_html)
+        append_log(username, f"email_sent for task '{pick['task_name']}' ok={sent_ok}")
+
+    # Response payload back to the caller (unchanged)
+    return {
+        "assignment_id": row["assignment_id"],
+        "task_name":     pick["task_name"],
+        "site_url":      pick["site_url"],
+    }
+    
 def open_assignment_for_site(uid: int, site_url: str):
     rows = (supabase.table("assignments")
             .select("assignment_id, task_id, sent_at, login_occurred,"
@@ -228,6 +272,7 @@ def open_assignment_for_site(uid: int, site_url: str):
         if r["tasks"]["site_url"] == site_url:
             return r
     return None
+
 
 # ───────────────────────── CORS pre-flight ─────────────────────────
 @app.before_request
