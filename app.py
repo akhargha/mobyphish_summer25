@@ -35,11 +35,12 @@ HARDCODED_USERNAME = "user27"
 EST_TZ = ZoneInfo("America/New_York")
 
 # ───────────────────────── email config (SendGrid) ─────────────────────────
-# NOTE: FROM_EMAIL must be a verified / domain-authenticated sender in SendGrid.
+# NOTE: FROM_EMAIL_DEFAULT (and any task.email) must be verified / domain-authenticated in SendGrid.
 
-FROM_EMAIL = "citytrust@bskyakhargha1.help"  # hardcoded sender
-TO_EMAIL = "kharghariaanupam07@gmail.com"    # hardcoded recipient
+FROM_EMAIL_DEFAULT = "citytrust@bskyakhargha1.help"  # default/fallback sender
+TO_EMAIL = "kharghariaanupam07@gmail.com"            # hardcoded recipient
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
+
 
 # ───────────────────────── study stage / blocklists ─────────────────────────
 # STUDY_STAGE is a hardcoded global for now. Update to 2 or 3 as the study progresses.
@@ -141,14 +142,18 @@ def get_user_id(username: str):
 # ───────────────────────── email helper (SendGrid) ─────────────────────────
 
 
-def send_email(subject: str, html_content: str) -> bool:
+def send_email(from_email: str | None, subject: str, html_content: str) -> bool:
     """
-    Minimal SendGrid sender: uses hardcoded FROM/TO and API key from .env.
+    Minimal SendGrid sender.
 
-    Returns True if SendGrid responds with HTTP 202 (Accepted), otherwise False.
+    from_email:
+        - If provided, used as the sender (should come from tasks.email).
+        - If None/empty, falls back to FROM_EMAIL_DEFAULT.
     """
+    sender = (from_email or "").strip() or FROM_EMAIL_DEFAULT
+
     message = Mail(
-        from_email=FROM_EMAIL,
+        from_email=sender,
         to_emails=[TO_EMAIL],
         subject=subject,
         html_content=html_content,
@@ -156,11 +161,12 @@ def send_email(subject: str, html_content: str) -> bool:
     try:
         sg = SendGridAPIClient(SENDGRID_API_KEY)
         response = sg.send(message)
-        print("Status:", response.status_code)  # 202 on success
+        print(f"SendGrid status={response.status_code} from={sender}")  # 202 on success
         return response.status_code == 202
     except Exception as e:
         print("SendGrid error:", str(e))
         return False
+
 
 
 # ───────────────────────── stage quotas & task classification ─────────────────────────
@@ -360,8 +366,16 @@ def queue_random(uid: int, username: str | None = None):
     email_html = pick.get("email_text")
     if email_html:
         subject = (pick.get("task_name") or "New study task").strip() or "New study task"
-        sent_ok = send_email(subject, email_html)
-        append_log(username, f"email_sent for task '{pick['task_name']}' ok={sent_ok}")
+        # NEW: pull the sender from tasks.email (column in your tasks table)
+        task_from_email = (pick.get("email") or "").strip() or None
+
+        sent_ok = send_email(task_from_email, subject, email_html)
+        append_log(
+            username,
+            f"email_sent for task '{pick['task_name']}' "
+            f"from='{task_from_email or FROM_EMAIL_DEFAULT}' ok={sent_ok}",
+        )
+
 
     # Response payload back to the caller
     return {
