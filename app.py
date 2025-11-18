@@ -67,6 +67,38 @@ def now_est_iso() -> str:
     return dt.datetime.now(EST_TZ).isoformat(timespec="seconds")
 
 
+def seconds_since_sent(sent_at_raw) -> float:
+    """
+    Compute how many seconds have elapsed since the assignment's sent_at time.
+
+    sent_at_raw is typically a string like '2025-11-12 23:29:26'
+    or '2025-11-12T23:29:26[.ffffff][±HH:MM]'.
+    """
+    if not sent_at_raw:
+        return 0.0
+
+    # Make sure we are working with a string representation.
+    s = str(sent_at_raw)
+
+    # Try ISO parsing first.
+    try:
+        sent_dt = dt.datetime.fromisoformat(s)
+    except ValueError:
+        # Fallback format if Supabase returns 'YYYY-MM-DD HH:MM:SS'
+        try:
+            sent_dt = dt.datetime.strptime(s, "%Y-%m-%d %H:%M:%S")
+        except ValueError:
+            return 0.0
+
+    # If there's no timezone info, treat it as EST (to match now_est_iso()).
+    if sent_dt.tzinfo is None:
+        sent_dt = sent_dt.replace(tzinfo=EST_TZ)
+
+    now = dt.datetime.now(EST_TZ)
+    elapsed = (now - sent_dt).total_seconds()
+    return max(elapsed, 0.0)
+
+
 # ───────────────────────── URL helpers (stage filtering) ─────────────────────────
 
 
@@ -166,7 +198,6 @@ def send_email(from_email: str | None, subject: str, html_content: str) -> bool:
     except Exception as e:
         print("SendGrid error:", str(e))
         return False
-
 
 
 # ───────────────────────── stage quotas & task classification ─────────────────────────
@@ -366,7 +397,7 @@ def queue_random(uid: int, username: str | None = None):
     email_html = pick.get("email_text")
     if email_html:
         subject = (pick.get("task_name") or "New study task").strip() or "New study task"
-        # NEW: pull the sender from tasks.email (column in your tasks table)
+        # pull the sender from tasks.email (column in your tasks table)
         task_from_email = (pick.get("email") or "").strip() or None
 
         sent_ok = send_email(task_from_email, subject, email_html)
@@ -375,7 +406,6 @@ def queue_random(uid: int, username: str | None = None):
             f"email_sent for task '{pick['task_name']}' "
             f"from='{task_from_email or FROM_EMAIL_DEFAULT}' ok={sent_ok}",
         )
-
 
     # Response payload back to the caller
     return {
@@ -392,8 +422,10 @@ def open_assignment_for_site(uid: int, site_url: str):
     """
     rows = (
         supabase.table("assignments")
-        .select("assignment_id, task_id, sent_at, login_occurred,"
-                "tasks(task_name, site_url)")
+        .select(
+            "assignment_id, task_id, sent_at, login_occurred,"
+            "tasks(task_name, site_url)"
+        )
         .eq("user_id", uid)
         .is_("completed_at", "null")
         .limit(5)
@@ -503,15 +535,16 @@ def assign_random():
 def complete_task():
     """
     Mark the current user's assignment for the given site_url as completed,
-    record time taken, and immediately queue the next task (if any).
+    record time taken (based on sent_at -> now), and immediately queue the next task (if any).
     """
     d = request.get_json(silent=True) or {}
     site = d.get("site_url")
-    elapsed, ctype = d.get("elapsed_ms"), d.get("completion_type")
+    elapsed_ms = d.get("elapsed_ms")  # kept for compatibility but ignored
+    ctype = d.get("completion_type")
 
     if not (
         isinstance(site, str)
-        and isinstance(elapsed, (int, float))
+        and isinstance(elapsed_ms, (int, float))
         and ctype in ("task_completed", "reported_phishing")
     ):
         return jsonify({"error": "bad payload"}), 400
@@ -525,12 +558,16 @@ def complete_task():
     if not row:
         return jsonify({"error": "no_pending_assignment"}), 409
 
+    # Compute elapsed seconds based on sent_at and current time.
+    sent_at_raw = row.get("sent_at")
+    elapsed_sec = seconds_since_sent(sent_at_raw)
+
     (
         supabase.table("assignments")
         .update(
             {
-                "completed_at": now_est_iso(),  # EST ISO
-                "time_taken": f"{elapsed/1000:.1f}s",
+                "completed_at": now_est_iso(),           # EST ISO
+                "time_taken": f"{elapsed_sec:.1f}s",     # string e.g. "23.4s"
                 "completion_type": ctype,
             }
         )
@@ -540,7 +577,8 @@ def complete_task():
 
     append_log(
         username,
-        f"finished '{row['tasks']['task_name']}' ({ctype}) in {elapsed/1000:.1f}s",
+        f"finished '{row['tasks']['task_name']}' ({ctype}) in {elapsed_sec:.1f}s "
+        f"(sent_at={sent_at_raw})",
     )
 
     nxt = queue_random(uid, username=username)
