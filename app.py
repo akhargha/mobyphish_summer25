@@ -18,12 +18,6 @@ from sendgrid.helpers.mail import Mail
 # ───────────────────────── Flask / Supabase setup ─────────────────────────
 
 app = Flask(__name__)
-CORS(
-    app,
-    origins="*",
-    methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization"],
-)
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
