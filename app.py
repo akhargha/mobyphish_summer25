@@ -50,9 +50,9 @@ STUDY_STAGE = get_study_stage()  # ← change to 2 or 3 when needed
 
 # Blocklists by stage — hostnames only (no scheme). Lowercase.
 STAGE_BLOCKLISTS = {
-    1: {},
-    2: {"citytrust.com", "cltytrust.com", "citytrustbank.com"},  # fill as needed
-    3: {"citytrust.com", "cltytrust.com", "citytrustbank.com"},  # fill as needed
+    1: {"citytrust.com", "cltytrust.com", "citytrustbank.com"},
+    2: {"meridiansuites.com", "rneridiansuites.com", "meridiansuite.com"},  # fill as needed
+    3: {"cloudjetairways.com", "cIoudjet.com", "cloudjetairway.com"},  # fill as needed
 }
 
 
