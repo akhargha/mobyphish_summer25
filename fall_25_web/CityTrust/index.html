@@ -42,14 +42,6 @@
         font-weight: 700;
       }
 
-      .user-info {
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        font-size: 14px;
-      }
-
-      
       main {
         max-width: 800px;
         margin: 32px auto;
@@ -185,19 +177,21 @@
         margin: 24px 0;
       }
 
-      .transaction-row {
+      .transaction-list {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+
+      .transaction-list li {
         display: flex;
         justify-content: space-between;
-        align-items: center;
-        padding: 12px 0;
+        padding: 8px 0;
         border-bottom: 1px solid #d1fae5;
       }
 
-      .transaction-row:last-child {
+      .transaction-list li:last-child {
         border-bottom: none;
-        font-weight: 600;
-        font-size: 18px;
-        color: #14532d;
       }
 
       .transaction-label {
@@ -212,7 +206,7 @@
 
       .amount-highlight {
         color: #dc2626;
-        font-size: 24px;
+        font-size: 20px;
         font-weight: 700;
       }
 
@@ -256,8 +250,6 @@
         .card-body {
           padding: 24px 16px;
         }
-
-        
       }
     </style>
   </head>
@@ -265,11 +257,8 @@
     <header>
       <div class="header-content">
         <div class="logo">CityTrust Bank</div>
-        <div class="user-info">
-          <span id="userDisplay">User</span>
-        </div>
+        <!-- user text removed from top right -->
       </div>
-      
     </header>
 
     <main>
@@ -278,61 +267,32 @@
       </div>
 
       <!-- LOGIN CARD -->
-      <!-- <div id="loginCard" class="card">
-        <div class="card-header">
-          <h2>Login with Username and Password</h2>
-        </div>
-        <div class="card-body">
-          <div class="form-group">
-            <label for="acc">Username</label>
-            <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
-          </div>
-
-          <div class="form-group">
-            <label for="pwd">Password</label>
-            <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
-          </div>
-
-          <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
-            <span class="loading-spinner" id="loginSpinner"></span>
-            Login
-          </button>
-
-          <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
-        </div>
-      </div> -->
-      
-      <!-- LOGIN CARD -->
       <div id="loginCard" class="card">
-
         <div class="card-header">
           <h2>Login with Username and Password</h2>
         </div>
 
-          <div class="card-body">
-            <form id="loginForm" method="POST" action="/verify-login">
+        <div class="card-body">
+          <form id="loginForm" onsubmit="return false;">
+            <div class="form-group">
+              <label for="acc">Username</label>
+              <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
+            </div>
 
-              <div class="form-group">
-                <label for="acc">Username</label>
-                <input id="acc" class="form-control" placeholder="Enter your username" autocomplete="username" />
-              </div>
+            <div class="form-group">
+              <label for="pwd">Password</label>
+              <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
+            </div>
 
-              <div class="form-group">
-                <label for="pwd">Password</label>
-                <input id="pwd" type="password" class="form-control" placeholder="Enter your password" autocomplete="current-password" />
-              </div>
+            <button id="loginBtn" type="button" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+              <span class="loading-spinner" id="loginSpinner"></span>
+              Login
+            </button>
 
-              <button id="loginBtn" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
-                <span class="loading-spinner" id="loginSpinner"></span>
-                Login
-              </button>
-
-              <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
-
-            </form>
-          </div>
+            <div id="loginErr" class="alert alert-danger" style="display: none;"></div>
+          </form>
+        </div>
       </div>
-
 
       <!-- TASK CARD -->
       <div id="taskCard" class="card" style="display: none;">
@@ -343,42 +303,25 @@
           <div class="alert alert-success">
             <strong>Authentication Successful</strong> - You are now authorized to approve business payments.
           </div>
-
           <p style="margin: 20px 0; font-size: 16px;">
             A <strong>business payment</strong> requires your approval before processing. Please review the payment details below and approve if accurate.
           </p>
-
           <div class="transaction-details">
-            <div class="transaction-row">
-              <span class="transaction-label">Payment Type:</span>
-              <span class="transaction-value">ACH Business Payment</span>
-            </div>
-            <div class="transaction-row">
-              <span class="transaction-label">Payee:</span>
-              <span class="transaction-value">Metro Office Supplies</span>
-            </div>
-            <div class="transaction-row">
-              <span class="transaction-label">Account Number:</span>
-              <span class="transaction-value">445632187</span>
-            </div>
-            <div class="transaction-row">
-              <span class="transaction-label">Reference:</span>
-              <span class="transaction-value">PAY-2025-0702-MOS</span>
-            </div>
-            <div class="transaction-row">
-              <span class="transaction-label">Payment Purpose:</span>
-              <span class="transaction-value">Office Equipment Purchase</span>
-            </div>
-            <div class="transaction-row">
-              <span class="transaction-label">Requested By:</span>
-              <span class="transaction-value">Operations Department</span>
-            </div>
-            <div class="transaction-row">
-              <span class="transaction-label">Amount:</span>
-              <span class="transaction-value amount-highlight">$3,420.00</span>
-            </div>
+            <ul class="transaction-list">
+              <li>
+                <span class="transaction-label">Payee:</span>
+                <span id="payeeValue" class="transaction-value">Business Vendor</span>
+              </li>
+              <li>
+                <span class="transaction-label">Account Number:</span>
+                <span id="accountValue" class="transaction-value">000000000</span>
+              </li>
+              <li>
+                <span class="transaction-label">Amount:</span>
+                <span id="amountValue" class="transaction-value amount-highlight">$0.00</span>
+              </li>
+            </ul>
           </div>
-
           <div class="btn-wrapper">
             <button id="approveBtn" class="btn btn-success" style="width: 100%; font-size: 18px; padding: 16px;">
               <span class="loading-spinner" id="approveSpinner"></span>
@@ -388,7 +331,7 @@
         </div>
       </div>
 
-      <!-- SUCCESS CARD -->
+      <!-- SUCCESS CARD (single doneCard) -->
       <div id="doneCard" class="card" style="display: none;">
         <div class="card-header">
           <h2>Payment Approved Successfully</h2>
@@ -396,30 +339,88 @@
         <div class="card-body" style="text-align: center;">
           <h3 style="color: #059669; margin-bottom: 16px;">Payment Authorized</h3>
           <p style="font-size: 16px; margin-bottom: 24px; color: #14532d;">
-            The business payment of <strong>$3,420.00</strong> has been successfully approved and will be processed within 1–2 business days.
+            The business payment has been successfully approved and will be processed within 1–2 business days.
           </p>
           <div class="alert alert-success">
-            <strong>Reference ID:</strong> CTB-PAY-2025070349Z<br />
-            <strong>Confirmation sent to:</strong> operations@yourcompany.com
+            <h3>Return to Mobymail to continue</h3>
           </div>
         </div>
       </div>
 
       <div class="footer-info">
-        This website is for designed for the MobyPhish study
+        This website is designed for the MobyPhish study
       </div>
     </main>
 
     <script>
       (() => {
-        const siteUrl = "citytrust-bank.com";
+        const siteUrl = "citytrust.com";
         const siteName = "CityTrust Bank";
         const pageStart = Date.now();
+        const API_BASE = "https://study-api.com";
         const $ = (id) => document.getElementById(id);
 
         const loginCard = $("loginCard"),
               taskCard = $("taskCard"),
-              doneCard = $("doneCard");
+              doneCard = $("doneCard"),
+              payeeEl = $("payeeValue"),
+              accountEl = $("accountValue"),
+              amountEl = $("amountValue");
+
+        // Map task_type -> payment details
+        const TASK_DETAILS = {
+          reg_task_1: {
+            payee: "Metro Office Supplies",
+            account: "445632187",
+            amount: "$400"
+          },
+          reg_task_2: {
+            payee: "Midtown Stationery Co.",
+            account: "882310459",
+            amount: "$325"
+          },
+          reg_task_3: {
+            payee: "Harbor Print & Copy",
+            account: "670114223",
+            amount: "$489"
+          },
+          reg_task_4: {
+            payee: "Evergreen Office Furnishings",
+            account: "553920186",
+            amount: "$1,240"
+          },
+          reg_task_5: {
+            payee: "Rapid Courier Services",
+            account: "419768302",
+            amount: "$275"
+          },
+          reg_task_6: {
+            payee: "Apex Tech Supplies",
+            account: "734501978",
+            amount: "$615"
+          },
+          cert_task_1: {
+            payee: "Evergreen Office Furnishings",
+            account: "553920186",
+            amount: "$1,240"
+          },
+          cert_task_2: {
+            payee: "Rapid Courier Services",
+            account: "419768302",
+            amount: "$275"
+          }
+        };
+
+        function setPaymentDetailsFromTaskType(taskType) {
+          const details = TASK_DETAILS[taskType] || {
+            payee: "Business Vendor",
+            account: "000000000",
+            amount: "$0.00"
+          };
+          payeeEl.textContent = details.payee;
+          accountEl.textContent = details.account;
+          amountEl.textContent = details.amount;
+        }
 
         let userId = localStorage.getItem("study_uid");
         if (!userId) {
@@ -428,21 +429,21 @@
         }
 
         const log = (msg) =>
-          fetch("/log", {
+          fetch(`${API_BASE}/log`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ user_id: Number(userId), text: msg }),
           }).catch(() => {});
 
         const markLogin = () =>
-          fetch("/login-event", {
+          fetch(`${API_BASE}/login-event`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ user_id: Number(userId), site_url: siteUrl }),
           }).catch(() => {});
 
         function finishTask(type) {
-          fetch("/complete-task", {
+          fetch(`${API_BASE}/complete-task`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -454,7 +455,34 @@
           }).catch(() => {});
         }
 
-        $("loginBtn").onclick = async () => {
+        async function fetchCurrentTaskAndSetDetails() {
+          try {
+            const res = await fetch(`${API_BASE}/current-task`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                user_id: Number(userId),
+                site_url: siteUrl
+              })
+            });
+
+            if (!res.ok) {
+              // Fallback to default details if no pending assignment
+              setPaymentDetailsFromTaskType(null);
+              return;
+            }
+
+            const data = await res.json();
+            const taskType = data.task_type || null;
+            setPaymentDetailsFromTaskType(taskType);
+          } catch (e) {
+            // On error, fallback to default
+            setPaymentDetailsFromTaskType(null);
+          }
+        }
+
+        // --- HARDCODED LOGIN: username=user, password=user ---
+        $("loginBtn").onclick = () => {
           const username = $("acc").value.trim();
           const password = $("pwd").value.trim();
           const spinner = $("loginSpinner");
@@ -463,35 +491,24 @@
           spinner.style.display = "inline-block";
           btn.disabled = true;
 
-          try {
-            const res = await fetch("/verify-login", {
-              method: "POST",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ username, password })
-            });
-
-            const result = await res.json();
-
-            if (res.ok && result.user_id) {
-              userId = result.user_id;
-              localStorage.setItem("study_uid", userId);
+          setTimeout(async () => {
+            if (username === "user" && password === "user") {
               $("loginErr").style.display = "none";
               loginCard.style.display = "none";
               taskCard.style.display = "block";
-              $("userDisplay").textContent = username;
+
               log(`User ${userId} logged into ${siteName} at ${new Date().toISOString()}`);
               markLogin();
+              // Fetch current task and update payee/account/amount
+              await fetchCurrentTaskAndSetDetails();
             } else {
-              $("loginErr").textContent = result.error || "Invalid credentials.";
+              $("loginErr").textContent = "Invalid username or password.";
               $("loginErr").style.display = "block";
             }
-          } catch (err) {
-            $("loginErr").textContent = "Login failed. Please try again.";
-            $("loginErr").style.display = "block";
-          } finally {
+
             spinner.style.display = "none";
             btn.disabled = false;
-          }
+          }, 800);
         };
 
         $("approveBtn").onclick = () => {
@@ -508,8 +525,6 @@
             finishTask("task_completed");
           }, 2000);
         };
-
-        
 
         document.addEventListener("keypress", (e) => {
           if (e.key === "Enter" && loginCard.style.display !== "none") {

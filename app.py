@@ -18,12 +18,6 @@ from sendgrid.helpers.mail import Mail
 # ───────────────────────── Flask / Supabase setup ─────────────────────────
 
 app = Flask(__name__)
-CORS(
-    app,
-    origins="*",
-    methods=["GET", "POST", "OPTIONS"],
-    allow_headers=["Content-Type", "Authorization"],
-)
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
@@ -45,7 +39,14 @@ SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 # ───────────────────────── study stage / blocklists ─────────────────────────
 # STUDY_STAGE is a hardcoded global for now. Update to 2 or 3 as the study progresses.
 
-STUDY_STAGE = 1  # ← change to 2 or 3 when needed
+def get_study_stage():
+    try:
+        with open("current_stage.txt", "r") as f:
+            return int(f.read().strip())
+    except:
+        return 1
+
+STUDY_STAGE = get_study_stage()  # ← change to 2 or 3 when needed
 
 # Blocklists by stage — hostnames only (no scheme). Lowercase.
 STAGE_BLOCKLISTS = {
@@ -53,8 +54,6 @@ STAGE_BLOCKLISTS = {
     2: {"citytrust.com", "cltytrust.com", "citytrustbank.com"},  # fill as needed
     3: {"citytrust.com", "cltytrust.com", "citytrustbank.com"},  # fill as needed
 }
-
-# ───────────────────────── basic helpers ─────────────────────────
 
 
 def current_username() -> str:
@@ -101,7 +100,6 @@ def seconds_since_sent(sent_at_raw) -> float:
 
 # ───────────────────────── URL helpers (stage filtering) ─────────────────────────
 
-
 def normalize_host(url_or_host: str) -> str:
     """
     Return the hostname for equality checks.
@@ -132,7 +130,6 @@ def is_blocked_for_stage(site_url: str) -> bool:
 
 
 # ───────────────────────── database helpers (logging / users) ─────────────────────────
-
 
 def append_log(uid: str, line: str):
     """
@@ -173,7 +170,6 @@ def get_user_id(username: str):
 
 # ───────────────────────── email helper (SendGrid) ─────────────────────────
 
-
 def send_email(from_email: str | None, subject: str, html_content: str) -> bool:
     """
     Minimal SendGrid sender.
@@ -201,7 +197,6 @@ def send_email(from_email: str | None, subject: str, html_content: str) -> bool:
 
 
 # ───────────────────────── stage quotas & task classification ─────────────────────────
-
 
 def stage_quota(stage: int) -> dict:
     """
@@ -424,7 +419,7 @@ def open_assignment_for_site(uid: int, site_url: str):
         supabase.table("assignments")
         .select(
             "assignment_id, task_id, sent_at, login_occurred,"
-            "tasks(task_name, site_url)"
+            "tasks(task_name, site_url, task_type)"
         )
         .eq("user_id", uid)
         .is_("completed_at", "null")
@@ -432,14 +427,22 @@ def open_assignment_for_site(uid: int, site_url: str):
         .execute()
         .data
     )
+
+    print(f"[open_assignment_for_site] found {len(rows)} open rows for uid={uid!r}")
+
     for r in rows:
-        if r["tasks"]["site_url"] == site_url:
+        tasks = r.get("tasks") or {}
+        task_site = tasks.get("site_url")
+        print(
+            f"[open_assignment_for_site] candidate assignment_id={r.get('assignment_id')} "
+            f"task_site={task_site!r}"
+        )
+        if tasks.get("site_url") == site_url:
             return r
     return None
 
 
 # ───────────────────────── CORS pre-flight ─────────────────────────
-
 
 @app.before_request
 def preflight():
@@ -454,12 +457,12 @@ def preflight():
 
 # ───────────────────────── /log ─────────────────────────
 
-
 @app.route("/log", methods=["POST"])
 def log_route():
     """
     Append an arbitrary log message to the current user's log_text field.
     Expected JSON: { "text": "<string>" }
+    (Extra fields like user_id are ignored for compatibility.)
     """
     b = request.get_json(silent=True) or {}
     text = b.get("text")
@@ -471,12 +474,13 @@ def log_route():
 
 # ───────────────────────── /login-event ─────────────────────────
 
-
 @app.route("/login-event", methods=["POST"])
 def login_event():
     """
     Mark that a login event occurred for the current user's pending assignment
     with the given site_url.
+    Expected JSON: { "site_url": "<string>", ... }
+    (Extra fields like user_id are ignored.)
     """
     data = request.get_json(silent=True) or {}
     site = data.get("site_url")
@@ -506,11 +510,12 @@ def login_event():
 
 # ───────────────────────── /assign-random ─────────────────────────
 
-
 @app.route("/assign-random", methods=["POST"])
 def assign_random():
     """
     Assign a random task for the current user, respecting per-stage quotas.
+
+    Payload (for compatibility): { "user_id": <anything> }  // ignored
     If a pending assignment already exists, returns 409 with
     {"error": "pending_assignment_exists"}.
     """
@@ -530,17 +535,25 @@ def assign_random():
 
 # ───────────────────────── /complete-task ─────────────────────────
 
-
 @app.route("/complete-task", methods=["POST"])
 def complete_task():
     """
     Mark the current user's assignment for the given site_url as completed,
     record time taken (based on sent_at -> now), and immediately queue the next task (if any).
+
+    Expected JSON:
+      {
+        "site_url": "<string>",
+        "elapsed_ms": <number>,          # kept for compatibility but not used in timing
+        "completion_type": "task_completed" | "reported_phishing"
+        ... (extra fields allowed)
+      }
     """
     d = request.get_json(silent=True) or {}
     site = d.get("site_url")
-    elapsed_ms = d.get("elapsed_ms")  # kept for compatibility but ignored
+    elapsed_ms = d.get("elapsed_ms")
     ctype = d.get("completion_type")
+    print('complete-task payload', site, ctype)
 
     if not (
         isinstance(site, str)
@@ -556,6 +569,10 @@ def complete_task():
 
     row = open_assignment_for_site(uid, site)
     if not row:
+        print(
+            "[/complete-task] no_pending_assignment — "
+            f"uid={uid!r}, site={site!r}"
+        )
         return jsonify({"error": "no_pending_assignment"}), 409
 
     # Compute elapsed seconds based on sent_at and current time.
@@ -585,8 +602,55 @@ def complete_task():
     return jsonify({"status": "completed", "next_task": nxt}), 200
 
 
-# ───────────────────────── /certificate_chain ─────────────────────────
+# ───────────────────────── /current-task (NEW) ─────────────────────────
 
+@app.route("/current-task", methods=["POST"])
+def current_task():
+    """
+    Return the current open assignment for this user + site_url, including task_type.
+
+    Expected JSON:
+      {
+        "site_url": "<string>",
+        "user_id": <anything>   # optional / ignored for compatibility
+      }
+
+    Response on success:
+      {
+        "assignment_id": <int>,
+        "task_id": <int>,
+        "task_name": "<str or null>",
+        "task_type": "<str or null>",
+        "site_url": "<str or null>"
+      }
+    """
+    data = request.get_json(silent=True) or {}
+    site = data.get("site_url")
+
+    if not isinstance(site, str):
+        return jsonify({"error": "bad_payload"}), 400
+
+    username = current_username()
+    uid = get_user_id(username)
+    if not uid:
+        return jsonify({"error": "user_not_found"}), 404
+
+    row = open_assignment_for_site(uid, site)
+    if not row:
+        return jsonify({"error": "no_pending_assignment"}), 409
+
+    task = row.get("tasks") or {}
+
+    return jsonify({
+        "assignment_id": row.get("assignment_id"),
+        "task_id": row.get("task_id"),
+        "task_name": task.get("task_name"),
+        "task_type": task.get("task_type"),
+        "site_url": task.get("site_url"),
+    }), 200
+
+
+# ───────────────────────── /certificate_chain ─────────────────────────
 
 def fetch_cert_chain(hostname: str, port: int = 443):
     """
@@ -635,7 +699,6 @@ def certificate_chain(hostname):
 
 
 # ───────────────────────── sanity / healthcheck ─────────────────────────
-
 
 @app.route("/test")
 def test():
