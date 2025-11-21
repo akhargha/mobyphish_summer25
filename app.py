@@ -44,12 +44,13 @@ def get_study_stage():
         with open("current_stage.txt", "r") as f:
             return int(f.read().strip())
     except:
-        return 1
+        return 0
 
-STUDY_STAGE = get_study_stage()  # ← change to 2 or 3 when needed
+STUDY_STAGE = get_study_stage()  # ← change to 1, 2 or 3 when needed
 
 # Blocklists by stage — hostnames only (no scheme). Lowercase.
 STAGE_BLOCKLISTS = {
+    0: set(),  # tutorial phase
     1: {"citytrust.com", "cltytrust.com", "citytrustbank.com"},
     2: {"meridiansuites.com", "rneridiansuites.com", "meridiansuite.com"},  # fill as needed
     3: {"cloudjetairways.com", "cIoudjet.com", "cloudjetairway.com"},  # fill as needed
@@ -202,17 +203,19 @@ def stage_quota(stage: int) -> dict:
     """
     CUMULATIVE quotas by stage.
 
-    Stage 1 increments:  regular=5, url=2, email=2, cert=1  -> total 10
-    Stage 2 increments:  regular=5, url=2, email=2, cert=1  -> cumulative 20
-    Stage 3 increments:  regular=5, url=2, email=4, cert=1  -> cumulative 32
+    Stage 0 (Tutorial):  regular=3, url=1, email=1, cert=0  -> total 5
+    Stage 1 increments:  regular=5, url=2, email=2, cert=1  -> cumulative 15
+    Stage 2 increments:  regular=5, url=2, email=2, cert=1  -> cumulative 25
+    Stage 3 increments:  regular=5, url=2, email=4, cert=1  -> cumulative 37
     """
     increments = {
+        0: {"regular": 3, "url": 1, "email": 1, "cert": 0},
         1: {"regular": 5, "url": 2, "email": 2, "cert": 1},
         2: {"regular": 5, "url": 2, "email": 2, "cert": 1},
         3: {"regular": 5, "url": 2, "email": 4, "cert": 1},
     }
     total = {"regular": 0, "url": 0, "email": 0, "cert": 0}
-    for s in range(1, max(1, min(3, stage)) + 1):
+    for s in range(0, max(0, min(3, stage)) + 1):
         inc = increments[s]
         total["regular"] += inc["regular"]
         total["url"] += inc["url"]
