@@ -3,30 +3,27 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CityTrust Bank</title>
+    <title>CloudJet Airways</title>
     <style>
       * {
         box-sizing: border-box;
         margin: 0;
         padding: 0;
       }
-
       body {
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-        background: linear-gradient(135deg, #f0fdf4 0%, #dcfce7 100%);
+        background: linear-gradient(135deg, #ffffff 0%, #f5f5f5 100%);
         min-height: 100vh;
-        color: #14532d;
+        color: #424242;
         line-height: 1.6;
       }
-
       header {
-        background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+        background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
         color: white;
         padding: 16px 24px;
         box-shadow: 0 2px 10px rgba(0,0,0,0.1);
         position: relative;
       }
-
       .header-content {
         max-width: 1200px;
         margin: 0 auto;
@@ -34,31 +31,32 @@
         justify-content: space-between;
         align-items: center;
       }
-
       .logo {
         display: flex;
         align-items: center;
         font-size: 24px;
         font-weight: 700;
       }
-
+      .user-info {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        font-size: 14px;
+      }
       main {
         max-width: 800px;
         margin: 32px auto;
         padding: 0 24px;
       }
-
       .breadcrumb {
         color: #6b7280;
         font-size: 14px;
         margin-bottom: 24px;
       }
-
       .breadcrumb a {
-        color: #16a34a;
+        color: #d32f2f;
         text-decoration: none;
       }
-
       .card {
         background: white;
         border-radius: 12px;
@@ -66,53 +64,45 @@
         overflow: hidden;
         margin-bottom: 24px;
       }
-
       .card-header {
-        background: linear-gradient(90deg, #15803d 0%, #166534 100%);
+        background: linear-gradient(90deg, #b71c1c 0%, #a01818 100%);
         color: white;
         padding: 20px 24px;
-        border-bottom: 3px solid #22c55e;
+        border-bottom: 3px solid #e53935;
       }
-
       .card-header h2 {
         margin: 0;
         font-size: 20px;
         font-weight: 600;
       }
-
       .card-body {
         padding: 32px 24px;
       }
-
       .form-group {
         margin-bottom: 20px;
       }
-
       .form-group label {
         display: block;
         margin-bottom: 6px;
         font-weight: 600;
-        color: #14532d;
+        color: #424242;
         font-size: 14px;
       }
-
       .form-control {
         width: 100%;
         padding: 12px 16px;
-        border: 2px solid #d1fae5;
+        border: 2px solid #e0e0e0;
         border-radius: 8px;
         font-size: 16px;
         transition: all 0.3s ease;
-        background: #f7fee7;
+        background: #fafafa;
       }
-
       .form-control:focus {
         outline: none;
-        border-color: #22c55e;
-        box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.1);
+        border-color: #d32f2f;
+        box-shadow: 0 0 0 3px rgba(211, 47, 47, 0.1);
         background: white;
       }
-
       .btn {
         display: inline-flex;
         align-items: center;
@@ -127,98 +117,82 @@
         text-decoration: none;
         min-width: 140px;
       }
-
       .btn-primary {
-        background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
+        background: linear-gradient(135deg, #e53935 0%, #d32f2f 100%);
         color: white;
       }
-
       .btn-primary:hover {
-        background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+        background: linear-gradient(135deg, #d32f2f 0%, #b71c1c 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(34, 197, 94, 0.3);
+        box-shadow: 0 4px 12px rgba(211, 47, 47, 0.3);
       }
-
       .btn-success {
-        background: linear-gradient(135deg, #059669 0%, #047857 100%);
+        background: linear-gradient(135deg, #616161 0%, #424242 100%);
         color: white;
       }
-
       .btn-success:hover {
-        background: linear-gradient(135deg, #047857 0%, #065f46 100%);
+        background: linear-gradient(135deg, #424242 0%, #212121 100%);
         transform: translateY(-1px);
-        box-shadow: 0 4px 12px rgba(5, 150, 105, 0.3);
+        box-shadow: 0 4px 12px rgba(66, 66, 66, 0.3);
       }
-
       .alert {
         padding: 12px 16px;
         border-radius: 8px;
         margin-top: 16px;
         font-size: 14px;
       }
-
       .alert-danger {
         background: #fef2f2;
         border: 1px solid #fecaca;
         color: #dc2626;
       }
-
       .alert-success {
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        color: #166534;
+        background: #f1f8e9;
+        border: 1px solid #c8e6c9;
+        color: #33691e;
       }
-
       .transaction-details {
-        background: #f7fee7;
-        border: 2px solid #d1fae5;
+        background: #fafafa;
+        border: 2px solid #eeeeee;
         border-radius: 8px;
         padding: 24px;
         margin: 24px 0;
       }
-
       .transaction-list {
         list-style: none;
         margin: 0;
         padding: 0;
       }
-
       .transaction-list li {
         display: flex;
         justify-content: space-between;
         padding: 8px 0;
-        border-bottom: 1px solid #d1fae5;
+        border-bottom: 1px solid #eeeeee;
       }
-
       .transaction-list li:last-child {
         border-bottom: none;
       }
-
       .transaction-label {
         color: #6b7280;
         font-weight: 500;
       }
-
       .transaction-value {
-        color: #14532d;
+        color: #424242;
         font-weight: 600;
       }
-
       .amount-highlight {
-        color: #dc2626;
-        font-size: 20px;
+        color: #d32f2f;
+        font-size: 24px;
         font-weight: 700;
       }
-
       .footer-info {
         text-align: center;
         color: #6b7280;
         font-size: 12px;
         margin-top: 32px;
         padding: 16px;
-        border-top: 1px solid #d1fae5;
+        border-top: 1px solid #eeeeee;
       }
-
       .loading-spinner {
         display: none;
         width: 20px;
@@ -229,24 +203,20 @@
         animation: spin 1s linear infinite;
         margin-right: 8px;
       }
-
       @keyframes spin {
         0% { transform: rotate(0deg); }
         100% { transform: rotate(360deg); }
       }
-
       @media (max-width: 768px) {
         .header-content {
           flex-direction: column;
           gap: 12px;
           text-align: center;
         }
-
         main {
           margin: 16px auto;
           padding: 0 16px;
         }
-
         .card-body {
           padding: 24px 16px;
         }
@@ -256,8 +226,7 @@
   <body>
     <header>
       <div class="header-content">
-        <div class="logo">CityTrust Bank</div>
-        <!-- user text removed from top right -->
+        <div class="logo">CloudJet Airways</div>
       </div>
     </header>
 
@@ -309,16 +278,16 @@
           <div class="transaction-details">
             <ul class="transaction-list">
               <li>
-                <span class="transaction-label">Payee:</span>
-                <span id="payeeValue" class="transaction-value">Business Vendor</span>
+                <span class="transaction-label">Aircraft ID:</span>
+                <span id="payeeValue" class="transaction-value">This is not the correct website.</span>
               </li>
               <li>
-                <span class="transaction-label">Account Number:</span>
-                <span id="accountValue" class="transaction-value">000000000</span>
+                <span class="transaction-label">Service Provider:</span>
+                <span id="accountValue" class="transaction-value">Please review the email again.</span>
               </li>
               <li>
-                <span class="transaction-label">Amount:</span>
-                <span id="amountValue" class="transaction-value amount-highlight">$0.00</span>
+                <span class="transaction-label">Estimated Cost:</span>
+                <span id="amountValue" class="transaction-value amount-highlight">Do not approve this payment.</span>
               </li>
             </ul>
           </div>
@@ -331,14 +300,14 @@
         </div>
       </div>
 
-      <!-- SUCCESS CARD (single doneCard) -->
+      <!-- SUCCESS CARD -->
       <div id="doneCard" class="card" style="display: none;">
         <div class="card-header">
           <h2>Payment Approved Successfully</h2>
         </div>
         <div class="card-body" style="text-align: center;">
-          <h3 style="color: #059669; margin-bottom: 16px;">Payment Authorized</h3>
-          <p style="font-size: 16px; margin-bottom: 24px; color: #14532d;">
+          <h3 style="color: #d32f2f; margin-bottom: 16px;">Payment Authorized</h3>
+          <p style="font-size: 16px; margin-bottom: 24px; color: #424242;">
             The business payment has been successfully approved and will be processed within 1–2 business days.
           </p>
           <div class="alert alert-success">
@@ -354,8 +323,8 @@
 
     <script>
       (() => {
-        const siteUrl = "cltytrust.com";
-        const siteName = "CityTrust Bank";
+        const siteUrl = "cIoudjet.com";
+        const siteName = "CloudJet Airways";
         const pageStart = Date.now();
         const API_BASE = "https://study-api.com";
         const $ = (id) => document.getElementById(id);
@@ -369,37 +338,37 @@
 
         // Map task_type -> payment details
         const TASK_DETAILS = {
-          spof_task_2: {
-            payee: "Harbor Print & Copy",
-            account: "670114223",
-            amount: "$489"
+          email_task_9: {
+            aircraftId: "NX-H203",
+            serviceProvider: "Zenith AeroWorks",
+            estimatedCost: "$5,020"
           },
-          spof_task_1: {
-            payee: "Metro Office Supplies",
-            account: "445632187",
-            amount: "$400"
+          email_task_10: {
+            aircraftId: "RW-P517",
+            serviceProvider: "AeroPoint Engineering",
+            estimatedCost: "$7,310"
           },
-          email_task_2: {
-            payee: "Midtown Stationery Co.",
-            account: "882310459",
-            amount: "$325"
+          spof_task_9: {
+            aircraftId: "QF-T889",
+            serviceProvider: "BlueStar Aviation",
+            estimatedCost: "$4,430"
           },
-          email_task_3: {
-            payee: "Harbor Print & Copy",
-            account: "670114223",
-            amount: "$489"
+          spof_task_10: {
+            aircraftId: "SZ-R556",
+            serviceProvider: "Vector Aeronautics",
+            estimatedCost: "$8,210"
           }
         };
 
         function setPaymentDetailsFromTaskType(taskType) {
           const details = TASK_DETAILS[taskType] || {
-            payee: "Business Vendor",
-            account: "000000000",
-            amount: "$0.00"
+            aircraftId: "This is not the correct website.",
+            serviceProvider: "Please review the email again.",
+            estimatedCost: "Do not approve this payment."
           };
-          payeeEl.textContent = details.payee;
-          accountEl.textContent = details.account;
-          amountEl.textContent = details.amount;
+          payeeEl.textContent = details.aircraftId;
+          accountEl.textContent = details.serviceProvider;
+          amountEl.textContent = details.estimatedCost;
         }
 
         let userId = localStorage.getItem("study_uid");
@@ -447,7 +416,7 @@
             });
 
             if (!res.ok) {
-              // Fallback to default details if no pending assignment
+              // Fallback to warning text if no pending assignment
               setPaymentDetailsFromTaskType(null);
               return;
             }
@@ -456,7 +425,7 @@
             const taskType = data.task_type || null;
             setPaymentDetailsFromTaskType(taskType);
           } catch (e) {
-            // On error, fallback to default
+            // On error, fallback to warning text
             setPaymentDetailsFromTaskType(null);
           }
         }
