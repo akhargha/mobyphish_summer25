@@ -35,6 +35,16 @@ FROM_EMAIL_DEFAULT = "citytrust@bskyakhargha1.help"  # default/fallback sender
 TO_EMAIL = "kharghariaanupam07@gmail.com"            # hardcoded recipient
 SENDGRID_API_KEY = os.getenv("SENDGRID_API_KEY")
 
+# ───────────────────────── study sites set (for cert endpoint behavior) ─────────────────────────
+
+STUDY_SITES = {
+    # CityTrust family
+    "citytrust.com", "cltytrust.com", "citytrustbank.com",
+    # Meridian family
+    "meridiansuites.com", "rneridiansuites.com", "meridiansuite.com",
+    # CloudJet family
+    "cloudjetairways.com", "cIoudjetairways.com", "cloudjetairway.com",
+}
 
 # ───────────────────────── study stage / blocklists ─────────────────────────
 # STUDY_STAGE is a hardcoded global for now. Update to 2 or 3 as the study progresses.
@@ -77,20 +87,16 @@ def seconds_since_sent(sent_at_raw) -> float:
     if not sent_at_raw:
         return 0.0
 
-    # Make sure we are working with a string representation.
     s = str(sent_at_raw)
 
-    # Try ISO parsing first.
     try:
         sent_dt = dt.datetime.fromisoformat(s)
     except ValueError:
-        # Fallback format if Supabase returns 'YYYY-MM-DD HH:MM:SS'
         try:
             sent_dt = dt.datetime.strptime(s, "%Y-%m-%d %H:%M:%S")
         except ValueError:
             return 0.0
 
-    # If there's no timezone info, treat it as EST (to match now_est_iso()).
     if sent_dt.tzinfo is None:
         sent_dt = sent_dt.replace(tzinfo=EST_TZ)
 
@@ -119,7 +125,6 @@ def normalize_host(url_or_host: str) -> str:
         host = urlparse(s).hostname or ""
         return host.lstrip(".")
     except Exception:
-        # Fallback: strip and normalize as best-effort.
         return url_or_host.strip().lower().lstrip(".")
 
 
@@ -167,6 +172,33 @@ def get_user_id(username: str):
         .data
     )
     return result[0]["id"] if result else None
+
+
+def has_open_cert_task_for_site(uid: int, hostname: str) -> bool:
+    """
+    True iff user has an open assignment whose task is a CERT phishing task
+    and task.site_url matches hostname exactly.
+    """
+    rows = (
+        supabase.table("assignments")
+        .select("assignment_id, tasks(is_phishing, phishing_type, site_url)")
+        .eq("user_id", uid)
+        .is_("completed_at", "null")
+        .limit(20)
+        .execute()
+        .data
+    )
+
+    for r in rows or []:
+        t = r.get("tasks") or {}
+        if (
+            t.get("is_phishing") is True
+            and str(t.get("phishing_type") or "").strip().upper() == "CERT"
+            and str(t.get("site_url") or "") == hostname
+        ):
+            return True
+
+    return False
 
 
 # ───────────────────────── email helper (SendGrid) ─────────────────────────
@@ -255,7 +287,6 @@ def task_matches_stage_category(task: dict, category: str) -> bool:
     if category == "cert":
         return blocked
     else:
-        # regular/url/email
         return not blocked
 
 
@@ -362,7 +393,6 @@ def queue_random(uid: int, username: str | None = None):
     if not pick:
         return None
 
-    # Resolve username if not passed in
     if username is None:
         user_result = (
             supabase.table("users")
@@ -381,7 +411,7 @@ def queue_random(uid: int, username: str | None = None):
             {
                 "user_id": uid,
                 "task_id": pick["task_id"],
-                "sent_at": now_est_iso(),  # EST ISO
+                "sent_at": now_est_iso(),
                 "username": username,
             }
         )
@@ -391,11 +421,9 @@ def queue_random(uid: int, username: str | None = None):
 
     append_log(username, f"assigned '{pick['task_name']}' ({pick['site_url']})")
 
-    # If this task has email_text, send an email representation of it.
     email_html = pick.get("email_text")
     if email_html:
         subject = (pick.get("task_name") or "New study task").strip() or "New study task"
-        # pull the sender from tasks.email (column in your tasks table)
         task_from_email = (pick.get("email") or "").strip() or None
 
         sent_ok = send_email(task_from_email, subject, email_html)
@@ -405,7 +433,6 @@ def queue_random(uid: int, username: str | None = None):
             f"from='{task_from_email or FROM_EMAIL_DEFAULT}' ok={sent_ok}",
         )
 
-    # Response payload back to the caller
     return {
         "assignment_id": row["assignment_id"],
         "task_name": pick["task_name"],
@@ -522,7 +549,7 @@ def assign_random():
     If a pending assignment already exists, returns 409 with
     {"error": "pending_assignment_exists"}.
     """
-    _ = (request.get_json(silent=True) or {}).get("user_id")  # kept for compatibility
+    _ = (request.get_json(silent=True) or {}).get("user_id")
     username = current_username()
 
     uid = get_user_id(username)
@@ -531,7 +558,6 @@ def assign_random():
 
     nxt = queue_random(uid, username=username)
     if not nxt:
-        # To preserve compatibility, keep the same error for "no more tasks" or "pending exists".
         return jsonify({"error": "pending_assignment_exists"}), 409
     return jsonify({"status": "assigned", **nxt}), 200
 
@@ -556,7 +582,7 @@ def complete_task():
     site = d.get("site_url")
     elapsed_ms = d.get("elapsed_ms")
     ctype = d.get("completion_type")
-    print('complete-task payload', site, ctype)
+    print("complete-task payload", site, ctype)
 
     if not (
         isinstance(site, str)
@@ -572,10 +598,7 @@ def complete_task():
 
     row = open_assignment_for_site(uid, site)
     if not row:
-        print(
-            "[/complete-task] no_pending_assignment — "
-            f"uid={uid!r}, site={site!r}"
-        )
+        print("[/complete-task] no_pending_assignment — " f"uid={uid!r}, site={site!r}")
         return jsonify({"error": "no_pending_assignment"}), 409
 
     # Compute elapsed seconds based on sent_at and current time.
@@ -586,8 +609,8 @@ def complete_task():
         supabase.table("assignments")
         .update(
             {
-                "completed_at": now_est_iso(),           # EST ISO
-                "time_taken": f"{elapsed_sec:.1f}s",     # string e.g. "23.4s"
+                "completed_at": now_est_iso(),
+                "time_taken": f"{elapsed_sec:.1f}s",
                 "completion_type": ctype,
             }
         )
@@ -605,7 +628,7 @@ def complete_task():
     return jsonify({"status": "completed", "next_task": nxt}), 200
 
 
-# ───────────────────────── /current-task (NEW) ─────────────────────────
+# ───────────────────────── /current-task ─────────────────────────
 
 @app.route("/current-task", methods=["POST"])
 def current_task():
@@ -643,27 +666,30 @@ def current_task():
         return jsonify({"error": "no_pending_assignment"}), 409
 
     task = row.get("tasks") or {}
-
-    return jsonify({
-        "assignment_id": row.get("assignment_id"),
-        "task_id": row.get("task_id"),
-        "task_name": task.get("task_name"),
-        "task_type": task.get("task_type"),
-        "site_url": task.get("site_url"),
-    }), 200
+    return jsonify(
+        {
+            "assignment_id": row.get("assignment_id"),
+            "task_id": row.get("task_id"),
+            "task_name": task.get("task_name"),
+            "task_type": task.get("task_type"),
+            "site_url": task.get("site_url"),
+        }
+    ), 200
 
 
 # ───────────────────────── /certificate_chain ─────────────────────────
 
 def fetch_cert_chain(hostname: str, port: int = 443):
     """
-    Fetch the TLS certificate chain for the given hostname:port using pyOpenSSL,
+    Fetch the TLS certificate chain for hostname:port using pyOpenSSL,
     returning a list of simplified certificate dicts.
     """
     ctx = SSL.Context(SSL.TLS_CLIENT_METHOD)
     ctx.set_verify(SSL.VERIFY_NONE, lambda *args: True)
 
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    sock.settimeout(5)
+
     conn = SSL.Connection(ctx, sock)
     conn.set_tlsext_host_name(hostname.encode())
     conn.connect((hostname, port))
@@ -692,20 +718,35 @@ def fetch_cert_chain(hostname: str, port: int = 443):
 @app.route("/certificate_chain/<path:hostname>")
 def certificate_chain(hostname):
     """
-    Return the TLS certificate chain for the given hostname as JSON.
+    For normal (non-study) sites: return real TLS cert chain.
+    For study sites: return 0 by default, but return 1 if user has an open CERT task for this site.
     """
+    host = (hostname or "").strip()
+
+    username = current_username()
+    uid = get_user_id(username)
+    if not uid:
+        return jsonify({"error": "user_not_found"}), 404
+
+    if host in STUDY_SITES:
+        try:
+            is_cert_task = has_open_cert_task_for_site(uid, host)
+        except Exception as e:
+            abort(502, description=f"DB error checking cert task: {e}")
+        return jsonify({"status": True, "output": (1 if is_cert_task else 0)}), 200
+
     try:
-        certs = fetch_cert_chain(hostname)
+        certs = fetch_cert_chain(host)
     except Exception as e:
         abort(502, description=f"Error fetching certificates: {e}")
-    return jsonify({"status": True, "output": certs})
+
+    return jsonify({"status": True, "output": certs}), 200
 
 
 # ───────────────────────── sanity / healthcheck ─────────────────────────
 
 @app.route("/test")
 def test():
-    """Simple sanity endpoint to verify server time, user, and stage."""
     return jsonify(
         {
             "est": now_est_iso(),
