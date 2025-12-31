@@ -25,7 +25,7 @@ supabase: Client = create_client(SUPABASE_URL, SUPABASE_KEY)
 
 # ───────────────────────── core config ─────────────────────────
 
-HARDCODED_USERNAME = "user27"
+HARDCODED_USERNAME = "user25"
 EST_TZ = ZoneInfo("America/New_York")
 
 # ───────────────────────── email config (SendGrid) ─────────────────────────
@@ -714,17 +714,63 @@ def fetch_cert_chain(hostname: str, port: int = 443):
         )
     return certs
 
+# ───────────────────────── Dummy certificates for study sites ─────────────────────────
+
+# "Legitimate" dummy certificate - returned when NOT a CERT phishing task
+# This is what gets saved when user first saves the site
+DUMMY_CERT_LEGITIMATE = [
+    {
+        "subject": {"commonName": "*.studysite.com", "organizationName": "Legitimate Company Inc."},
+        "issuer": {"commonName": "DigiCert TLS RSA SHA256 2020 CA1", "organizationName": "DigiCert Inc"},
+        "serial_number": "0a1b2c3d4e5f6789",
+        "version": "v3",
+        "not_before": "2024-01-01T00:00:00",
+        "not_after": "2026-01-01T00:00:00",
+    },
+    {
+        "subject": {"commonName": "DigiCert TLS RSA SHA256 2020 CA1", "organizationName": "DigiCert Inc"},
+        "issuer": {"commonName": "DigiCert Global Root CA", "organizationName": "DigiCert Inc"},
+        "serial_number": "deadbeef12345678",
+        "version": "v3",
+        "not_before": "2020-01-01T00:00:00",
+        "not_after": "2030-01-01T00:00:00",
+    },
+]
+
+# "Phishing" dummy certificate - returned when it IS a CERT phishing task
+# This has different issuer/subject to trigger the certificate mismatch warning
+DUMMY_CERT_PHISHING = [
+    {
+        "subject": {"commonName": "*.studysite.com", "organizationName": "Suspicious Entity LLC"},
+        "issuer": {"commonName": "Unknown CA", "organizationName": "Self-Signed Authority"},
+        "serial_number": "badc0ffee0000001",
+        "version": "v3",
+        "not_before": "2025-01-01T00:00:00",
+        "not_after": "2025-12-31T00:00:00",
+    },
+    {
+        "subject": {"commonName": "Unknown CA", "organizationName": "Self-Signed Authority"},
+        "issuer": {"commonName": "Unknown CA", "organizationName": "Self-Signed Authority"},
+        "serial_number": "badc0ffee0000002",
+        "version": "v3",
+        "not_before": "2025-01-01T00:00:00",
+        "not_after": "2025-12-31T00:00:00",
+    },
+]
+
 
 @app.route("/certificate_chain/<path:hostname>")
 def certificate_chain(hostname):
     """
     For normal (non-study) sites: return real TLS cert chain.
-    For study sites: return 0 by default, but return 1 if user has an open CERT task for this site.
+    For study sites: return dummy cert chain.
+      - If user has an open CERT task for this site: return PHISHING dummy (triggers mismatch)
+      - Otherwise: return LEGITIMATE dummy (matches what was saved)
     """
     host = (hostname or "").strip()
-
     username = current_username()
     uid = get_user_id(username)
+
     if not uid:
         return jsonify({"error": "user_not_found"}), 404
 
@@ -733,15 +779,18 @@ def certificate_chain(hostname):
             is_cert_task = has_open_cert_task_for_site(uid, host)
         except Exception as e:
             abort(502, description=f"DB error checking cert task: {e}")
-        return jsonify({"status": True, "output": (1 if is_cert_task else 0)}), 200
 
+        # Return appropriate dummy certificate based on whether it's a CERT phishing task
+        dummy_cert = DUMMY_CERT_PHISHING if is_cert_task else DUMMY_CERT_LEGITIMATE
+        return jsonify({"status": True, "output": dummy_cert}), 200
+
+    # Non-study sites: fetch real certificate chain
     try:
         certs = fetch_cert_chain(host)
     except Exception as e:
         abort(502, description=f"Error fetching certificates: {e}")
 
     return jsonify({"status": True, "output": certs}), 200
-
 
 # ───────────────────────── sanity / healthcheck ─────────────────────────
 
