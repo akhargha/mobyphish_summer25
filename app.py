@@ -18,6 +18,7 @@ from sendgrid.helpers.mail import Mail
 # ───────────────────────── Flask / Supabase setup ─────────────────────────
 
 app = Flask(__name__)
+CORS(app, origins="*", methods=["GET", "POST", "OPTIONS"], allow_headers="*")
 
 SUPABASE_URL = os.getenv("SUPABASE_URL")
 SUPABASE_KEY = os.getenv("SUPABASE_KEY")
@@ -470,19 +471,6 @@ def open_assignment_for_site(uid: int, site_url: str):
         if tasks.get("site_url") == site_url:
             return r
     return None
-
-
-# ───────────────────────── CORS pre-flight ─────────────────────────
-
-@app.before_request
-def preflight():
-    """Handle CORS pre-flight OPTIONS requests."""
-    if request.method == "OPTIONS":
-        r = jsonify({})
-        r.headers["Access-Control-Allow-Origin"] = "*"
-        r.headers["Access-Control-Allow-Headers"] = "*"
-        r.headers["Access-Control-Allow-Methods"] = "*"
-        return r
 
 
 # ───────────────────────── /log ─────────────────────────
