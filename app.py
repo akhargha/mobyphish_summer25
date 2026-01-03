@@ -443,9 +443,11 @@ def queue_random(uid: int, username: str | None = None):
 
 def open_assignment_for_site(uid: int, site_url: str):
     """
-    Return the open (not completed) assignment row for this user and site_url,
-    or None if no such assignment exists.
+    Return the open (not completed) assignment row for this user that matches
+    site_url, using hostname normalization (case-insensitive).
     """
+    target_host = normalize_host(site_url)
+
     rows = (
         supabase.table("assignments")
         .select(
@@ -454,23 +456,29 @@ def open_assignment_for_site(uid: int, site_url: str):
         )
         .eq("user_id", uid)
         .is_("completed_at", "null")
-        .limit(5)
+        .limit(20)
         .execute()
         .data
     )
 
     print(f"[open_assignment_for_site] found {len(rows)} open rows for uid={uid!r}")
+    print(f"[open_assignment_for_site] target site_url={site_url!r} -> host={target_host!r}")
 
-    for r in rows:
+    for r in rows or []:
         tasks = r.get("tasks") or {}
-        task_site = tasks.get("site_url")
+        task_site_raw = tasks.get("site_url") or ""
+        task_host = normalize_host(task_site_raw)
+
         print(
             f"[open_assignment_for_site] candidate assignment_id={r.get('assignment_id')} "
-            f"task_site={task_site!r}"
+            f"task_site={task_site_raw!r} -> host={task_host!r}"
         )
-        if tasks.get("site_url") == site_url:
+
+        if task_host == target_host:
             return r
+
     return None
+
 
 
 # ───────────────────────── /log ─────────────────────────
